@@ -15,7 +15,7 @@ async function getRandomUser() {
       lastName: user.name.last,
       baseSalary,
       advanceOnSalary:
-        Math.random() > 0.5 ? Math.floor(Math.random() * 5000) : null,
+        Math.random() > 0.5 ? Math.floor(Math.random() * 5000) : 0,
     };
   } catch (error) {
     console.error('Error fetching random user:', error.message);

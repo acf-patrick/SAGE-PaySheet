@@ -15,5 +15,7 @@ model User {
   name            String
   lastName        String
   baseSalary      Int
-  advanceOnSalary Int?
+  advanceOnSalary Int    @default(0)
+
+  @@unique([name, lastName])
 }
