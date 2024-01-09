@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { UpdateUserDto } from './dto/userUpdate.dto';
 
@@ -70,11 +70,22 @@ export class UserService {
 
   // Update one specific user
   async updateUser(updateUserDto: UpdateUserDto) {
+    const roles = ['ADMIN', 'USER'];
     try {
+      if (
+        updateUserDto.role &&
+        roles.find((role) => role == updateUserDto.role) == undefined
+      ) {
+        throw new NotFoundException(
+          'Role ' + '"' + updateUserDto.role + '" not found.',
+        );
+      }
+
       return await this.prisma.user.update({
         data: {
           name: updateUserDto.name,
           lastName: updateUserDto.lastName,
+          role: updateUserDto.role,
         },
         where: {
           id: updateUserDto.id,

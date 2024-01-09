@@ -10,6 +10,11 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum Role {
+  USER
+  ADMIN
+}
+
 model Paysheet {
   id              String  @id @default(uuid())
   baseSalary      Int
@@ -23,6 +28,7 @@ model User {
   name      String
   lastName  String
   paysheets Paysheet[]
+  role      Role       @default(USER)
 
   @@unique([name, lastName])
 }
