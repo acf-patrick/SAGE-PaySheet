@@ -77,6 +77,10 @@ export class PaysheetService {
           data: {
             name: paysheet.name,
             lastName: paysheet.lastName,
+            username: (paysheet.name + ' ' + paysheet.lastName).replaceAll(
+              ' ',
+              '_',
+            ),
           },
         });
       }

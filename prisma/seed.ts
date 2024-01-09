@@ -35,6 +35,10 @@ async function generateRandomUsersWithPaysheets() {
       data: {
         name: randomUser.name,
         lastName: randomUser.lastName,
+        username: (randomUser.name + ' ' + randomUser.lastName).replaceAll(
+          ' ',
+          '_',
+        ),
       },
     });
 

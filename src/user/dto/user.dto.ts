@@ -18,6 +18,30 @@ export class UpdateUserDto {
   lastName?: string;
 
   @IsOptional()
+  @ApiProperty()
+  @IsString()
+  username?: string;
+
+  @IsOptional()
+  @ApiProperty({ enum: Role, enumName: 'Role' })
+  @IsEnum(Role)
+  role?: Role;
+}
+
+export class UserDto {
+  @ApiProperty()
+  @IsString()
+  name: string;
+
+  @ApiProperty()
+  @IsString()
+  lastName: string;
+
+  @ApiProperty()
+  @IsString()
+  username: string;
+
+  @IsOptional()
   @ApiProperty({ enum: Role, enumName: 'Role' })
   @IsEnum(Role)
   role?: Role;

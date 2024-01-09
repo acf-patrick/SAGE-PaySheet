@@ -10,7 +10,7 @@ import {
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
-import { UpdateUserDto } from './dto/userUpdate.dto';
+import { UpdateUserDto, UserDto } from './dto/user.dto';
 
 @ApiTags('👤 Users')
 @Controller('user')
@@ -55,5 +55,13 @@ export class UserController {
   })
   async updateUser(@Body() updateUserDto: UpdateUserDto) {
     return await this.userService.updateUser(updateUserDto);
+  }
+
+  @Post()
+  @ApiOperation({
+    summary: 'Create user',
+  })
+  async createUser(@Body() userDto: UserDto) {
+    return await this.userService.createUser(userDto);
   }
 }
