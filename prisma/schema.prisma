@@ -10,12 +10,19 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id              String @id @default(uuid())
-  name            String
-  lastName        String
+model Paysheet {
+  id              String  @id @default(uuid())
   baseSalary      Int
-  advanceOnSalary Int    @default(0)
+  advanceOnSalary Int     @default(0)
+  user            User?   @relation(fields: [userId], references: [id])
+  userId          String?
+}
+
+model User {
+  id        String     @id @default(uuid())
+  name      String
+  lastName  String
+  paysheets Paysheet[]
 
   @@unique([name, lastName])
 }

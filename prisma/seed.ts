@@ -1,7 +1,7 @@
 // seed.ts
 
-import axios from 'axios';
 import { PrismaClient } from '@prisma/client';
+import axios from 'axios';
 
 const prisma = new PrismaClient();
 
@@ -9,13 +9,9 @@ async function getRandomUser() {
   try {
     const response = await axios.get('https://randomuser.me/api/');
     const user = response.data.results[0];
-    const baseSalary = Math.floor(Math.random() * 20) * 50000 + 50000; // Multiple of 50,000
     return {
       name: user.name.first,
       lastName: user.name.last,
-      baseSalary,
-      advanceOnSalary:
-        Math.random() > 0.5 ? Math.floor(Math.random() * 5000) : 0,
     };
   } catch (error) {
     console.error('Error fetching random user:', error.message);
@@ -23,21 +19,35 @@ async function getRandomUser() {
   }
 }
 
-async function main() {
+async function generateRandomUsersWithPaysheets() {
   await prisma.user.deleteMany();
+  await prisma.paysheet.deleteMany();
 
-  const users = [];
   for (let i = 1; i <= 25; i++) {
     const randomUser = await getRandomUser();
-    users.push(randomUser);
-  }
+    const paysheet = {
+      baseSalary: Math.floor(Math.random() * 100000) + 50000,
+      advanceOnSalary:
+        Math.random() > 0.5 ? Math.floor(Math.random() * 5000) : 0,
+    };
 
-  await prisma.user.createMany({
-    data: users,
-  });
+    const createdUser = await prisma.user.create({
+      data: {
+        name: randomUser.name,
+        lastName: randomUser.lastName,
+      },
+    });
+
+    await prisma.paysheet.create({
+      data: {
+        ...paysheet,
+        userId: createdUser.id,
+      },
+    });
+  }
 }
 
-main()
+generateRandomUsersWithPaysheets()
   .catch((e) => {
     throw e;
   })

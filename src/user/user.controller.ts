@@ -9,18 +9,18 @@ export class UserController {
 
   @Get()
   @ApiOperation({
-    summary: 'Get all pay sheets',
+    summary: 'Get all users',
   })
   async getPaySheets() {
-    return await this.userService.getPaySheets();
+    return await this.userService.getUsers();
   }
 
   @Get('/search/')
   @ApiOperation({
-    summary: 'Get one specific pay sheet',
+    summary: 'Get one specific user',
   })
   async getPaySheetsByKeyWord(@Query('keyword') keyword: string) {
-    return await this.userService.getPaySheetsByKeyWord(keyword);
+    return await this.userService.getUsersByKeyWord(keyword);
   }
 
   @Delete()
@@ -28,6 +28,6 @@ export class UserController {
     summary: 'Delete all pay sheets',
   })
   async deleteAllPaySheets() {
-    return await this.userService.deleteAllPaySheets();
+    return await this.userService.deleteAllUsers();
   }
 }

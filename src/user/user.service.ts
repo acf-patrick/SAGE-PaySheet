@@ -5,8 +5,8 @@ import { PrismaService } from 'src/prisma/prisma.service';
 export class UserService {
   constructor(private readonly prisma: PrismaService) {}
 
-  // Getting all paysheets
-  async getPaySheets() {
+  // Getting all users
+  async getUsers() {
     try {
       return await this.prisma.user.findMany();
     } catch (err) {
@@ -16,7 +16,7 @@ export class UserService {
   }
 
   // Get pay sheets by a keyword for name and last name
-  async getPaySheetsByKeyWord(keyword: string) {
+  async getUsersByKeyWord(keyword: string) {
     try {
       return await this.prisma.user.findMany({
         where: {
@@ -43,7 +43,7 @@ export class UserService {
   }
 
   // Delete all pay sheets
-  async deleteAllPaySheets() {
+  async deleteAllUsers() {
     try {
       await this.prisma.user.deleteMany();
       return 'All Pay Sheets are deleted!';
