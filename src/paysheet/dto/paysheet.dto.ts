@@ -3,10 +3,6 @@ import { IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class PaySheetDto {
   @ApiProperty()
-  @IsString()
-  id: string;
-
-  @ApiProperty()
   @IsNumber()
   baseSalary: number;
 
@@ -17,17 +13,7 @@ export class PaySheetDto {
   @IsOptional()
   @ApiProperty()
   @IsString()
-  userId?: string;
-
-  @IsOptional()
-  @ApiProperty()
-  @IsString()
-  name?: string;
-
-  @IsOptional()
-  @ApiProperty()
-  @IsString()
-  lastName?: string;
+  userId: string;
 }
 
 export class UpdatePaySheetDto {

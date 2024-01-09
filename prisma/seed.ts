@@ -2,6 +2,9 @@
 
 import { PrismaClient } from '@prisma/client';
 import axios from 'axios';
+import * as bcrypt from 'bcrypt';
+
+const saltOrRounds = 10;
 
 const prisma = new PrismaClient();
 
@@ -38,6 +41,10 @@ async function generateRandomUsersWithPaysheets() {
         username: (randomUser.name + ' ' + randomUser.lastName).replaceAll(
           ' ',
           '_',
+        ),
+        password: await bcrypt.hash(
+          (randomUser.name + ' ' + randomUser.lastName).replaceAll(' ', '_'),
+          saltOrRounds,
         ),
       },
     });

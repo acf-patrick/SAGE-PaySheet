@@ -62,27 +62,23 @@ export class PaysheetService {
   // Adding new paysheet
   async addPaySheet(paysheet: PaySheetDto) {
     try {
-      let user: User;
-      if (paysheet.userId) {
-        const user = await this.prisma.user.findFirst({
-          where: {
-            id: paysheet.userId,
-          },
-          include: {
-            paysheets: true,
-          },
-        });
-      } else {
-        user = await this.prisma.user.create({
-          data: {
-            name: paysheet.name,
-            lastName: paysheet.lastName,
-            username: (paysheet.name + ' ' + paysheet.lastName).replaceAll(
-              ' ',
-              '_',
-            ),
-          },
-        });
+      if (!paysheet.userId) {
+        throw new NotFoundException(
+          'User id: ' + paysheet.userId + ' not found',
+        );
+      }
+
+      const user = await this.prisma.user.findFirst({
+        where: {
+          id: paysheet.userId,
+        },
+        include: {
+          paysheets: true,
+        },
+      });
+
+      if (!user) {
+        throw new NotFoundException('User not found');
       }
 
       const paysheetToAdd = await this.prisma.paysheet.create({
