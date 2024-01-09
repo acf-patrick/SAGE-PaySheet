@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { UpdateUserDto } from './dto/userUpdate.dto';
 
 @Injectable()
 export class UserService {
@@ -15,7 +16,7 @@ export class UserService {
     }
   }
 
-  // Get pay sheets by a keyword for name and last name
+  // Get users by a keyword for name and last name
   async getUsersByKeyWord(keyword: string) {
     try {
       return await this.prisma.user.findMany({
@@ -42,13 +43,46 @@ export class UserService {
     }
   }
 
-  // Delete all pay sheets
+  // Delete all users
   async deleteAllUsers() {
     try {
       await this.prisma.user.deleteMany();
       return 'All Pay Sheets are deleted!';
     } catch (err) {
       return 'Error while deleting pay sheets';
+    }
+  }
+
+  // Delete one specific user
+  async deleteUser(id: string) {
+    try {
+      await this.prisma.user.delete({
+        where: {
+          id,
+        },
+      });
+      return 'User with id: ' + id + ' deleted.';
+    } catch (err) {
+      console.log(err);
+      return 'Error: ' + err;
+    }
+  }
+
+  // Update one specific user
+  async updateUser(updateUserDto: UpdateUserDto) {
+    try {
+      return await this.prisma.user.update({
+        data: {
+          name: updateUserDto.name,
+          lastName: updateUserDto.lastName,
+        },
+        where: {
+          id: updateUserDto.id,
+        },
+      });
+    } catch (err) {
+      console.log(err);
+      return 'Error: ' + err;
     }
   }
 }

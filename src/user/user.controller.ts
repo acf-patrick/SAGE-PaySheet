@@ -1,6 +1,16 @@
-import { Controller, Delete, Get, Param, Post, Query } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Query,
+} from '@nestjs/common';
 import { UserService } from './user.service';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { UpdateUserDto } from './dto/userUpdate.dto';
 
 @ApiTags('👤 Users')
 @Controller('user')
@@ -25,9 +35,25 @@ export class UserController {
 
   @Delete()
   @ApiOperation({
-    summary: 'Delete all pay sheets',
+    summary: 'Delete all users',
   })
-  async deleteAllPaySheets() {
+  async deleteAllUsers() {
     return await this.userService.deleteAllUsers();
+  }
+
+  @Delete()
+  @ApiOperation({
+    summary: 'Delete one specific user',
+  })
+  async deleteUser(@Query('id') id: string) {
+    return await this.userService.deleteUser(id);
+  }
+
+  @Patch()
+  @ApiOperation({
+    summary: 'Update one specific user',
+  })
+  async updateUser(@Body() updateUserDto: UpdateUserDto) {
+    return await this.userService.updateUser(updateUserDto);
   }
 }
