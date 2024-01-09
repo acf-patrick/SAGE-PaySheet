@@ -7,16 +7,21 @@ import {
   Patch,
   Post,
   Query,
+  Req,
+  UseGuards,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { UpdateUserDto, UserDto } from './dto/user.dto';
+import { Request } from 'express';
+import { AccessTokenGuard } from 'src/auth/access_token.guard';
 
 @ApiTags('👤 Users')
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
+  @UseGuards(AccessTokenGuard)
   @Get()
   @ApiOperation({
     summary: 'Get all users',
@@ -61,7 +66,8 @@ export class UserController {
   @ApiOperation({
     summary: 'Create user',
   })
-  async createUser(@Body() userDto: UserDto) {
+  async createUser(@Body() userDto: UserDto, @Req() req: Request) {
+    req.user;
     return await this.userService.createUser(userDto);
   }
 }
