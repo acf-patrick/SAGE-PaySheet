@@ -1,14 +1,10 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNumber, IsString } from 'class-validator';
+import { IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class PaySheetDto {
   @ApiProperty()
   @IsString()
-  name: string;
-
-  @ApiProperty()
-  @IsString()
-  lastName: string;
+  id: string;
 
   @ApiProperty()
   @IsNumber()
@@ -17,4 +13,35 @@ export class PaySheetDto {
   @ApiProperty()
   @IsNumber()
   advanceOnSalary: number;
+
+  @IsOptional()
+  @ApiProperty()
+  @IsString()
+  userId?: string;
+
+  @IsOptional()
+  @ApiProperty()
+  @IsString()
+  name?: string;
+
+  @IsOptional()
+  @ApiProperty()
+  @IsString()
+  lastName?: string;
+}
+
+export class UpdatePaySheetDto {
+  @ApiProperty()
+  @IsString()
+  id: string;
+
+  @IsOptional()
+  @ApiProperty()
+  @IsNumber()
+  baseSalary?: number;
+
+  @IsOptional()
+  @ApiProperty()
+  @IsNumber()
+  advanceOnSalary?: number;
 }

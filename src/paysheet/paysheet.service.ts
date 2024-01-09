@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { Paysheet } from '@prisma/client';
+import { Paysheet, User } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { PaySheetDto } from './dto/paysheet.dto';
+import { PaySheetDto, UpdatePaySheetDto } from './dto/paysheet.dto';
 import { UserService } from 'src/user/user.service';
 
 @Injectable()
@@ -62,40 +62,71 @@ export class PaysheetService {
   // Adding new paysheet
   async addPaySheet(paysheet: PaySheetDto) {
     try {
-      const user = await this.prisma.user.findFirst({
-        where: {
-          name: paysheet.name,
-          lastName: paysheet.lastName,
-        },
-        include: {
-          paysheets: true,
-        },
-      });
-
-      let userId = '';
-
-      if (!user) {
-        userId = (
-          await this.prisma.user.create({
-            data: {
-              name: paysheet.name,
-              lastName: paysheet.lastName,
-            },
-          })
-        ).id;
+      let user: User;
+      if (paysheet.userId) {
+        const user = await this.prisma.user.findFirst({
+          where: {
+            id: paysheet.userId,
+          },
+          include: {
+            paysheets: true,
+          },
+        });
       } else {
-        userId = user.id;
+        user = await this.prisma.user.create({
+          data: {
+            name: paysheet.name,
+            lastName: paysheet.lastName,
+          },
+        });
       }
 
       const paysheetToAdd = await this.prisma.paysheet.create({
         data: {
           baseSalary: paysheet.baseSalary,
           advanceOnSalary: paysheet.advanceOnSalary,
-          userId,
+          userId: user.id,
         },
       });
 
       return paysheetToAdd;
+    } catch (err) {
+      console.log('Error: ' + err);
+      return err;
+    }
+  }
+
+  // Update one specific paysheet
+  async updatePaysheet(paysheetDto: UpdatePaySheetDto) {
+    try {
+      const paysheetToUpdate = await this.prisma.paysheet.findUnique({
+        where: {
+          id: paysheetDto.id,
+        },
+      });
+
+      if (!paysheetToUpdate) {
+        throw new NotFoundException(
+          'Paysheet with id: ' + paysheetDto.id + 'not found.',
+        );
+      }
+
+      const paysheet = await this.prisma.paysheet.update({
+        data: {
+          // baseSalary: paysheetDto.baseSalary
+          //   ? paysheetDto.baseSalary
+          //   : paysheetToUpdate.baseSalary,
+          // advanceOnSalary: paysheetDto.advanceOnSalary
+          //   ? paysheetDto.advanceOnSalary
+          //   : paysheetToUpdate.advanceOnSalary,
+          ...paysheetDto,
+        },
+        where: {
+          id: paysheetDto.id,
+        },
+      });
+
+      return paysheet;
     } catch (err) {
       console.log('Error: ' + err);
       return err;

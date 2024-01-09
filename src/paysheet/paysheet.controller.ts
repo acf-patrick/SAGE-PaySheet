@@ -4,12 +4,13 @@ import {
   Delete,
   Get,
   Param,
+  Patch,
   Post,
   Query,
 } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { PaysheetService } from './paysheet.service';
-import { PaySheetDto } from './dto/paysheet.dto';
+import { PaySheetDto, UpdatePaySheetDto } from './dto/paysheet.dto';
 
 @ApiTags('💰 PaySheets')
 @Controller('paysheet')
@@ -46,5 +47,13 @@ export class PaysheetController {
   })
   async addPaysheet(@Body() paysheet: PaySheetDto) {
     return await this.paysheetService.addPaySheet(paysheet);
+  }
+
+  @Patch()
+  @ApiOperation({
+    summary: 'Update specific paysheet',
+  })
+  async updatePaysheet(@Body() paysheetDto: UpdatePaySheetDto) {
+    return await this.paysheetService.updatePaysheet(paysheetDto);
   }
 }
