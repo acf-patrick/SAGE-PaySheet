@@ -2,12 +2,13 @@ import { Module } from '@nestjs/common';
 import { UserModule } from 'src/user/user.module';
 import { AuthService } from './auth.service';
 import { PassportModule } from '@nestjs/passport';
-import { JwtModule } from '@nestjs/jwt';
+import { JwtModule, JwtService } from '@nestjs/jwt';
 import { UserService } from 'src/user/user.service';
 import { AuthController } from './auth.controller';
 import { ConfigService } from '@nestjs/config';
-import { AccessTokenStrategy } from './access_token.strategy';
+import { AccessTokenStrategy } from './strategies/access_token.strategy';
 import { PrismaModule } from 'src/prisma/prisma.module';
+import { RefreshTokenStrategy } from './strategies/refresh_token.strategy';
 
 @Module({
   imports: [
@@ -18,13 +19,18 @@ import { PrismaModule } from 'src/prisma/prisma.module';
       useFactory: async (config: ConfigService) => ({
         secret: config.get<string>('JWT_SECRET'),
         signOptions: {
-          expiresIn: 60,
+          expiresIn: 10,
         },
       }),
       inject: [ConfigService],
     }),
   ],
-  providers: [AuthService, UserService, AccessTokenStrategy],
+  providers: [
+    AuthService,
+    UserService,
+    AccessTokenStrategy,
+    RefreshTokenStrategy,
+  ],
   controllers: [AuthController],
 })
 export class AuthModule {}

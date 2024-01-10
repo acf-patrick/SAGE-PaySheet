@@ -7,16 +7,19 @@ import {
   Patch,
   Post,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { PaysheetService } from './paysheet.service';
 import { PaySheetDto, UpdatePaySheetDto } from './dto/paysheet.dto';
+import { AccessTokenGuard } from 'src/auth/guards/access_token.guard';
 
 @ApiTags('💰 PaySheets')
 @Controller('paysheet')
 export class PaysheetController {
   constructor(private readonly paysheetService: PaysheetService) {}
 
+  @UseGuards(AccessTokenGuard)
   @Get()
   @ApiOperation({
     summary: 'Get all pay sheets',

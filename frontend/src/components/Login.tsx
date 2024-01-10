@@ -1,8 +1,9 @@
 // LoginForm.js
-import { useState } from "react";
+import { useContext, useState } from "react";
 import styled from "styled-components";
 import { api } from "../api";
 import { useNavigate } from "react-router-dom";
+import { UserContext } from "../contexts/userContext";
 
 const LoginContainer = styled.div`
   display: flex;
@@ -70,6 +71,8 @@ export const Login = () => {
 
   const navigate = useNavigate();
 
+  const { setUser } = useContext(UserContext);
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     api
@@ -77,8 +80,12 @@ export const Login = () => {
         username,
         password,
       })
-      .then((data) => {
-        console.log("access_token:" + data.data.access_token);
+      .then((res) => {
+        setUser!(res.data.user);
+        localStorage.setItem("userId", res.data.user.id);
+        localStorage.setItem("access_token", res.data.access_token);
+        console.log("access_token:" + res.data.access_token + "\nUser:");
+        console.log(res.data.user);
         navigate("/paysheets");
       })
       .catch((err) => console.log(err));
