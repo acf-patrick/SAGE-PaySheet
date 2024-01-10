@@ -1,9 +1,16 @@
-import { Body, Controller, Post, UnauthorizedException } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Post,
+  UnauthorizedException,
+  UseGuards,
+} from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { User } from '@prisma/client';
 import { UserDto } from 'src/user/dto/user.dto';
 import { UserService } from 'src/user/user.service';
 import { AuthService } from './auth.service';
+import { RefreshTokenGuard } from './guards/refresh_token.guard';
 
 @ApiTags('🔒 Auth')
 @Controller('auth')
@@ -37,6 +44,7 @@ export class AuthController {
     return await this.userService.createUser(user);
   }
 
+  @UseGuards(RefreshTokenGuard)
   @Post('refresh')
   @ApiOperation({ summary: 'Refresh token of current user' })
   async refreshToken(@Body() token: { refresh: string }) {
