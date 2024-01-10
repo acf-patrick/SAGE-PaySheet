@@ -28,6 +28,7 @@ export class AuthController {
 
     return {
       access_token: this.jwtService.sign({ username: loginDto.username }),
+      user,
     };
   }
 }
