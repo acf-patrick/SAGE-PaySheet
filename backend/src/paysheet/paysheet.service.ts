@@ -132,4 +132,17 @@ export class PaysheetService {
       return err;
     }
   }
+
+  async getPaySheetsForOneUser(id: string) {
+    try {
+      return await this.prisma.paysheet.findMany({
+        where: {
+          userId: id,
+        },
+      });
+    } catch (err) {
+      console.log(err);
+      return err;
+    }
+  }
 }

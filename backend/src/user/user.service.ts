@@ -17,6 +17,20 @@ export class UserService {
     }
   }
 
+  // Get one specific user
+  async getUser(id: string) {
+    try {
+      return await this.prisma.user.findUnique({
+        where: {
+          id,
+        },
+      });
+    } catch (err) {
+      console.log(err);
+      return 'Error: ' + err;
+    }
+  }
+
   // Get users by a keyword for name and last name
   async getUsersByKeyWord(keyword: string) {
     try {

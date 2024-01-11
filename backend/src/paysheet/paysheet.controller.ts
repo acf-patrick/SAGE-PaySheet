@@ -28,6 +28,16 @@ export class PaysheetController {
     return await this.paysheetService.getPaySheets();
   }
 
+  @UseGuards(AccessTokenGuard)
+  @Get('/:id')
+  @ApiOperation({
+    summary: 'Get all pay sheets for one specific user',
+  })
+  async getPaySheetsForOneUser(@Param('id') id: string) {
+    return await this.paysheetService.getPaySheetsForOneUser(id);
+  }
+
+  @UseGuards(AccessTokenGuard)
   @Get('/search')
   @ApiOperation({
     summary: 'Get one specific pay sheet',
@@ -36,6 +46,7 @@ export class PaysheetController {
     return await this.paysheetService.getPaySheetsByKeyWord(userId);
   }
 
+  @UseGuards(AccessTokenGuard)
   @Delete()
   @ApiOperation({
     summary: 'Delete all pay sheets',
@@ -44,6 +55,7 @@ export class PaysheetController {
     return await this.paysheetService.deleteAllPaySheets();
   }
 
+  @UseGuards(AccessTokenGuard)
   @Post()
   @ApiOperation({
     summary: 'Add new paysheet',
@@ -52,6 +64,7 @@ export class PaysheetController {
     return await this.paysheetService.addPaySheet(paysheet);
   }
 
+  @UseGuards(AccessTokenGuard)
   @Patch()
   @ApiOperation({
     summary: 'Update specific paysheet',

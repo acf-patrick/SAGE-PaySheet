@@ -2,11 +2,12 @@ import {
   Body,
   Controller,
   Post,
+  Req,
   UnauthorizedException,
   UseGuards,
 } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
-import { User } from '@prisma/client';
+import { Request } from 'express';
 import { UserDto } from 'src/user/dto/user.dto';
 import { UserService } from 'src/user/user.service';
 import { AuthService } from './auth.service';
@@ -26,7 +27,7 @@ export class AuthController {
     summary: 'Sign in user',
   })
   async login(@Body() loginDto: { username: string; password: string }) {
-    const user: Omit<User, 'password'> = await this.authService.validateUser(
+    const user = await this.authService.validateUser(
       loginDto.username,
       loginDto.password,
     );
@@ -47,7 +48,9 @@ export class AuthController {
   @UseGuards(RefreshTokenGuard)
   @Post('refresh')
   @ApiOperation({ summary: 'Refresh token of current user' })
-  async refreshToken(@Body() token: { refresh: string }) {
-    return await this.authService.refreshToken(token);
+  async refreshToken(@Req() req: Request) {
+    return await this.authService.refreshToken({
+      refresh: req.headers.authorization?.split(' ')[1],
+    });
   }
 }
