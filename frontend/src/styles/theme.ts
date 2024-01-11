@@ -4,5 +4,8 @@ export const theme = {
       background: "#007bff",
       hover: "#0056b3",
     },
+    error: {
+      background: "#FFCDD2",
+    },
   },
 };

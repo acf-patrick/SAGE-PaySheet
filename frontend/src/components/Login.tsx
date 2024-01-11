@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { api } from "../api";
@@ -55,6 +55,8 @@ const LoginFormContainer = styled.form`
     border-radius: 4px;
     background: whitesmoke;
     transition: border 250ms;
+    font-family: "Ubuntu";
+    font-weight: 600;
 
     &:hover {
       border: 2px solid grey;
@@ -69,9 +71,13 @@ const LoginFormContainer = styled.form`
 
   button {
     width: 150px;
+    height: 45px;
     padding: 10px;
     background-color: ${({ theme }) => theme.login.button.background};
     color: #fff;
+    font-weight: 600;
+    font-size: 16px;
+    letter-spacing: 1px;
     border: none;
     border-radius: 4px;
     cursor: pointer;
@@ -81,11 +87,29 @@ const LoginFormContainer = styled.form`
       background-color: ${({ theme }) => theme.login.button.hover};
     }
   }
+
+  .error {
+    opacity: 0;
+    background-color: ${({ theme }) => theme.login.error.background};
+    height: 65px;
+    width: 80%;
+    border-radius: 5px;
+    display: grid;
+    place-items: center;
+    color: red;
+    font-weight: 600;
+    transition: opacity 250ms;
+  }
+
+  .show {
+    opacity: 1;
+  }
 `;
 
 export const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const errorRef = useRef<HTMLParagraphElement>(null);
 
   const navigate = useNavigate();
 
@@ -106,6 +130,8 @@ export const Login = () => {
       .catch((err) => {
         console.log("Error when authenticating");
         console.log(err);
+        errorRef.current?.classList.add("show");
+        setTimeout(() => errorRef.current?.classList.remove("show"), 2000);
       });
   };
 
@@ -116,14 +142,14 @@ export const Login = () => {
           <img src="../public/paysheet.svg" alt="logo" />
           <h2>PaySheet</h2>
         </div>
-        <label htmlFor="username">Username:</label>
+        <label htmlFor="username">Identifiant</label>
         <input
           type="text"
           id="username"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
         />
-        <label htmlFor="password">Password:</label>
+        <label htmlFor="password">Mot de passe:</label>
         <input
           type="password"
           id="password"
@@ -131,6 +157,9 @@ export const Login = () => {
           onChange={(e) => setPassword(e.target.value)}
         />
         <button type="submit">Login</button>
+        <p className="error" ref={errorRef}>
+          Identifiant ou mot de passe invalide
+        </p>
       </LoginFormContainer>
     </LoginContainer>
   );
