@@ -7,5 +7,8 @@ export const theme = {
     error: {
       background: "#FFCDD2",
     },
+    success: {
+      background: "#9dee9d",
+    },
   },
 };

@@ -70,6 +70,7 @@ const LoginFormContainer = styled.form`
   }
 
   button {
+    margin-top: 1rem;
     width: 150px;
     height: 45px;
     padding: 10px;
@@ -156,7 +157,7 @@ export const Login = () => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-        <button type="submit">Login</button>
+        <button type="submit">Connexion</button>
         <p className="error" ref={errorRef}>
           Identifiant ou mot de passe invalide
         </p>
