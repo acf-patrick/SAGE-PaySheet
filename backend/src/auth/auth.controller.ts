@@ -33,7 +33,8 @@ export class AuthController {
     );
 
     if (!user) {
-      throw new UnauthorizedException('Credentials error');
+      console.log('Credentials error');
+      return user;
     }
 
     return await this.authService.login(user);

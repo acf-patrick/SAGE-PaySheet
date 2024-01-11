@@ -10,9 +10,9 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
-import { PaysheetService } from './paysheet.service';
-import { PaySheetDto, UpdatePaySheetDto } from './dto/paysheet.dto';
 import { AccessTokenGuard } from 'src/auth/guards/access_token.guard';
+import { PaySheetDto, UpdatePaySheetDto } from './dto/paysheet.dto';
+import { PaysheetService } from './paysheet.service';
 
 @ApiTags('💰 PaySheets')
 @Controller('paysheet')

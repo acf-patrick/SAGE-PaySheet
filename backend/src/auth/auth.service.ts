@@ -5,8 +5,6 @@ import { User } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
 import { jwtDecode } from 'jwt-decode';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { UserDto } from 'src/user/dto/user.dto';
-import { UserService } from 'src/user/user.service';
 
 @Injectable()
 export class AuthService {

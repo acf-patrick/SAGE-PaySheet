@@ -1,4 +1,3 @@
-// LoginForm.js
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
@@ -11,6 +10,7 @@ const LoginContainer = styled.div`
   height: 100vh;
   width: 100vw;
   background-color: #f0f0f0;
+  background-image: url("../../images/auth-bg.png");
 `;
 
 const LoginFormContainer = styled.form`
@@ -26,25 +26,44 @@ const LoginFormContainer = styled.form`
   justify-content: center;
   color: black;
 
-  h2 {
-    text-align: center;
-    margin-bottom: 20px;
+  .header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    img {
+      width: 25%;
+    }
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
   }
 
   label {
     display: block;
     margin-bottom: 8px;
+    font-weight: 600;
   }
 
   input {
     width: 75%;
-    padding: 10px;
+    padding: 12px;
     margin-bottom: 16px;
-    border: 1px solid #ccc;
+    border: 2px solid black;
     border-radius: 4px;
+    background: whitesmoke;
+    transition: border 250ms;
+
+    &:hover {
+      border: 2px solid grey;
+      cursor: pointer;
+    }
 
     &:focus {
       outline: none;
+      cursor: text;
     }
   }
 
@@ -84,13 +103,19 @@ export const Login = () => {
         localStorage.setItem("refresh_token", res.data.refresh_token);
         navigate("/paysheets");
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        console.log("Error when authenticating");
+        console.log(err);
+      });
   };
 
   return (
     <LoginContainer>
       <LoginFormContainer onSubmit={handleSubmit}>
-        <h2>Login</h2>
+        <div className="header">
+          <img src="../public/paysheet.svg" alt="logo" />
+          <h2>PaySheet</h2>
+        </div>
         <label htmlFor="username">Username:</label>
         <input
           type="text"

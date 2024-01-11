@@ -4,7 +4,6 @@ export const api = axios.create({
   baseURL: import.meta.env.VITE_API_ENDPOINT || "http://localhost:3000/api/",
 });
 
-// Add a request interceptor
 api.interceptors.request.use(
   async (config) => {
     const accessToken = localStorage.getItem("access_token");
@@ -16,7 +15,6 @@ api.interceptors.request.use(
   }
 );
 
-// Add a response interceptor
 api.interceptors.response.use(
   (response) => {
     return response;

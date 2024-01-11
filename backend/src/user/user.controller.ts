@@ -10,11 +10,11 @@ import {
   Req,
   UseGuards,
 } from '@nestjs/common';
-import { UserService } from './user.service';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
-import { UpdateUserDto, UserDto } from './dto/user.dto';
 import { Request } from 'express';
 import { AccessTokenGuard } from 'src/auth/guards/access_token.guard';
+import { UpdateUserDto, UserDto } from './dto/user.dto';
+import { UserService } from './user.service';
 
 @ApiTags('👤 Users')
 @Controller('user')
