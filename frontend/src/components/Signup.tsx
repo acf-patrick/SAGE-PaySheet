@@ -111,8 +111,10 @@ const SignupFormContainer = styled.form`
     height: 75px;
     width: 80%;
     border-radius: 5px;
-    display: grid;
-    place-items: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
     color: red;
     font-weight: 600;
     transition: opacity 250ms;
@@ -186,6 +188,14 @@ export const Signup = () => {
       return;
     }
 
+    if (password.length < 8) {
+      setError("Le mot de passe doit avoir au moins 8 caractères");
+      errorRef.current?.classList.add("show");
+      setTimeout(() => errorRef.current?.classList.remove("show"), 2000);
+      setPending(false);
+      return;
+    }
+
     api
       .post("auth/signup", {
         ...formData,
@@ -253,7 +263,7 @@ export const Signup = () => {
           {pending ? <CgSpinner className="spinner" /> : <span>Souscrire</span>}
         </button>
         <p className="error" ref={errorRef}>
-          {error}
+          <span>{error}</span>
         </p>
       </SignupFormContainer>
     </SignupContainer>
