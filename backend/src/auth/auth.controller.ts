@@ -40,7 +40,7 @@ export class AuthController {
     return await this.authService.login(user);
   }
 
-  @Post('register')
+  @Post('signup')
   @ApiOperation({ summary: 'Register new user' })
   async register(@Body() user: UserDto) {
     return await this.userService.createUser(user);
