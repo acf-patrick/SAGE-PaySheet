@@ -24,6 +24,12 @@ export class UserService {
         where: {
           id,
         },
+        select: {
+          name: true,
+          lastName: true,
+          username: true,
+          paysheets: true,
+        },
       });
     } catch (err) {
       console.log(err);

@@ -6,8 +6,15 @@ export type User = {
   role: string;
 };
 
+export type UserDto = {
+  name: string;
+  lastName: string;
+  username: string;
+};
+
 export type Paysheet = {
   userId: string;
   baseSalary: string;
   advanceOnSalary: string;
+  date: string;
 };
