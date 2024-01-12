@@ -238,6 +238,7 @@ async function generateRandomUsersWithPaysheets() {
       baseSalary: Math.floor(Math.random() * 100000) + 50000,
       advanceOnSalary:
         Math.random() > 0.5 ? Math.floor(Math.random() * 5000) : 0,
+      date: new Date().toISOString(),
     };
 
     const createdUser = await prisma.user.create({
@@ -258,7 +259,11 @@ async function generateRandomUsersWithPaysheets() {
     await prisma.paysheet.create({
       data: {
         ...paysheet,
-        userId: createdUser.id,
+        user: {
+          connect: {
+            id: createdUser.id,
+          },
+        },
       },
     });
   }
