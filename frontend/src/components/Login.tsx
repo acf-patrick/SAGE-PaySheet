@@ -105,6 +105,16 @@ const LoginFormContainer = styled.form`
   .show {
     opacity: 1;
   }
+
+  .signup {
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+
+    &:hover {
+      color: grey;
+    }
+  }
 `;
 
 export const Login = () => {
@@ -161,6 +171,9 @@ export const Login = () => {
         <p className="error" ref={errorRef}>
           Identifiant ou mot de passe invalide
         </p>
+        <a className="signup" href={location.href + "signup"}>
+          Créer compte
+        </a>
       </LoginFormContainer>
     </LoginContainer>
   );
