@@ -28,10 +28,8 @@ model User {
   id        String     @id @default(uuid())
   name      String
   lastName  String
-  username  String
+  username  String     @unique
   password  String
   paysheets Paysheet[]
   role      Role       @default(USER)
-
-  @@unique([name, lastName])
 }
