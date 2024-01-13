@@ -50,7 +50,7 @@ const zodiacSigns = [
   <TbZodiacSagittarius />,
 ];
 
-const StyledHeader = styled.h2<{ $scrolled: boolean }>`
+export const StyledHeader = styled.h2<{ $scrolled?: boolean }>`
   margin: 0;
   position: sticky;
   top: 0;

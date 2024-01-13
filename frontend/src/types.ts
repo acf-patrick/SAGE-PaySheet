@@ -5,6 +5,12 @@ export type User = {
   username: string;
   role: string;
 };
+export type UpdateUserDto = {
+  name: string;
+  lastName: string;
+  username: string;
+  role: string;
+};
 
 export type UserDto = {
   name: string;
