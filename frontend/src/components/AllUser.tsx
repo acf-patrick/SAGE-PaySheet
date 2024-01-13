@@ -65,7 +65,6 @@ function Alluser() {
         <img src="../../public/paysheet.svg" alt="" />
         <span>User Infos</span>
       </StyledHeader>
-      <Outlet />
       <UserList>
         {user.map((user) => (
           <UserCard>
@@ -87,6 +86,7 @@ function Alluser() {
           </UserCard>
         ))}
       </UserList>
+      <Outlet />
     </>
   );
 }
