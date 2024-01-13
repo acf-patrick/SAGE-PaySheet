@@ -2,7 +2,7 @@ import { createBrowserRouter } from "react-router-dom";
 import { Login } from "./components/Login";
 import Paysheets from "./components/Paysheets";
 import { Signup } from "./components/Signup";
-import User from "./components/User";
+import User from "./components/AllUser";
 import AllUser from "./components/AllUser";
 
 export const routes = createBrowserRouter([
@@ -23,12 +23,12 @@ export const routes = createBrowserRouter([
     element: <Paysheets />,
   },
   {
-    path: "user",
-    element: <User />,
+    path: "alluser",
+    element: <AllUser />,
     children: [
       {
-        path: "alluser",
-        element: <AllUser />,
+        path: "user",
+        element: <User />,
       },
     ],
   },

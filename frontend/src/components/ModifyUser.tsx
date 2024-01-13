@@ -1,5 +1,5 @@
 import { FiEdit3 } from "react-icons/fi";
-import { UpdateUserDto, UserDto } from "../types";
+import { UpdateUserDto } from "../types";
 import { useState } from "react";
 
 function ModifyUser() {
