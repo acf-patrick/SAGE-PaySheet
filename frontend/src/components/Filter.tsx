@@ -1,3 +1,4 @@
+import { useRef } from "react";
 import { IoMdClose } from "react-icons/io";
 import styled from "styled-components";
 
@@ -45,11 +46,15 @@ function Filters({
   show,
   setFilters,
   yearsBoundaries,
+  setShowFilter,
 }: {
   show: boolean;
   setFilters: (date: { month: number; year: number }) => void;
   yearsBoundaries: { upper: number; lower: number };
+  setShowFilter: (val: boolean) => void;
 }) {
+  const formRef = useRef<HTMLFormElement>(null);
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
@@ -70,8 +75,12 @@ function Filters({
 
   return (
     <StyledFilters $show={show}>
-      <IoMdClose onClick={handleSetFilters} />
-      <form className="date-picker" onSubmit={handleSubmit}>
+      <IoMdClose
+        onClick={() => {
+          setShowFilter(false);
+        }}
+      />
+      <form className="date-picker" onSubmit={handleSubmit} ref={formRef}>
         <label htmlFor="month">Mois</label>
         <select name="month" id="month">
           {months.map((month, i) => (
@@ -89,6 +98,15 @@ function Filters({
         </select>
         <button>Filtrer</button>
       </form>
+      <button
+        onClick={() => {
+          handleSetFilters();
+          setShowFilter(false);
+          formRef.current?.reset();
+        }}
+      >
+        Reset
+      </button>
     </StyledFilters>
   );
 }

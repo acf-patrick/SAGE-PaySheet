@@ -40,7 +40,7 @@ export class UserController {
   }
 
   @UseGuards(AccessTokenGuard)
-  @Get('/search/')
+  @Get('search/keyword/')
   @ApiOperation({
     summary: 'Get one specific user',
   })

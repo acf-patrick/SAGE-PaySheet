@@ -228,28 +228,22 @@ function Paysheets() {
         let res = true;
         if (filters.month >= 0) {
           res = paysheetMonth == filters.month;
+          if (!res) {
+            return false;
+          }
           if (filters.year >= 0) {
             res = paysheetYear == filters.year;
+            if (!res) {
+              return false;
+            }
           }
         } else {
           if (filters.year >= 0) {
             res = paysheetYear == filters.year;
+            if (!res) {
+              return false;
+            }
           }
-        }
-        return res;
-      })
-    );
-
-    console.log(
-      paysheets.filter((paysheet) => {
-        const paysheetMonth = new Date(paysheet.date).getMonth();
-        const paysheetYear = new Date(paysheet.date).getFullYear();
-        let res = true;
-        if (filters.month >= 0) {
-          res = paysheetMonth == filters.month;
-        }
-        if (filters.year >= 0) {
-          res = paysheetYear == filters.year;
         }
         return res;
       })
@@ -284,6 +278,7 @@ function Paysheets() {
       </div>
       <Filters
         show={showFilters}
+        setShowFilter={setShowFilters}
         setFilters={setFilters}
         yearsBoundaries={getYearsBoundaries()}
       />
