@@ -1,9 +1,9 @@
-import { Outlet, useNavigate } from "react-router-dom";
-import { StyledHeader } from "./Paysheets";
-import { api } from "../api";
-import { UpdateUserDto } from "../types";
-import styled from "styled-components";
 import { useState } from "react";
+import { Outlet } from "react-router-dom";
+import styled from "styled-components";
+import { api } from "../api";
+import { UpdateUserDto, User } from "../types";
+import { StyledHeader } from "./Paysheets";
 
 const UserList = styled.div`
   display: flex;
@@ -50,14 +50,9 @@ const UserInfo = styled.div`
 `;
 
 function Alluser() {
-  let users: UpdateUserDto[] = [];
-  api.get("alluser/").then((res) => {
-    users.push({
-      name: res.data.name,
-      lastName: res.data.lastName,
-      username: res.data.username,
-      role: res.data.role,
-    });
+  const [users, setUsers] = useState<User[]>([]);
+  api.get("user").then((res) => {
+    setUsers(res.data);
   });
   const [selectedUser, setSelectedUser] = useState<UpdateUserDto>({
     name: "",

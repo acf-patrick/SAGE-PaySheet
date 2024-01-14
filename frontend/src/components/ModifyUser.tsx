@@ -1,28 +1,39 @@
-import { FiEdit3 } from "react-icons/fi";
+import { FiEdit3, FiCheck } from "react-icons/fi";
 import { useOutletContext } from "react-router-dom";
 import { UpdateUserDto } from "../types";
+import { useState } from "react";
 
 function ModifyUser() {
   const user: UpdateUserDto = useOutletContext();
+  const userDatas: string[] = [
+    user.name,
+    user.lastName,
+    user.username,
+    user.role,
+  ];
+  const labels: string[] = ["Name: ", "Lastname: ", "Username: ", "Role: "];
+  const [modify, setModify] = useState(false);
 
   return (
     <form>
-      <p>
-        {user.name}
-        <FiEdit3 />
-      </p>
-      <p>
-        {user.lastName}
-        <FiEdit3 />
-      </p>
-      <p>
-        {user.username}
-        <FiEdit3 />
-      </p>
-      <p>
-        {user.role}
-        <FiEdit3 />
-      </p>
+      <div className="user-info">
+        {userDatas.map((data, i) =>
+          modify ? (
+            <div key={labels[i]}>
+              <div>
+                <h3>{labels[i]}</h3>
+                <p>{data}</p>
+              </div>
+              <FiEdit3 />
+            </div>
+          ) : (
+            <div>
+              <input type="text" />
+              <FiCheck />
+            </div>
+          )
+        )}
+      </div>
     </form>
   );
 }
