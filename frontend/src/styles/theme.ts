@@ -11,4 +11,8 @@ export const theme = {
       background: "#9dee9d",
     },
   },
+  modifyUser: {
+    background: "green",
+    hover: "#095209",
+  },
 };

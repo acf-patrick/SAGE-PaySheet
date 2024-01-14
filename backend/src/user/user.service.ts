@@ -29,6 +29,7 @@ export class UserService {
           lastName: true,
           username: true,
           paysheets: true,
+          role: true,
         },
       });
     } catch (err) {

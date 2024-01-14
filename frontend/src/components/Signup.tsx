@@ -1,8 +1,9 @@
-import React, { useState, useRef } from "react";
+import React, { useRef, useState } from "react";
+import { CgSpinner } from "react-icons/cg";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { api } from "../api";
-import { CgSpinner } from "react-icons/cg";
+import "../styles/keyframes.css";
 
 export type fromDataType = {
   name: string;
@@ -22,15 +23,6 @@ const SignupContainer = styled.div`
 `;
 
 const SignupFormContainer = styled.form`
-  @keyframes rotate {
-    from {
-      transform: rotate(0);
-    }
-    to {
-      transform: rotate(360deg);
-    }
-  }
-
   width: 25%;
   height: 75%;
   background-color: #fff;
