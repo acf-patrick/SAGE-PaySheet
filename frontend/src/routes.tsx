@@ -4,6 +4,7 @@ import Paysheets from "./components/Paysheets";
 import { Signup } from "./components/Signup";
 import User from "./components/AllUser";
 import AllUser from "./components/AllUser";
+import ModifyUser from "./components/ModifyUser";
 
 export const routes = createBrowserRouter([
   {
@@ -28,7 +29,7 @@ export const routes = createBrowserRouter([
     children: [
       {
         path: "user",
-        element: <User />,
+        element: <ModifyUser />,
       },
     ],
   },

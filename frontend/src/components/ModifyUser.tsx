@@ -27,7 +27,7 @@ function ModifyUser() {
               <FiEdit3 />
             </div>
           ) : (
-            <div>
+            <div key={labels[i]}>
               <input type="text" />
               <FiCheck />
             </div>

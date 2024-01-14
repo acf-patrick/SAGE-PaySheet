@@ -55,6 +55,8 @@ export const StyledHeader = styled.h2<{ $scrolled?: boolean }>`
   position: sticky;
   top: 0;
   left: 0;
+  z-index: 2;
+  backdrop-filter: blur(1px);
   min-height: 75px;
   text-align: center;
   background-color: grey;
