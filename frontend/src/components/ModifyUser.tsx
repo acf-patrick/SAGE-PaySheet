@@ -37,9 +37,29 @@ const StyledForm = styled.form`
     justify-content: space-between;
     align-items: center;
 
-    select {
-      height: 30px;
-      width: 75px;
+    .slider {
+      width: 35%;
+      height: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      .slider-container {
+        background-color: gray;
+        border-radius: 16px;
+        width: 2rem;
+        height: 1rem;
+        padding: 1px;
+
+        .slider-circle {
+          width: 1rem;
+          height: 1rem;
+          border-radius: 50%;
+          background-color: #f1f1f1;
+          transform: translateX(100%);
+          transition: transform 250ms, background-color 250ms;
+        }
+      }
     }
   }
 
@@ -63,48 +83,39 @@ const StyledForm = styled.form`
     animation: rotate linear infinite 750ms;
   }
 `;
-
+const UserInfo = styled.div`
+  width: 35%;
+  .infos {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    width: 100%;
+    p {
+      display: flex;
+      width: 100%;
+      justify-content: space-between;
+    }
+  }
+`;
 function ModifyUser() {
   const { id } = useParams();
-
-  const [user, setUser] = useState<Map<string, string>>(
-    new Map<string, string>([
-      ["Nom", ""],
-      ["Prenoms", ""],
-      ["Identifiant", ""],
-      ["Role", ""],
-    ])
-  );
-
+  const [name, setName] = useState("");
+  const [lastname, setLastName] = useState("");
+  const [username, setUsername] = useState("");
+  const [role, setRole] = useState("");
   const [pending, setPending] = useState(false);
-
   const [modify, setModify] = useState(false);
   const labels: string[] = ["Nom", "Prenoms", "Identifiant", "Role"];
 
-  const handleSubnit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     setPending(true);
 
     const formData = new FormData(e.currentTarget);
 
-    const updatedUser: User = {
-      id: id!,
-      name: formData.get("Nom")
-        ? formData.get("Nom")!.toString()
-        : user.get("Nom")!,
-      lastName: formData.get("Prenoms")
-        ? formData.get("Prenoms")!.toString()
-        : user.get("Prenoms")!,
-      username: formData.get("Identifiant")
-        ? formData.get("Identifiant")!.toString()
-        : user.get("Identifiant")!,
-      role: formData.get("Role")
-        ? formData.get("Role")!.toString()
-        : user.get("Role")!,
-    };
     api
-      .patch("user", updatedUser)
+      .patch("user")
       .then((res) => {
         console.log(res.data);
         window.location.reload();
@@ -115,16 +126,17 @@ function ModifyUser() {
       .finally(() => setPending(false));
   };
 
+  const handleSlide = () => {
+    const circle = document.querySelector(".slider-circle") as HTMLDivElement;
+    circle.style.transform = "translateX(0)";
+  };
+
   useEffect(() => {
     api.get("user/" + id).then((res) => {
-      setUser(
-        new Map<string, string>([
-          ["Nom", res.data.name],
-          ["Prenoms", res.data.lastName],
-          ["Identifiant", res.data.username],
-          ["Role", res.data.role],
-        ])
-      );
+      setName(res.data.name);
+      setLastName(res.data.lastName);
+      setUsername(res.data.username);
+      setRole(res.data.role);
     });
   }, []);
 
@@ -132,12 +144,33 @@ function ModifyUser() {
     <>
       <StyledHeader>
         <img src="../../public/paysheet.svg" alt="" />
-        <span>{user.get(labels[0]) + " " + user.get(labels[1])}</span>
+        <span>{name + " " + lastname}</span>
         <div style={{ width: "2rem" }}></div>
       </StyledHeader>
-      <StyledForm onSubmit={handleSubnit}>
-        <div className="user-info">
-          {Array.from([0, 1, 2]).map((i) =>
+      <StyledForm onSubmit={handleSubmit}>
+        <UserInfo>
+          {!modify ? (
+            <div className="infos">
+              <p>
+                <strong>Nom: </strong>
+                {" " + name}
+                <FiEdit3 />
+              </p>
+              <p>
+                <strong>Prénoms: </strong>
+                {" " + lastname}
+                <FiEdit3 />
+              </p>
+              <p>
+                <strong>Identifiant: </strong>
+                {" " + username}
+                <FiEdit3 />
+              </p>
+            </div>
+          ) : (
+            <div></div>
+          )}
+          {/* {Array.from([0, 1, 2]).map((i) =>
             !modify ? (
               <div key={labels[i]} className="container">
                 <div className="info">
@@ -152,29 +185,24 @@ function ModifyUser() {
                   name={labels[i]}
                   type="text"
                   defaultValue={user.get(labels[i])}
-                  onChange={(e) => user.set(labels[i], e.currentTarget.value)}
+                  onChange={(e) => {
+                    setName[]
+                    user.set(labels[i], e.currentTarget.value)}}
                 />
               </div>
             )
-          )}
+          )} */}
           <div className="role-container">
             <h3>Role:</h3>
-            <label htmlFor="ADMIN">
+            <div className="slider">
               Admin
-              <input
-                type="checkbox"
-                name="ADMIN"
-                id="ADMIN"
-                value="ADMIN"
-                defaultChecked={
-                  user.get("Role")
-                    ? user.get("Role")?.toString() == "ADMIN"
-                    : false
-                }
-              />
-            </label>
+              <div className="slider-container">
+                <div className="slider-circle" onClick={handleSlide}></div>
+              </div>
+              User
+            </div>
           </div>
-        </div>
+        </UserInfo>
         <button>
           {pending ? (
             <CgSpinner className="spinner" />
