@@ -14,5 +14,9 @@ export const theme = {
   modifyUser: {
     background: "green",
     hover: "#095209",
+    editButton: {
+      background: "orange",
+      hover: "#ffa600d4",
+    },
   },
 };

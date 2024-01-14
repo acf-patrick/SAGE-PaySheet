@@ -5,7 +5,6 @@ import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import { api } from "../api";
 import "../styles/keyframes.css";
-import { User } from "../types";
 import { StyledHeader } from "./Paysheets";
 
 const StyledForm = styled.form`
@@ -43,27 +42,11 @@ const StyledForm = styled.form`
       display: flex;
       justify-content: space-between;
       align-items: center;
-
-      .slider-container {
-        background-color: gray;
-        border-radius: 16px;
-        width: 2rem;
-        height: 1rem;
-        padding: 1px;
-
-        .slider-circle {
-          width: 1rem;
-          height: 1rem;
-          border-radius: 50%;
-          background-color: #f1f1f1;
-          transform: translateX(100%);
-          transition: transform 250ms, background-color 250ms;
-        }
-      }
     }
   }
 
-  button {
+  button,
+  .edit-button {
     height: 40px;
     background-color: ${({ theme }) => theme.modifyUser.background};
     width: 120px;
@@ -82,6 +65,18 @@ const StyledForm = styled.form`
     font-size: 25px;
     animation: rotate linear infinite 750ms;
   }
+
+  .edit-button {
+    background-color: ${({ theme }) => theme.modifyUser.editButton.background};
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+
+    &:hover {
+      background-color: ${({ theme }) => theme.modifyUser.editButton.hover};
+    }
+  }
 `;
 const UserInfo = styled.div`
   width: 35%;
@@ -92,30 +87,61 @@ const UserInfo = styled.div`
     width: 100%;
     p {
       display: flex;
+      align-items: center;
+      justify-content: space-between;
       width: 100%;
+    }
+    span {
+      width: 100%;
+      display: flex;
       justify-content: space-between;
     }
   }
 `;
+
+const StyledSlider = styled.div<{ $isAdmin: boolean }>`
+  background-color: ${(props) => (props.$isAdmin ? "green" : "grey")};
+  border-radius: 16px;
+  width: 2rem;
+  height: 1rem;
+  padding: 1px;
+  cursor: pointer;
+
+  .slider-circle {
+    width: 1rem;
+    height: 1rem;
+    border-radius: 50%;
+    background-color: #f1f1f1;
+    transform: ${(props) =>
+      props.$isAdmin ? "translateX(0)" : "translateX(100%)"};
+    transition: transform 250ms, background-color 250ms;
+  }
+`;
+
 function ModifyUser() {
   const { id } = useParams();
-  const [name, setName] = useState("");
-  const [lastname, setLastName] = useState("");
-  const [username, setUsername] = useState("");
-  const [role, setRole] = useState("");
   const [pending, setPending] = useState(false);
-  const [modify, setModify] = useState(false);
-  const labels: string[] = ["Nom", "Prenoms", "Identifiant", "Role"];
+  const [isEdited, setIsEdited] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
+
+  const [user, setUser] = useState({
+    name: "",
+    lastName: "",
+    username: "",
+    password: "",
+    role: "",
+  });
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
     setPending(true);
-
-    const formData = new FormData(e.currentTarget);
-
+    const data = {
+      id,
+      ...user,
+      password: user.password,
+    };
     api
-      .patch("user")
+      .patch("user", data)
       .then((res) => {
         console.log(res.data);
         window.location.reload();
@@ -127,16 +153,25 @@ function ModifyUser() {
   };
 
   const handleSlide = () => {
-    const circle = document.querySelector(".slider-circle") as HTMLDivElement;
-    circle.style.transform = "translateX(0)";
+    setIsAdmin(!isAdmin);
   };
 
   useEffect(() => {
+    setUser({
+      ...user,
+      role: isAdmin ? "ADMIN" : "USER",
+    });
+  }, [isAdmin]);
+  useEffect(() => {
     api.get("user/" + id).then((res) => {
-      setName(res.data.name);
-      setLastName(res.data.lastName);
-      setUsername(res.data.username);
-      setRole(res.data.role);
+      setUser({
+        name: res.data.name,
+        lastName: res.data.lastName,
+        username: res.data.username,
+        password: "********",
+        role: res.data.role,
+      });
+      setIsAdmin(res.data.role == "ADMIN");
     });
   }, []);
 
@@ -144,72 +179,110 @@ function ModifyUser() {
     <>
       <StyledHeader>
         <img src="../../public/paysheet.svg" alt="" />
-        <span>{name + " " + lastname}</span>
+        <span>{user.name + " " + user.lastName}</span>
         <div style={{ width: "2rem" }}></div>
       </StyledHeader>
       <StyledForm onSubmit={handleSubmit}>
         <UserInfo>
-          {!modify ? (
+          {!isEdited ? (
             <div className="infos">
               <p>
                 <strong>Nom: </strong>
-                {" " + name}
-                <FiEdit3 />
+                <span>{" " + user.name}</span>
               </p>
               <p>
                 <strong>Prénoms: </strong>
-                {" " + lastname}
-                <FiEdit3 />
+                {" " + user.lastName}
               </p>
               <p>
                 <strong>Identifiant: </strong>
-                {" " + username}
-                <FiEdit3 />
+                <span>{" " + user.username}</span>
               </p>
             </div>
           ) : (
-            <div></div>
-          )}
-          {/* {Array.from([0, 1, 2]).map((i) =>
-            !modify ? (
-              <div key={labels[i]} className="container">
-                <div className="info">
-                  <h3>{labels[i]}:</h3>
-                  <p>{user.get(labels[i])}</p>
-                  <FiEdit3 onClick={() => setModify(true)} />
-                </div>
-              </div>
-            ) : (
-              <div key={labels[i]}>
-                <input
-                  name={labels[i]}
-                  type="text"
-                  defaultValue={user.get(labels[i])}
-                  onChange={(e) => {
-                    setName[]
-                    user.set(labels[i], e.currentTarget.value)}}
-                />
-              </div>
-            )
-          )} */}
-          <div className="role-container">
-            <h3>Role:</h3>
-            <div className="slider">
-              Admin
-              <div className="slider-container">
-                <div className="slider-circle" onClick={handleSlide}></div>
-              </div>
-              User
+            <div className="infos">
+              <label htmlFor="name">Nom: </label>
+              <input
+                type="text"
+                defaultValue={user.name}
+                onChange={(e) =>
+                  setUser({
+                    ...user,
+                    name: e.currentTarget.value,
+                  })
+                }
+                id="name"
+                name="name"
+              />
+              <div style={{ width: "1rem" }}></div>
+              <label htmlFor="lastName">Prénom(s): </label>
+              <input
+                type="text"
+                defaultValue={user.lastName}
+                onChange={(e) =>
+                  setUser({
+                    ...user,
+                    lastName: e.currentTarget.value,
+                  })
+                }
+                id="lastName"
+                name="lastName"
+              />
+              <label htmlFor="username">Identifiant: </label>
+              <input
+                type="text"
+                defaultValue={user.username}
+                onChange={(e) =>
+                  setUser({
+                    ...user,
+                    username: e.currentTarget.value,
+                  })
+                }
+                id="username"
+                name="username"
+              />
+              <label htmlFor="password">Mot de passe: </label>
+              <input
+                type="text"
+                defaultValue="********"
+                onChange={(e) =>
+                  setUser({
+                    ...user,
+                    password: e.currentTarget.value,
+                  })
+                }
+                id="password"
+                name="password"
+              />
             </div>
-          </div>
-        </UserInfo>
-        <button>
-          {pending ? (
-            <CgSpinner className="spinner" />
-          ) : (
-            <span>Sauvegarder</span>
           )}
-        </button>
+          {isEdited ? (
+            <div className="role-container">
+              <h3>Role:</h3>
+              <div className="slider">
+                Admin
+                <StyledSlider $isAdmin={isAdmin} onClick={handleSlide}>
+                  <div className="slider-circle"></div>
+                </StyledSlider>
+                User
+              </div>
+            </div>
+          ) : null}
+        </UserInfo>
+        {!isEdited ? (
+          <div className="edit-button" onClick={() => setIsEdited(true)}>
+            <FiEdit3 />
+            <span>Modifier</span>
+          </div>
+        ) : (
+          <button>
+            {pending ? (
+              <CgSpinner className="spinner" />
+            ) : (
+              <span>Sauvegarder</span>
+            )}
+          </button>
+        )}
       </StyledForm>
     </>
   );

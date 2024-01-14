@@ -24,13 +24,6 @@ export class UserService {
         where: {
           id,
         },
-        select: {
-          name: true,
-          lastName: true,
-          username: true,
-          paysheets: true,
-          role: true,
-        },
       });
     } catch (err) {
       console.log(err);
@@ -109,14 +102,19 @@ export class UserService {
         );
       }
 
+      const data = {
+        name: updateUserDto.name,
+        lastName: updateUserDto.lastName,
+        username: updateUserDto.username,
+        role: updateUserDto.role,
+      };
+
+      if (updateUserDto.password.indexOf('*') < 0) {
+        data['password'] = await bcrypt.hash(updateUserDto.password, 10);
+      }
+
       return await this.prisma.user.update({
-        data: {
-          name: updateUserDto.name,
-          lastName: updateUserDto.lastName,
-          username: updateUserDto.username,
-          password: updateUserDto.password,
-          role: updateUserDto.role,
-        },
+        data,
         where: {
           id: updateUserDto.id,
         },
