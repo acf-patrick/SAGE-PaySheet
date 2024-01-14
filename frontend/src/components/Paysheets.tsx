@@ -181,7 +181,7 @@ function Paysheets() {
 
   const containerRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => console.log(scrolled), [scrolled]);
+  // useEffect(() => console.log(scrolled), [scrolled]);
 
   useEffect(() => {
     const userId = localStorage.getItem("userId");
@@ -221,7 +221,7 @@ function Paysheets() {
       return;
     }
 
-    console.log(filters);
+    // console.log(filters);
 
     setFilteredPaysheets(
       paysheets.filter((paysheet) => {

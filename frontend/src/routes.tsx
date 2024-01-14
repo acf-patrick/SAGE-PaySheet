@@ -25,11 +25,9 @@ export const routes = createBrowserRouter([
   {
     path: "alluser",
     element: <AllUser />,
-    children: [
-      {
-        path: "user",
-        element: <ModifyUser />,
-      },
-    ],
+  },
+  {
+    path: "user/:id",
+    element: <ModifyUser />,
   },
 ]);

@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import { Outlet, useNavigate } from "react-router-dom";
+import { FiGrid, FiList } from "react-icons/fi";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { api } from "../api";
-import { UpdateUserDto, User } from "../types";
-import { FiList, FiGrid } from "react-icons/fi";
+import { User } from "../types";
 import { StyledHeader } from "./Paysheets";
 
 const Users = styled.div`
@@ -48,11 +48,14 @@ const UserList = styled.div`
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
   cursor: pointer;
+  transition: box-shadow 250ms;
+
   p {
     margin: 1rem;
   }
+
   &:hover {
-    box-shadow: 0 15px 20px 1px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 5px 1px rgba(0, 0, 0, 0.05);
   }
 `;
 const UserProfil = styled.div`
@@ -88,21 +91,6 @@ function Alluser() {
   const navigate = useNavigate();
   const [users, setUsers] = useState<User[]>([]);
   const [list, setList] = useState(false);
-  const [selectedUser, setSelectedUser] = useState<UpdateUserDto>({
-    name: "",
-    lastName: "",
-    username: "",
-    role: "",
-  });
-  const handleSelectedUser = (i: number) => {
-    setSelectedUser({
-      name: users[i].name,
-      lastName: users[i].lastName,
-      username: users[i].username,
-      role: users[i].role,
-    });
-    navigate("user");
-  };
 
   useEffect(() => {
     api.get("user").then((res) => {
@@ -136,13 +124,27 @@ function Alluser() {
         ) : null}
         {users.map((user, i) =>
           list ? (
-            <UserList key={user.username} onClick={() => handleSelectedUser(i)}>
+            <UserList
+              key={user.username}
+              onClick={() =>
+                navigate({
+                  pathname: "/user/" + users[i].id,
+                })
+              }
+            >
               <p>{user.name + " " + user.lastName}</p>
               <p>{user.username}</p>
               <p>{user.role}</p>
             </UserList>
           ) : (
-            <UserCard key={user.username} onClick={() => handleSelectedUser(i)}>
+            <UserCard
+              key={user.username}
+              onClick={() =>
+                navigate({
+                  pathname: "/user/" + users[i].id,
+                })
+              }
+            >
               <UserProfil>Placeholder Image</UserProfil>
               <UserInfo>
                 <p>
@@ -162,7 +164,6 @@ function Alluser() {
           )
         )}
       </Users>
-      <Outlet context={[selectedUser]} />
     </>
   );
 }
