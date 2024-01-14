@@ -9,8 +9,6 @@ import { StyledHeader } from "./Paysheets";
 const Users = styled.div`
   margin-top: 2rem;
   display: flex;
-  flex-direction: column;
-  align-items: center;
   width: 100%;
   height: 100%;
   flex-wrap: wrap;
@@ -36,6 +34,7 @@ const UserCard = styled.div`
   box-shadow: 0 0 15px 1px grey;
   transform: scale(1);
   transition: transform 300ms;
+  cursor: pointer;
   &:hover {
     transform: scale(1.05);
   }
@@ -48,6 +47,7 @@ const UserList = styled.div`
   justify-content: space-between;
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
+  cursor: pointer;
   p {
     margin: 1rem;
   }
@@ -120,7 +120,13 @@ function Alluser() {
           <FiGrid onClick={() => setList(false)} />
         </div>
       </StyledHeader>
-      <Users>
+      <Users
+        style={{
+          flexDirection: list ? "column" : "row",
+          alignItems: list ? "center" : "none",
+          justifyContent: list ? "none" : "center",
+        }}
+      >
         {list ? (
           <div className="list-label">
             <p>Full Name</p>
@@ -130,7 +136,7 @@ function Alluser() {
         ) : null}
         {users.map((user, i) =>
           list ? (
-            <UserList key={user.username}>
+            <UserList key={user.username} onClick={() => handleSelectedUser(i)}>
               <p>{user.name + " " + user.lastName}</p>
               <p>{user.username}</p>
               <p>{user.role}</p>
