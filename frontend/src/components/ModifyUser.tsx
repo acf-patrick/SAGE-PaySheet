@@ -3,6 +3,15 @@ import { FiCheck, FiEdit3 } from "react-icons/fi";
 import { useParams } from "react-router-dom";
 import { api } from "../api";
 import { StyledHeader } from "./Paysheets";
+import styled from "styled-components";
+
+const StyledForm = styled.form`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  .user-info {
+  }
+`;
 
 function ModifyUser() {
   const { id } = useParams();
@@ -39,7 +48,7 @@ function ModifyUser() {
         <span>{user.get(labels[0]) + " " + user.get(labels[1])}</span>
         <div style={{ width: "2rem" }}></div>
       </StyledHeader>
-      <form>
+      <StyledForm>
         <div className="user-info">
           {Array.from([0, 1, 2, 3]).map((i) =>
             !modify ? (
@@ -58,7 +67,7 @@ function ModifyUser() {
             )
           )}
         </div>
-      </form>
+      </StyledForm>
     </>
   );
 }
