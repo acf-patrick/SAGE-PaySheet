@@ -1,14 +1,10 @@
 import { FiEdit3 } from "react-icons/fi";
+import { useOutletContext } from "react-router-dom";
 import { UpdateUserDto } from "../types";
-import { useState } from "react";
 
 function ModifyUser() {
-  const [user, setuser] = useState<UpdateUserDto>({
-    name: "",
-    lastName: "",
-    username: "",
-    role: "",
-  });
+  const user: UpdateUserDto = useOutletContext();
+
   return (
     <form>
       <p>
