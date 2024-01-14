@@ -1,7 +1,4 @@
-import { UpdateUserDto } from "../types";
-import { StyledHeader } from "./Paysheets";
-
-function User({ user }: { user: UpdateUserDto }) {
+function User() {
   return (
     <>
       <h1>User</h1>
