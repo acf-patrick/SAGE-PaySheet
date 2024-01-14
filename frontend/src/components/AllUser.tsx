@@ -34,6 +34,7 @@ const UserCard = styled.div`
   box-shadow: 0 0 15px 1px grey;
   transform: scale(1);
   transition: transform 300ms;
+  animation: fadeIn linear 250ms;
   cursor: pointer;
   &:hover {
     transform: scale(1.05);
@@ -49,6 +50,7 @@ const UserList = styled.div`
   border-bottom-right-radius: 5px;
   cursor: pointer;
   transition: box-shadow 250ms;
+  animation: fadeIn linear 250ms;
 
   p {
     margin: 1rem;
@@ -90,7 +92,7 @@ const UserInfo = styled.div`
 function Alluser() {
   const navigate = useNavigate();
   const [users, setUsers] = useState<User[]>([]);
-  const [list, setList] = useState(false);
+  const [list, setList] = useState(true);
 
   useEffect(() => {
     api.get("user").then((res) => {
@@ -104,8 +106,11 @@ function Alluser() {
         <img src="../../public/paysheet.svg" alt="" />
         <span>All Users</span>
         <div className="view">
-          <FiList onClick={() => setList(true)} />
-          <FiGrid onClick={() => setList(false)} />
+          {!list ? (
+            <FiList onClick={() => setList(true)} className="icone" />
+          ) : (
+            <FiGrid onClick={() => setList(false)} className="icone" />
+          )}
         </div>
       </StyledHeader>
       <Users

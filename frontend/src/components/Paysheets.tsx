@@ -76,6 +76,7 @@ export const StyledHeader = styled.h2<{ $scrolled?: boolean }>`
     margin-right: 50px;
     font-size: 35px;
     cursor: pointer;
+    animation: fadeIn linear 350ms;
   }
 `;
 

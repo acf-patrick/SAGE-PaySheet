@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { FiCheck, FiEdit3 } from "react-icons/fi";
 import { useParams } from "react-router-dom";
 import { api } from "../api";
+import { StyledHeader } from "./Paysheets";
 
 function ModifyUser() {
   const { id } = useParams();
@@ -32,26 +33,33 @@ function ModifyUser() {
   }, []);
 
   return (
-    <form>
-      <div className="user-info">
-        {Array.from([0, 1, 2, 3]).map((i) =>
-          !modify ? (
-            <div key={labels[i]}>
-              <div>
-                <h3>{labels[i]}:</h3>
-                <p>{user.get(labels[i])}</p>
+    <>
+      <StyledHeader>
+        <img src="../../public/paysheet.svg" alt="" />
+        <span>{user.get(labels[0]) + " " + user.get(labels[1])}</span>
+        <div style={{ width: "2rem" }}></div>
+      </StyledHeader>
+      <form>
+        <div className="user-info">
+          {Array.from([0, 1, 2, 3]).map((i) =>
+            !modify ? (
+              <div key={labels[i]}>
+                <div>
+                  <h3>{labels[i]}:</h3>
+                  <p>{user.get(labels[i])}</p>
+                </div>
+                <FiEdit3 onClick={() => setModify(true)} />
               </div>
-              <FiEdit3 onClick={() => setModify(true)} />
-            </div>
-          ) : (
-            <div key={labels[i]}>
-              <input type="text" />
-              <FiCheck onClick={() => setModify(false)} />
-            </div>
-          )
-        )}
-      </div>
-    </form>
+            ) : (
+              <div key={labels[i]}>
+                <input type="text" value={user.get(labels[i])} />
+                <FiCheck onClick={() => setModify(false)} />
+              </div>
+            )
+          )}
+        </div>
+      </form>
+    </>
   );
 }
 
