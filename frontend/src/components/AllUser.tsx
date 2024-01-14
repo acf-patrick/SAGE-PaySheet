@@ -6,14 +6,23 @@ import { UpdateUserDto, User } from "../types";
 import { FiList, FiGrid } from "react-icons/fi";
 import { StyledHeader } from "./Paysheets";
 
-const UserList = styled.div`
+const Users = styled.div`
   margin-top: 2rem;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
   width: 100%;
   height: 100%;
   flex-wrap: wrap;
   gap: 2rem;
+  .list-label {
+    display: flex;
+    justify-content: space-between;
+    width: 62%;
+    p {
+      color: grey;
+    }
+  }
 `;
 const UserCard = styled.div`
   display: flex;
@@ -29,6 +38,21 @@ const UserCard = styled.div`
   transition: transform 300ms;
   &:hover {
     transform: scale(1.05);
+  }
+`;
+const UserList = styled.div`
+  display: flex;
+  flex-direction: row;
+  width: 65%;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+  justify-content: space-between;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  p {
+    margin: 1rem;
+  }
+  &:hover {
+    box-shadow: 0 15px 20px 1px rgba(0, 0, 0, 0.1);
   }
 `;
 const UserProfil = styled.div`
@@ -96,27 +120,42 @@ function Alluser() {
           <FiGrid onClick={() => setList(false)} />
         </div>
       </StyledHeader>
-      <UserList>
-        {users.map((user, i) => (
-          <UserCard key={user.username} onClick={() => handleSelectedUser(i)}>
-            <UserProfil>Placeholder Image</UserProfil>
-            <UserInfo>
-              <p>
-                <span>Full name:</span>
-                {user.name + " " + user.lastName}
-              </p>
-              <p>
-                <span>UserName:</span>
-                {user.username}
-              </p>
-              <p>
-                <span>Role:</span>
-                {user.role}
-              </p>
-            </UserInfo>
-          </UserCard>
-        ))}
-      </UserList>
+      <Users>
+        {list ? (
+          <div className="list-label">
+            <p>Full Name</p>
+            <p>Username</p>
+            <p>Role</p>
+          </div>
+        ) : null}
+        {users.map((user, i) =>
+          list ? (
+            <UserList key={user.username}>
+              <p>{user.name + " " + user.lastName}</p>
+              <p>{user.username}</p>
+              <p>{user.role}</p>
+            </UserList>
+          ) : (
+            <UserCard key={user.username} onClick={() => handleSelectedUser(i)}>
+              <UserProfil>Placeholder Image</UserProfil>
+              <UserInfo>
+                <p>
+                  <span>Full name:</span>
+                  {user.name + " " + user.lastName}
+                </p>
+                <p>
+                  <span>UserName:</span>
+                  {user.username}
+                </p>
+                <p>
+                  <span>Role:</span>
+                  {user.role}
+                </p>
+              </UserInfo>
+            </UserCard>
+          )
+        )}
+      </Users>
       <Outlet context={[selectedUser]} />
     </>
   );

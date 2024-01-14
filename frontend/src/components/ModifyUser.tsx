@@ -18,18 +18,18 @@ function ModifyUser() {
     <form>
       <div className="user-info">
         {userDatas.map((data, i) =>
-          modify ? (
+          !modify ? (
             <div key={labels[i]}>
               <div>
                 <h3>{labels[i]}</h3>
                 <p>{data}</p>
               </div>
-              <FiEdit3 />
+              <FiEdit3 onClick={() => setModify(true)} />
             </div>
           ) : (
             <div key={labels[i]}>
               <input type="text" />
-              <FiCheck />
+              <FiCheck onClick={() => setModify(false)} />
             </div>
           )
         )}
