@@ -76,8 +76,6 @@ function ModifyUser() {
     ])
   );
 
-  const [admin, setAdmin] = useState(false);
-
   const [pending, setPending] = useState(false);
 
   const [modify, setModify] = useState(false);
@@ -164,27 +162,13 @@ function ModifyUser() {
             <label htmlFor="ADMIN">
               Admin
               <input
-                type="radio"
-                name="Role"
+                type="checkbox"
+                name="ADMIN"
                 id="ADMIN"
                 value="ADMIN"
                 defaultChecked={
                   user.get("Role")
                     ? user.get("Role")?.toString() == "ADMIN"
-                    : false
-                }
-              />
-            </label>
-            <label htmlFor="USER">
-              User
-              <input
-                type="radio"
-                name="Role"
-                id="USER"
-                value="USER"
-                defaultChecked={
-                  user.get("Role")
-                    ? user.get("Role")?.toString() == "USER"
                     : false
                 }
               />
