@@ -155,16 +155,14 @@ function Alluser() {
         {list ? (
           <div className="list-label">
             <label htmlFor="select">
-              {" "}
               Trier:
               <select
                 id="select"
+                defaultValue={sort}
                 name="Trier"
                 onChange={(e) => setSort(e.currentTarget.value)}
               >
-                <option value="A-Z" selected>
-                  A-Z
-                </option>
+                <option value="A-Z">A-Z</option>
                 <option value="Z-A">Z-A</option>
                 <option value="Admin">Admin</option>
                 <option value="User">User</option>
