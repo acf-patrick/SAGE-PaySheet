@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { CgSpinner } from "react-icons/cg";
 import { FiEdit3 } from "react-icons/fi";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { api } from "../api";
 import "../styles/keyframes.css";
@@ -16,21 +16,6 @@ const StyledForm = styled.form`
   height: 100%;
   gap: 3rem;
 
-  .user-info {
-    margin-top: 5rem;
-    width: 60%;
-    height: 30%;
-
-    .container {
-      .info {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 15%;
-        border-bottom: 2px solid grey;
-      }
-    }
-  }
   .role-container {
     display: flex;
     justify-content: space-between;
@@ -61,20 +46,62 @@ const StyledForm = styled.form`
     }
   }
 
-  .spinner {
-    font-size: 25px;
-    animation: rotate linear infinite 750ms;
-  }
-
-  .edit-button {
-    background-color: ${({ theme }) => theme.modifyUser.editButton.background};
+  .my-edit-button {
     display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
+    width: 35%;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+    .edit-button {
+      background-color: ${({ theme }) =>
+        theme.modifyUser.editButton.background};
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
 
-    &:hover {
-      background-color: ${({ theme }) => theme.modifyUser.editButton.hover};
+      &:hover {
+        background-color: ${({ theme }) => theme.modifyUser.editButton.hover};
+      }
+    }
+    .back-button {
+      background-color: ${({ theme }) => theme.modifyUser.editButton.back};
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 5rem;
+      border-radius: 5px;
+      cursor: pointer;
+      &:hover {
+        background-color: ${({ theme }) =>
+          theme.modifyUser.editButton.backhover};
+      }
+    }
+  }
+  .my-buttons {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+    width: 35%;
+
+    button {
+      .spinner {
+        font-size: 25px;
+        animation: rotate linear infinite 750ms;
+      }
+    }
+
+    .back-button {
+      background-color: ${({ theme }) => theme.modifyUser.editButton.back};
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 5rem;
+      border-radius: 5px;
+      cursor: pointer;
+      &:hover {
+        background-color: ${({ theme }) =>
+          theme.modifyUser.editButton.backhover};
+      }
     }
   }
 `;
@@ -85,16 +112,32 @@ const UserInfo = styled.div`
     justify-content: space-between;
     flex-direction: column;
     width: 100%;
-    p {
+    div {
       display: flex;
       align-items: center;
-      justify-content: space-between;
+      justify-content: flex-start;
       width: 100%;
-    }
-    span {
-      width: 100%;
-      display: flex;
-      justify-content: space-between;
+      h3 {
+        width: 50%;
+      }
+      p {
+        width: auto;
+      }
+      label {
+        margin-top: 0.8rem;
+        width: 50%;
+        font-size: large;
+        font-weight: bold;
+      }
+      input {
+        margin-top: 0.8rem;
+        border: none;
+        width: auto;
+        height: 2rem;
+        border-bottom: 2px solid grey;
+        outline: none;
+        font-size: medium;
+      }
     }
   }
 `;
@@ -123,7 +166,7 @@ function ModifyUser() {
   const [pending, setPending] = useState(false);
   const [isEdited, setIsEdited] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
-
+  const navigate = useNavigate();
   const [user, setUser] = useState({
     name: "",
     lastName: "",
@@ -186,74 +229,81 @@ function ModifyUser() {
         <UserInfo>
           {!isEdited ? (
             <div className="infos">
-              <p>
-                <strong>Nom: </strong>
-                <span>{" " + user.name}</span>
-              </p>
-              <p>
-                <strong>Prénoms: </strong>
-                {" " + user.lastName}
-              </p>
-              <p>
-                <strong>Identifiant: </strong>
-                <span>{" " + user.username}</span>
-              </p>
+              <div>
+                <h3>Nom: </h3>
+                <p>{" " + user.name}</p>
+              </div>
+              <div>
+                <h3>Prénom(s): </h3>
+                <p>{" " + user.lastName}</p>
+              </div>
+              <div>
+                <h3>Identifiant: </h3>
+                <p>{" " + user.username}</p>
+              </div>
             </div>
           ) : (
             <div className="infos">
-              <label htmlFor="name">Nom: </label>
-              <input
-                type="text"
-                defaultValue={user.name}
-                onChange={(e) =>
-                  setUser({
-                    ...user,
-                    name: e.currentTarget.value,
-                  })
-                }
-                id="name"
-                name="name"
-              />
-              <div style={{ width: "1rem" }}></div>
-              <label htmlFor="lastName">Prénom(s): </label>
-              <input
-                type="text"
-                defaultValue={user.lastName}
-                onChange={(e) =>
-                  setUser({
-                    ...user,
-                    lastName: e.currentTarget.value,
-                  })
-                }
-                id="lastName"
-                name="lastName"
-              />
-              <label htmlFor="username">Identifiant: </label>
-              <input
-                type="text"
-                defaultValue={user.username}
-                onChange={(e) =>
-                  setUser({
-                    ...user,
-                    username: e.currentTarget.value,
-                  })
-                }
-                id="username"
-                name="username"
-              />
-              <label htmlFor="password">Mot de passe: </label>
-              <input
-                type="text"
-                defaultValue="********"
-                onChange={(e) =>
-                  setUser({
-                    ...user,
-                    password: e.currentTarget.value,
-                  })
-                }
-                id="password"
-                name="password"
-              />
+              <div>
+                <label htmlFor="name">Nom: </label>
+                <input
+                  type="text"
+                  defaultValue={user.name}
+                  onChange={(e) =>
+                    setUser({
+                      ...user,
+                      name: e.currentTarget.value,
+                    })
+                  }
+                  id="name"
+                  name="name"
+                />
+              </div>
+              <div>
+                <label htmlFor="lastName">Prénom(s): </label>
+                <input
+                  type="text"
+                  defaultValue={user.lastName}
+                  onChange={(e) =>
+                    setUser({
+                      ...user,
+                      lastName: e.currentTarget.value,
+                    })
+                  }
+                  id="lastName"
+                  name="lastName"
+                />
+              </div>
+              <div>
+                <label htmlFor="username">Identifiant: </label>
+                <input
+                  type="text"
+                  defaultValue={user.username}
+                  onChange={(e) =>
+                    setUser({
+                      ...user,
+                      username: e.currentTarget.value,
+                    })
+                  }
+                  id="username"
+                  name="username"
+                />
+              </div>
+              <div>
+                <label htmlFor="password">Mot de passe: </label>
+                <input
+                  type="text"
+                  defaultValue="********"
+                  onChange={(e) =>
+                    setUser({
+                      ...user,
+                      password: e.currentTarget.value,
+                    })
+                  }
+                  id="password"
+                  name="password"
+                />
+              </div>
             </div>
           )}
           {isEdited ? (
@@ -270,18 +320,40 @@ function ModifyUser() {
           ) : null}
         </UserInfo>
         {!isEdited ? (
-          <div className="edit-button" onClick={() => setIsEdited(true)}>
-            <FiEdit3 />
-            <span>Modifier</span>
+          <div className="my-edit-button">
+            <div className="edit-button" onClick={() => setIsEdited(true)}>
+              <FiEdit3 />
+              <span>Modifier</span>
+            </div>
+            <div
+              className="back-button"
+              onClick={() => {
+                navigate({
+                  pathname: "/alluser",
+                });
+              }}
+            >
+              Retour
+            </div>
           </div>
         ) : (
-          <button>
-            {pending ? (
-              <CgSpinner className="spinner" />
-            ) : (
-              <span>Sauvegarder</span>
-            )}
-          </button>
+          <div className="my-buttons">
+            <button>
+              {pending ? (
+                <CgSpinner className="spinner" />
+              ) : (
+                <span>Sauvegarder</span>
+              )}
+            </button>
+            <div
+              className="back-button"
+              onClick={() => {
+                setIsEdited(false);
+              }}
+            >
+              Retour
+            </div>
+          </div>
         )}
       </StyledForm>
     </>

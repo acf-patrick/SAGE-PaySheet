@@ -17,6 +17,8 @@ export const theme = {
     editButton: {
       background: "orange",
       hover: "#ffa600d4",
+      back: "#d3d3d3",
+      backhover: "#adadad",
     },
   },
 };
