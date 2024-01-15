@@ -7,7 +7,7 @@ import { User } from "../types";
 import { StyledHeader } from "./Paysheets";
 
 const Users = styled.div`
-  margin-top: 2rem;
+  margin: 2rem 0;
   display: flex;
   width: 100%;
   height: 100%;
@@ -16,9 +16,25 @@ const Users = styled.div`
   .list-label {
     display: flex;
     justify-content: space-between;
-    width: 62%;
-    p {
-      color: grey;
+    align-items: center;
+    width: 80%;
+    .titles {
+      width: 80%;
+      padding-right: 8rem;
+      display: flex;
+      justify-content: space-between;
+      p {
+        color: grey;
+      }
+    }
+    label {
+      display: flex;
+      justify-content: flex-start;
+      gap: 1rem;
+      width: 7.5rem;
+      select {
+        width: 2rem;
+      }
     }
   }
 `;
@@ -122,9 +138,16 @@ function Alluser() {
       >
         {list ? (
           <div className="list-label">
-            <p>Full Name</p>
-            <p>Username</p>
-            <p>Role</p>
+            <label htmlFor="select">
+              {" "}
+              Trier:
+              <select id="select" name="Trier"></select>
+            </label>
+            <div className="titles">
+              <p>Full Name</p>
+              <p>Username</p>
+              <p>Role</p>
+            </div>
           </div>
         ) : null}
         {users.map((user, i) =>
