@@ -111,7 +111,7 @@ function Alluser() {
   const navigate = useNavigate();
   const [users, setUsers] = useState<User[]>([]);
   const [list, setList] = useState(true);
-  const [sort, setSort] = useState("A-Z");
+  const [sort, setSort] = useState(" ");
 
   useEffect(() => {
     api.get("user").then((res) => {
@@ -120,14 +120,24 @@ function Alluser() {
   }, []);
 
   useEffect(() => {
+    if (sort == "") {
+      setSort("A-Z");
+    }
+  }, [users]);
+
+  useEffect(() => {
     if (sort == "A-Z") {
-      setUsers(users.sort((a, b) => a.name.localeCompare(b.name)));
+      setUsers([...users.sort((a, b) => a.name.localeCompare(b.name))]);
     } else if (sort == "Z-A") {
-      setUsers(users.sort((a, b) => a.name.localeCompare(b.name)).reverse());
+      setUsers([
+        ...users.sort((a, b) => a.name.localeCompare(b.name)).reverse(),
+      ]);
     } else if (sort == "Admin") {
-      setUsers(users.sort((a, b) => a.role.localeCompare(b.role)));
+      setUsers([...users.sort((a, b) => a.role.localeCompare(b.role))]);
     } else {
-      setUsers(users.sort((a, b) => a.role.localeCompare(b.role)).reverse());
+      setUsers([
+        ...users.sort((a, b) => a.role.localeCompare(b.role)).reverse(),
+      ]);
     }
     console.log(sort);
   }, [sort]);
@@ -158,7 +168,6 @@ function Alluser() {
               Trier:
               <select
                 id="select"
-                defaultValue={sort}
                 name="Trier"
                 onChange={(e) => setSort(e.currentTarget.value)}
               >
