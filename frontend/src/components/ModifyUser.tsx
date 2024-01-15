@@ -5,7 +5,14 @@ import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { api } from "../api";
 import "../styles/keyframes.css";
+import { Paysheet } from "../types";
 import { StyledHeader } from "./Paysheets";
+
+const StyledContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
 
 const StyledForm = styled.form`
   display: flex;
@@ -161,6 +168,37 @@ const StyledSlider = styled.div<{ $isAdmin: boolean }>`
   }
 `;
 
+const PaysheetList = styled.ul`
+  display: flex;
+  flex-direction: column;
+  width: 65%;
+  gap: 15px;
+
+  li {
+    margin: 0 1rem;
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+    border-right: 1px solid rgba(0, 0, 0, 0.2);
+    box-shadow: 2px 2px 3px 1px rgba(0, 0, 0, 0.05);
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    cursor: pointer;
+    transition: box-shadow 250ms;
+    animation: fadeIn linear 250ms;
+    padding: 0 1rem;
+
+    &:hover {
+      box-shadow: 2px 5px 5px 2px rgba(0, 0, 0, 0.1);
+    }
+  }
+
+  h1 {
+    text-align: center;
+    font-weight: 700;
+  }
+`;
+
 function ModifyUser() {
   const { id } = useParams();
   const [pending, setPending] = useState(false);
@@ -174,6 +212,8 @@ function ModifyUser() {
     password: "",
     role: "",
   });
+
+  const [paysheets, setPaysheets] = useState<Paysheet[]>([]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -206,16 +246,27 @@ function ModifyUser() {
     });
   }, [isAdmin]);
   useEffect(() => {
-    api.get("user/" + id).then((res) => {
-      setUser({
-        name: res.data.name,
-        lastName: res.data.lastName,
-        username: res.data.username,
-        password: "********",
-        role: res.data.role,
-      });
-      setIsAdmin(res.data.role == "ADMIN");
-    });
+    api
+      .get("user/" + id)
+      .then((res) => {
+        setUser({
+          name: res.data.name,
+          lastName: res.data.lastName,
+          username: res.data.username,
+          password: "********",
+          role: res.data.role,
+        });
+        setIsAdmin(res.data.role == "ADMIN");
+      })
+      .catch((err) => console.log("Error while getting user: " + err));
+    api
+      .get("paysheet/" + id)
+      .then((res) => {
+        setPaysheets(res.data);
+      })
+      .catch((err) =>
+        console.log("Error while getting user's paysheets: " + err)
+      );
   }, []);
 
   return (
@@ -225,137 +276,149 @@ function ModifyUser() {
         <span>{user.name + " " + user.lastName}</span>
         <div style={{ width: "2rem" }}></div>
       </StyledHeader>
-      <StyledForm onSubmit={handleSubmit}>
-        <UserInfo>
+      <StyledContainer>
+        <StyledForm onSubmit={handleSubmit}>
+          <UserInfo>
+            {!isEdited ? (
+              <div className="infos">
+                <div>
+                  <h3>Nom: </h3>
+                  <p>{" " + user.name}</p>
+                </div>
+                <div>
+                  <h3>Prénom(s): </h3>
+                  <p>{" " + user.lastName}</p>
+                </div>
+                <div>
+                  <h3>Identifiant: </h3>
+                  <p>{" " + user.username}</p>
+                </div>
+              </div>
+            ) : (
+              <div className="infos">
+                <div>
+                  <label htmlFor="name">Nom: </label>
+                  <input
+                    type="text"
+                    defaultValue={user.name}
+                    onChange={(e) =>
+                      setUser({
+                        ...user,
+                        name: e.currentTarget.value,
+                      })
+                    }
+                    id="name"
+                    name="name"
+                  />
+                </div>
+                <div>
+                  <label htmlFor="lastName">Prénom(s): </label>
+                  <input
+                    type="text"
+                    defaultValue={user.lastName}
+                    onChange={(e) =>
+                      setUser({
+                        ...user,
+                        lastName: e.currentTarget.value,
+                      })
+                    }
+                    id="lastName"
+                    name="lastName"
+                  />
+                </div>
+                <div>
+                  <label htmlFor="username">Identifiant: </label>
+                  <input
+                    type="text"
+                    defaultValue={user.username}
+                    onChange={(e) =>
+                      setUser({
+                        ...user,
+                        username: e.currentTarget.value,
+                      })
+                    }
+                    id="username"
+                    name="username"
+                  />
+                </div>
+                <div>
+                  <label htmlFor="password">Mot de passe: </label>
+                  <input
+                    type="text"
+                    defaultValue="********"
+                    onChange={(e) =>
+                      setUser({
+                        ...user,
+                        password: e.currentTarget.value,
+                      })
+                    }
+                    id="password"
+                    name="password"
+                  />
+                </div>
+              </div>
+            )}
+            {isEdited ? (
+              <div className="role-container">
+                <h3>Role:</h3>
+                <div className="slider">
+                  Admin
+                  <StyledSlider $isAdmin={isAdmin} onClick={handleSlide}>
+                    <div className="slider-circle"></div>
+                  </StyledSlider>
+                  User
+                </div>
+              </div>
+            ) : null}
+          </UserInfo>
           {!isEdited ? (
-            <div className="infos">
-              <div>
-                <h3>Nom: </h3>
-                <p>{" " + user.name}</p>
+            <div className="my-edit-button">
+              <div className="edit-button" onClick={() => setIsEdited(true)}>
+                <FiEdit3 />
+                <span>Modifier</span>
               </div>
-              <div>
-                <h3>Prénom(s): </h3>
-                <p>{" " + user.lastName}</p>
-              </div>
-              <div>
-                <h3>Identifiant: </h3>
-                <p>{" " + user.username}</p>
+              <div
+                className="back-button"
+                onClick={() => {
+                  navigate({
+                    pathname: "/alluser",
+                  });
+                }}
+              >
+                Retour
               </div>
             </div>
           ) : (
-            <div className="infos">
-              <div>
-                <label htmlFor="name">Nom: </label>
-                <input
-                  type="text"
-                  defaultValue={user.name}
-                  onChange={(e) =>
-                    setUser({
-                      ...user,
-                      name: e.currentTarget.value,
-                    })
-                  }
-                  id="name"
-                  name="name"
-                />
-              </div>
-              <div>
-                <label htmlFor="lastName">Prénom(s): </label>
-                <input
-                  type="text"
-                  defaultValue={user.lastName}
-                  onChange={(e) =>
-                    setUser({
-                      ...user,
-                      lastName: e.currentTarget.value,
-                    })
-                  }
-                  id="lastName"
-                  name="lastName"
-                />
-              </div>
-              <div>
-                <label htmlFor="username">Identifiant: </label>
-                <input
-                  type="text"
-                  defaultValue={user.username}
-                  onChange={(e) =>
-                    setUser({
-                      ...user,
-                      username: e.currentTarget.value,
-                    })
-                  }
-                  id="username"
-                  name="username"
-                />
-              </div>
-              <div>
-                <label htmlFor="password">Mot de passe: </label>
-                <input
-                  type="text"
-                  defaultValue="********"
-                  onChange={(e) =>
-                    setUser({
-                      ...user,
-                      password: e.currentTarget.value,
-                    })
-                  }
-                  id="password"
-                  name="password"
-                />
+            <div className="my-buttons">
+              <button>
+                {pending ? (
+                  <CgSpinner className="spinner" />
+                ) : (
+                  <span>Sauvegarder</span>
+                )}
+              </button>
+              <div
+                className="back-button"
+                onClick={() => {
+                  setIsEdited(false);
+                }}
+              >
+                Retour
               </div>
             </div>
           )}
-          {isEdited ? (
-            <div className="role-container">
-              <h3>Role:</h3>
-              <div className="slider">
-                Admin
-                <StyledSlider $isAdmin={isAdmin} onClick={handleSlide}>
-                  <div className="slider-circle"></div>
-                </StyledSlider>
-                User
-              </div>
-            </div>
-          ) : null}
-        </UserInfo>
-        {!isEdited ? (
-          <div className="my-edit-button">
-            <div className="edit-button" onClick={() => setIsEdited(true)}>
-              <FiEdit3 />
-              <span>Modifier</span>
-            </div>
-            <div
-              className="back-button"
-              onClick={() => {
-                navigate({
-                  pathname: "/alluser",
-                });
-              }}
-            >
-              Retour
-            </div>
-          </div>
-        ) : (
-          <div className="my-buttons">
-            <button>
-              {pending ? (
-                <CgSpinner className="spinner" />
-              ) : (
-                <span>Sauvegarder</span>
-              )}
-            </button>
-            <div
-              className="back-button"
-              onClick={() => {
-                setIsEdited(false);
-              }}
-            >
-              Retour
-            </div>
-          </div>
-        )}
-      </StyledForm>
+        </StyledForm>
+        <PaysheetList>
+          <h1>Fiches de paie</h1>
+          {paysheets.map((paysheet, i) => (
+            <li key={i}>
+              <p>{paysheet.baseSalary}</p>
+              <p>{paysheet.advanceOnSalary}</p>
+              <p>{paysheet.date}</p>
+            </li>
+          ))}
+        </PaysheetList>
+      </StyledContainer>
     </>
   );
 }
