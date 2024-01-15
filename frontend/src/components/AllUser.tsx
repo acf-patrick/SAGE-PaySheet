@@ -33,7 +33,9 @@ const Users = styled.div`
       gap: 1rem;
       width: 7.5rem;
       select {
-        width: 2rem;
+        width: 3rem;
+        background-color: white;
+        cursor: pointer;
       }
     }
   }
@@ -109,12 +111,26 @@ function Alluser() {
   const navigate = useNavigate();
   const [users, setUsers] = useState<User[]>([]);
   const [list, setList] = useState(true);
+  const [sort, setSort] = useState("A-Z");
 
   useEffect(() => {
     api.get("user").then((res) => {
       setUsers(res.data);
     });
   }, []);
+
+  useEffect(() => {
+    if (sort == "A-Z") {
+      setUsers(users.sort((a, b) => a.name.localeCompare(b.name)));
+    } else if (sort == "Z-A") {
+      setUsers(users.sort((a, b) => a.name.localeCompare(b.name)).reverse());
+    } else if (sort == "Admin") {
+      setUsers(users.sort((a, b) => a.role.localeCompare(b.role)));
+    } else {
+      setUsers(users.sort((a, b) => a.role.localeCompare(b.role)).reverse());
+    }
+    console.log(sort);
+  }, [sort]);
 
   return (
     <>
@@ -141,7 +157,18 @@ function Alluser() {
             <label htmlFor="select">
               {" "}
               Trier:
-              <select id="select" name="Trier"></select>
+              <select
+                id="select"
+                name="Trier"
+                onChange={(e) => setSort(e.currentTarget.value)}
+              >
+                <option value="A-Z" selected>
+                  A-Z
+                </option>
+                <option value="Z-A">Z-A</option>
+                <option value="Admin">Admin</option>
+                <option value="User">User</option>
+              </select>
             </label>
             <div className="titles">
               <p>Full Name</p>
