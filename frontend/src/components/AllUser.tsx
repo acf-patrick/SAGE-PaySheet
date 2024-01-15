@@ -121,12 +121,6 @@ function Alluser() {
   }, []);
 
   useEffect(() => {
-    if (sort == "") {
-      setSort("A-Z");
-    }
-  }, [users]);
-
-  useEffect(() => {
     if (sort == "A-Z") {
       setUsers([...users.sort((a, b) => a.name.localeCompare(b.name))]);
     } else if (sort == "Z-A") {
