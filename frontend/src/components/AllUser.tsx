@@ -115,7 +115,8 @@ function Alluser() {
 
   useEffect(() => {
     api.get("user").then((res) => {
-      setUsers(res.data);
+      const tmp: User[] = res.data;
+      setUsers([...tmp.sort((a, b) => a.name.localeCompare(b.name))]);
     });
   }, []);
 
