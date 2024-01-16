@@ -182,8 +182,6 @@ function Paysheets() {
 
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // useEffect(() => console.log(scrolled), [scrolled]);
-
   useEffect(() => {
     const userId = localStorage.getItem("userId");
 

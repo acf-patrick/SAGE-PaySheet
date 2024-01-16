@@ -1,6 +1,13 @@
 import { useEffect, useState } from "react";
 import { CgSpinner } from "react-icons/cg";
-import { FiEdit3 } from "react-icons/fi";
+import {
+  FiEdit3,
+  FiPlusSquare,
+  FiPlus,
+  FiFolderPlus,
+  FiFolder,
+  FiFolderMinus,
+} from "react-icons/fi";
 import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { api } from "../api";
@@ -192,6 +199,35 @@ const PaysheetList = styled.ul`
       box-shadow: 2px 5px 5px 2px rgba(0, 0, 0, 0.1);
     }
   }
+  .empty-box {
+    box-shadow: 2px 5px 5px 2px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    height: 10rem;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #f5f5f549;
+
+    p {
+      color: gray;
+      font-size: large;
+      font-weight: bold;
+    }
+
+    .add-paysheet {
+      font-size: xx-large;
+      cursor: pointer;
+      width: 3rem;
+      height: 3rem;
+      color: black;
+      transition: color 200ms;
+      &:hover {
+        color: gray;
+      }
+    }
+  }
 
   h1 {
     text-align: center;
@@ -211,6 +247,12 @@ function ModifyUser() {
     username: "",
     password: "",
     role: "",
+  });
+  const [userPaysheets, setUserPaysheets] = useState<Paysheet>({
+    userId: id!,
+    baseSalary: "",
+    advanceOnSalary: "",
+    date: "",
   });
 
   const [paysheets, setPaysheets] = useState<Paysheet[]>([]);
@@ -238,6 +280,8 @@ function ModifyUser() {
   const handleSlide = () => {
     setIsAdmin(!isAdmin);
   };
+
+  const addPaysheet = () => {};
 
   useEffect(() => {
     setUser({
@@ -410,13 +454,20 @@ function ModifyUser() {
         </StyledForm>
         <PaysheetList>
           <h1>Fiches de paie</h1>
-          {paysheets.map((paysheet, i) => (
-            <li key={i}>
-              <p>{paysheet.baseSalary}</p>
-              <p>{paysheet.advanceOnSalary}</p>
-              <p>{paysheet.date}</p>
-            </li>
-          ))}
+          {paysheets.length > 0 ? (
+            paysheets.map((paysheet, i) => (
+              <li key={i}>
+                <p>{paysheet.baseSalary}</p>
+                <p>{paysheet.advanceOnSalary}</p>
+                <p>{paysheet.date}</p>
+              </li>
+            ))
+          ) : (
+            <div className="empty-box">
+              <p>Vide</p>
+              <FiFolderPlus className="add-paysheet" onClick={addPaysheet} />
+            </div>
+          )}
         </PaysheetList>
       </StyledContainer>
     </>

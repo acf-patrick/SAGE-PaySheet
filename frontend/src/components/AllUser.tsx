@@ -63,6 +63,7 @@ const UserList = styled.div`
   flex-direction: row;
   width: 65%;
   border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+  border-right: 1px solid rgba(0, 0, 0, 0.2);
   justify-content: space-between;
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
