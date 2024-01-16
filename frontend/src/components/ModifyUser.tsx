@@ -240,7 +240,9 @@ function ModifyUser() {
   const [pending, setPending] = useState(false);
   const [isEdited, setIsEdited] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [isAddingPaysheet, setIsAddingPaysheet] = useState(false);
   const navigate = useNavigate();
+  const now = new Date();
   const [user, setUser] = useState({
     name: "",
     lastName: "",
@@ -281,7 +283,9 @@ function ModifyUser() {
     setIsAdmin(!isAdmin);
   };
 
-  const addPaysheet = () => {};
+  const addPaysheet = () => {
+    setUserPaysheets({ ...userPaysheets, date: now.toLocaleDateString() });
+  };
 
   useEffect(() => {
     setUser({
@@ -464,8 +468,64 @@ function ModifyUser() {
             ))
           ) : (
             <div className="empty-box">
-              <p>Vide</p>
-              <FiFolderPlus className="add-paysheet" onClick={addPaysheet} />
+              {!isAddingPaysheet ? (
+                <div>
+                  <p>Vide</p>
+                  <FiFolderPlus
+                    className="add-paysheet"
+                    onClick={() => setIsAddingPaysheet(true)}
+                  />
+                </div>
+              ) : (
+                <div className="add-container">
+                  <div className="add-input">
+                    <label htmlFor="base-salary">Salaire de base:</label>
+                    <input
+                      type="number"
+                      name="base-salary"
+                      id="base-salary"
+                      onChange={(e) =>
+                        setUserPaysheets({
+                          ...userPaysheets,
+                          baseSalary: e.currentTarget.value,
+                        })
+                      }
+                    />
+                  </div>
+                  <div className="add-input">
+                    <label htmlFor="advance">Avance prise:</label>
+                    <input
+                      type="number"
+                      name="advance"
+                      id="advance"
+                      onChange={(e) =>
+                        setUserPaysheets({
+                          ...userPaysheets,
+                          advanceOnSalary: e.currentTarget.value,
+                        })
+                      }
+                    />
+                  </div>
+                  <div className="add-input">
+                    <label htmlFor="Date">Date:</label>
+                    <input
+                      type="text"
+                      name="Date"
+                      id="Date"
+                      defaultValue={now.toLocaleDateString()}
+                      onChange={(e) =>
+                        setUserPaysheets({
+                          ...userPaysheets,
+                          date: e.currentTarget.value,
+                        })
+                      }
+                    />
+                  </div>
+                  <button type="button" onClick={addPaysheet}>
+                    Valider
+                  </button>
+                </div>
+              )}
             </div>
           )}
         </PaysheetList>
