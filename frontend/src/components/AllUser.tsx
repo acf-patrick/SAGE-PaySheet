@@ -117,6 +117,55 @@ const UserList = styled.div`
     }
   }
 `;
+
+const ConfirmButton = styled.div`
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.5);
+
+  .container {
+    font-size: large;
+    width: 25%;
+    height: 10rem;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid grey;
+    background-color: #fafafa;
+    z-index: 2;
+    .choice {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 3rem;
+      .yes,
+      .no {
+        border: 1px solid gray;
+        width: 3rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 10px;
+        height: 2rem;
+        font-size: medium;
+        font-weight: bold;
+        cursor: pointer;
+        &:hover {
+          color: #000;
+          background-color: #e3e3e3;
+        }
+      }
+    }
+  }
+`;
 const UserProfil = styled.div`
   width: 100%;
   height: 45%;
@@ -150,6 +199,8 @@ function Alluser() {
   const navigate = useNavigate();
   const [users, setUsers] = useState<User[]>([]);
   const [list, setList] = useState(true);
+  const [confirmDelete, setConfirmDelete] = useState(false);
+  const [userIndexToDelet, setUserIndexToDelet] = useState(0);
   const [sort, setSort] = useState(" ");
 
   const deleteUser = (i: number) => {
@@ -160,6 +211,7 @@ function Alluser() {
           const tmp: User[] = res.data;
           setUsers([...tmp.sort((a, b) => a.name.localeCompare(b.name))]);
         });
+        setConfirmDelete(false);
       })
       .catch((err) => console.log(err));
   };
@@ -247,8 +299,9 @@ function Alluser() {
               <div
                 className="delete"
                 onClick={(e) => {
-                  deleteUser(i);
+                  setUserIndexToDelet(i);
                   e.stopPropagation();
+                  setConfirmDelete(true);
                 }}
               >
                 <FiDelete />
@@ -281,8 +334,9 @@ function Alluser() {
               <div
                 className="delete"
                 onClick={(e) => {
-                  deleteUser(i);
+                  setUserIndexToDelet(i);
                   e.stopPropagation();
+                  setConfirmDelete(true);
                 }}
               >
                 <FiDelete />
@@ -290,6 +344,26 @@ function Alluser() {
             </UserCard>
           )
         )}
+        {confirmDelete ? (
+          <ConfirmButton>
+            <div className="container">
+              Vous êtes sûr?
+              <div className="choice">
+                <p className="yes" onClick={() => setConfirmDelete(false)}>
+                  Non
+                </p>
+                <p
+                  className="no"
+                  onClick={() => {
+                    deleteUser(userIndexToDelet);
+                  }}
+                >
+                  Oui
+                </p>
+              </div>
+            </div>
+          </ConfirmButton>
+        ) : null}
       </Users>
     </>
   );
