@@ -193,15 +193,15 @@ const PaysheetList = styled.ul`
     }
   }
   .empty-box {
-    box-shadow: 2px 5px 5px 2px rgba(0, 0, 0, 0.1);
     width: 100%;
-    height: 10rem;
-    border-radius: 5px;
+    height: auto;
+    padding: 2rem 0;
+    border-radius: 15px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background-color: #f5f5f549;
+    background-color: #efefef48;
 
     p {
       color: gray;
@@ -218,6 +218,73 @@ const PaysheetList = styled.ul`
       transition: color 200ms;
       &:hover {
         color: gray;
+      }
+    }
+
+    .add-container {
+      display: flex;
+      flex-direction: column;
+      width: 60%;
+      .add-input {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        label {
+          font-size: large;
+          font-weight: bold;
+          width: 45%;
+          margin-top: 0.8rem;
+        }
+        input {
+          margin-top: 0.8rem;
+          border: none;
+          width: auto;
+          height: 2rem;
+          border-bottom: 2px solid grey;
+          outline: none;
+          font-size: medium;
+        }
+      }
+      .validate {
+        width: 90%;
+        margin-top: 2rem;
+        display: flex;
+        flex-direction: row-reverse;
+        align-items: center;
+        justify-content: space-between;
+        .ok {
+          background-color: green;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 7.3rem;
+          height: 3rem;
+          border-radius: 5px;
+          color: white;
+          font-weight: lighter;
+          font-size: medium;
+          cursor: pointer;
+          &:hover {
+            background-color: #004900;
+          }
+        }
+        .non {
+          background-color: ${({ theme }) => theme.modifyUser.editButton.back};
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 5rem;
+          height: 3rem;
+          border-radius: 5px;
+          color: black;
+          font-weight: lighter;
+          font-size: medium;
+          cursor: pointer;
+          &:hover {
+            background-color: ${({ theme }) =>
+              theme.modifyUser.editButton.backhover};
+          }
+        }
       }
     }
   }
@@ -528,8 +595,9 @@ function ModifyUser() {
                       }
                     />
                   </div>
-                  <div className="add-button" onClick={addPaysheet}>
-                    Valider
+                  <div className="validate" onClick={addPaysheet}>
+                    <p className="ok">Valider</p>
+                    <p className="non">Annuler</p>
                   </div>
                 </div>
               )}
