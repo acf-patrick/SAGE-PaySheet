@@ -56,6 +56,23 @@ const UserCard = styled.div`
   &:hover {
     transform: scale(1.05);
   }
+  .delete {
+    font-size: x-large;
+    width: 100%;
+    height: 3rem;
+    margin: 0 13% 0 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+    background-color: #f1f1f1;
+    color: gray;
+    transition: color 200ms, background-color 200ms;
+    &:hover {
+      color: white;
+      background-color: #fcdfdf;
+    }
+  }
 `;
 const UserList = styled.div`
   display: flex;
@@ -85,7 +102,6 @@ const UserList = styled.div`
 
   .delete {
     font-size: x-large;
-    /* height: 3rem; */
     width: 5%;
     margin: 0 13% 0 0;
     display: flex;
@@ -135,6 +151,18 @@ function Alluser() {
   const [users, setUsers] = useState<User[]>([]);
   const [list, setList] = useState(true);
   const [sort, setSort] = useState(" ");
+
+  const deleteUser = (i: number) => {
+    api
+      .delete("user/" + users[i].id)
+      .then((_res) => {
+        api.get("user").then((res) => {
+          const tmp: User[] = res.data;
+          setUsers([...tmp.sort((a, b) => a.name.localeCompare(b.name))]);
+        });
+      })
+      .catch((err) => console.log(err));
+  };
 
   useEffect(() => {
     api.get("user").then((res) => {
@@ -216,7 +244,13 @@ function Alluser() {
                 <p>{user.username}</p>
                 <p>{user.role}</p>
               </div>
-              <div className="delete">
+              <div
+                className="delete"
+                onClick={(e) => {
+                  deleteUser(i);
+                  e.stopPropagation();
+                }}
+              >
                 <FiDelete />
               </div>
             </UserList>
@@ -244,6 +278,15 @@ function Alluser() {
                   {user.role}
                 </p>
               </UserInfo>
+              <div
+                className="delete"
+                onClick={(e) => {
+                  deleteUser(i);
+                  e.stopPropagation();
+                }}
+              >
+                <FiDelete />
+              </div>
             </UserCard>
           )
         )}

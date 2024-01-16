@@ -62,7 +62,7 @@ export class UserController {
   @ApiOperation({
     summary: 'Delete one specific user',
   })
-  async deleteUser(@Query('id') id: string) {
+  async deleteUser(@Param('id') id: string) {
     return await this.userService.deleteUser(id);
   }
 
