@@ -1,13 +1,6 @@
 import { useEffect, useState } from "react";
 import { CgSpinner } from "react-icons/cg";
-import {
-  FiEdit3,
-  FiPlusSquare,
-  FiPlus,
-  FiFolderPlus,
-  FiFolder,
-  FiFolderMinus,
-} from "react-icons/fi";
+import { FiEdit3, FiFolderPlus } from "react-icons/fi";
 import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { api } from "../api";
@@ -284,7 +277,23 @@ function ModifyUser() {
   };
 
   const addPaysheet = () => {
-    setUserPaysheets({ ...userPaysheets, date: now.toLocaleDateString() });
+    const data = {
+      userId: userPaysheets.userId,
+      baseSalary: userPaysheets.baseSalary,
+      advanceOnSalary: userPaysheets.advanceOnSalary,
+    };
+    api
+      .post("paysheet/", data)
+      .then((res: any) => {
+        console.log(res.data);
+        window.location.reload();
+      })
+      .catch((err: any) => {
+        console.log(err);
+      })
+      .finally(() => setPending(false));
+    setIsAddingPaysheet(false);
+    console.log("Posted paysheet");
   };
 
   useEffect(() => {
@@ -293,6 +302,7 @@ function ModifyUser() {
       role: isAdmin ? "ADMIN" : "USER",
     });
   }, [isAdmin]);
+
   useEffect(() => {
     api
       .get("user/" + id)
@@ -458,7 +468,7 @@ function ModifyUser() {
         </StyledForm>
         <PaysheetList>
           <h1>Fiches de paie</h1>
-          {paysheets.length > 0 ? (
+          {paysheets.length != 0 ? (
             paysheets.map((paysheet, i) => (
               <li key={i}>
                 <p>{paysheet.baseSalary}</p>
@@ -487,7 +497,7 @@ function ModifyUser() {
                       onChange={(e) =>
                         setUserPaysheets({
                           ...userPaysheets,
-                          baseSalary: e.currentTarget.value,
+                          baseSalary: e.currentTarget.value.toString(),
                         })
                       }
                     />
@@ -501,7 +511,7 @@ function ModifyUser() {
                       onChange={(e) =>
                         setUserPaysheets({
                           ...userPaysheets,
-                          advanceOnSalary: e.currentTarget.value,
+                          advanceOnSalary: e.currentTarget.value.toString(),
                         })
                       }
                     />
