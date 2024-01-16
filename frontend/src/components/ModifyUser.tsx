@@ -171,10 +171,31 @@ const StyledSlider = styled.div<{ $isAdmin: boolean }>`
 const PaysheetList = styled.ul`
   display: flex;
   flex-direction: column;
+  align-items: center;
   width: 65%;
+  min-height: 100%;
+  padding: 2rem 0;
   gap: 15px;
+  border-radius: 15px;
+  background-color: #efefef48;
+
+  h2 {
+    margin: 0;
+    display: flex;
+    justify-content: space-between;
+    width: 95%;
+    svg {
+      cursor: pointer;
+      color: black;
+      transition: color 200ms;
+      &:hover {
+        color: gray;
+      }
+    }
+  }
 
   li {
+    width: 90%;
     margin: 0 1rem;
     display: flex;
     justify-content: space-between;
@@ -196,12 +217,10 @@ const PaysheetList = styled.ul`
     width: 100%;
     height: auto;
     padding: 2rem 0;
-    border-radius: 15px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background-color: #efefef48;
 
     p {
       color: gray;
@@ -351,8 +370,15 @@ function ModifyUser() {
     };
     api
       .post("paysheet", data)
-      .then((res) => {
-        console.log(res.data);
+      .then(() => {
+        api
+          .get("paysheet/" + id)
+          .then((res) => {
+            setPaysheets(res.data);
+          })
+          .catch((err) =>
+            console.log("Error while getting user's paysheets: " + err)
+          );
       })
       .catch((err) => {
         console.log("error:" + err);
@@ -531,7 +557,12 @@ function ModifyUser() {
           )}
         </StyledForm>
         <PaysheetList>
-          <h1>Fiches de paie</h1>
+          <h2>
+            Fiches de paie{" "}
+            {paysheets.length == 0 ? null : (
+              <FiFolderPlus onClick={() => setIsAddingPaysheet(true)} />
+            )}
+          </h2>
           {paysheets.length != 0 ? (
             paysheets.map((paysheet, i) => (
               <li key={i}>
