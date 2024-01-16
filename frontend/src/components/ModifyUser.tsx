@@ -279,21 +279,18 @@ function ModifyUser() {
   const addPaysheet = () => {
     const data = {
       userId: userPaysheets.userId,
-      baseSalary: userPaysheets.baseSalary,
-      advanceOnSalary: userPaysheets.advanceOnSalary,
+      baseSalary: parseFloat(userPaysheets.baseSalary),
+      advanceOnSalary: parseFloat(userPaysheets.advanceOnSalary),
     };
     api
-      .post("paysheet/", data)
-      .then((res: any) => {
+      .post("paysheet", data)
+      .then((res) => {
         console.log(res.data);
-        window.location.reload();
       })
-      .catch((err: any) => {
-        console.log(err);
-      })
-      .finally(() => setPending(false));
+      .catch((err) => {
+        console.log("error:" + err);
+      });
     setIsAddingPaysheet(false);
-    console.log("Posted paysheet");
   };
 
   useEffect(() => {
@@ -497,7 +494,7 @@ function ModifyUser() {
                       onChange={(e) =>
                         setUserPaysheets({
                           ...userPaysheets,
-                          baseSalary: e.currentTarget.value.toString(),
+                          baseSalary: e.currentTarget.value,
                         })
                       }
                     />
@@ -511,7 +508,7 @@ function ModifyUser() {
                       onChange={(e) =>
                         setUserPaysheets({
                           ...userPaysheets,
-                          advanceOnSalary: e.currentTarget.value.toString(),
+                          advanceOnSalary: e.currentTarget.value,
                         })
                       }
                     />
@@ -531,9 +528,9 @@ function ModifyUser() {
                       }
                     />
                   </div>
-                  <button type="button" onClick={addPaysheet}>
+                  <div className="add-button" onClick={addPaysheet}>
                     Valider
-                  </button>
+                  </div>
                 </div>
               )}
             </div>

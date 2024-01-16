@@ -56,6 +56,15 @@ export class PaysheetController {
   }
 
   @UseGuards(AccessTokenGuard)
+  @Delete('/:id')
+  @ApiOperation({
+    summary: 'Delete one specific paysheet',
+  })
+  async deletePaysheet(@Query('id') id: string) {
+    return await this.paysheetService.deletePaySheet(id);
+  }
+
+  @UseGuards(AccessTokenGuard)
   @Post()
   @ApiOperation({
     summary: 'Add new paysheet',

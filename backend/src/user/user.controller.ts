@@ -58,7 +58,7 @@ export class UserController {
   }
 
   @UseGuards(AccessTokenGuard)
-  @Delete()
+  @Delete('/:id')
   @ApiOperation({
     summary: 'Delete one specific user',
   })
