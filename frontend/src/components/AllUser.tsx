@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { FiGrid, FiList } from "react-icons/fi";
+import { FiGrid, FiList, FiDelete } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { api } from "../api";
@@ -17,10 +17,10 @@ const Users = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 80%;
+    width: 100%;
     .titles {
-      width: 80%;
-      padding-right: 8rem;
+      width: 75%;
+      padding-right: 20%;
       display: flex;
       justify-content: space-between;
       p {
@@ -31,10 +31,10 @@ const Users = styled.div`
       display: flex;
       justify-content: flex-start;
       gap: 1rem;
-      width: 7.5rem;
+      width: 30%;
+      display: flex;
+      justify-content: center;
       select {
-        width: 3rem;
-        background-color: white;
         cursor: pointer;
       }
     }
@@ -49,7 +49,6 @@ const UserCard = styled.div`
   border: 2px solid grey;
   border-radius: 10px;
   padding: 5px;
-  box-shadow: 0 0 15px 1px grey;
   transform: scale(1);
   transition: transform 300ms;
   animation: fadeIn linear 250ms;
@@ -61,22 +60,45 @@ const UserCard = styled.div`
 const UserList = styled.div`
   display: flex;
   flex-direction: row;
-  width: 65%;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
-  border-right: 1px solid rgba(0, 0, 0, 0.2);
-  justify-content: space-between;
-  border-bottom-left-radius: 5px;
-  border-bottom-right-radius: 5px;
+  width: 100%;
+  gap: 5px;
+  justify-content: flex-end;
   cursor: pointer;
-  transition: box-shadow 250ms;
   animation: fadeIn linear 250ms;
 
-  p {
-    margin: 1rem;
+  .first-child {
+    width: 60%;
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+    border-right: 1px solid rgba(0, 0, 0, 0.2);
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    transition: box-shadow 250ms;
+    &:hover {
+      box-shadow: 0 2px 5px 1px rgba(0, 0, 0, 0.05);
+    }
+    p {
+      margin: 1rem;
+    }
   }
 
-  &:hover {
-    box-shadow: 0 2px 5px 1px rgba(0, 0, 0, 0.05);
+  .delete {
+    font-size: x-large;
+    /* height: 3rem; */
+    width: 5%;
+    margin: 0 13% 0 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+    background-color: #f1f1f1;
+    color: gray;
+    transition: color 200ms, background-color 200ms;
+    &:hover {
+      color: white;
+      background-color: #fcdfdf;
+    }
   }
 `;
 const UserProfil = styled.div`
@@ -135,7 +157,6 @@ function Alluser() {
         ...users.sort((a, b) => a.role.localeCompare(b.role)).reverse(),
       ]);
     }
-    console.log(sort);
   }, [sort]);
 
   return (
@@ -190,9 +211,14 @@ function Alluser() {
                 })
               }
             >
-              <p>{user.name + " " + user.lastName}</p>
-              <p>{user.username}</p>
-              <p>{user.role}</p>
+              <div className="first-child">
+                <p>{user.name + " " + user.lastName}</p>
+                <p>{user.username}</p>
+                <p>{user.role}</p>
+              </div>
+              <div className="delete">
+                <FiDelete />
+              </div>
             </UserList>
           ) : (
             <UserCard
