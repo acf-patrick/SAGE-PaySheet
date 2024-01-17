@@ -203,6 +203,7 @@ const UserInfo = styled.div`
 function Alluser() {
   const navigate = useNavigate();
   const [users, setUsers] = useState<User[]>([]);
+  const [filteredUsers, setFilteredUsers] = useState<User[]>(users);
   const [list, setList] = useState(true);
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [userIndexToDelet, setUserIndexToDelet] = useState(0);
@@ -225,33 +226,24 @@ function Alluser() {
     api.get("user").then((res) => {
       const tmp: User[] = res.data;
       setUsers([...tmp.sort((a, b) => a.name.localeCompare(b.name))]);
+      setFilteredUsers([...tmp.sort((a, b) => a.name.localeCompare(b.name))]);
     });
   }, []);
 
   useEffect(() => {
     if (sort != "") {
       if (sort == "A-Z") {
-        api.get("user").then((res) => {
-          const tmp: User[] = res.data;
-          setUsers([...tmp.sort((a, b) => a.name.localeCompare(b.name))]);
-        });
+        setFilteredUsers([
+          ...users.sort((a, b) => a.name.localeCompare(b.name)),
+        ]);
       } else if (sort == "Z-A") {
-        api.get("user").then((res) => {
-          const tmp: User[] = res.data;
-          setUsers([
-            ...tmp.sort((a, b) => a.name.localeCompare(b.name)).reverse(),
-          ]);
-        });
+        setFilteredUsers([
+          ...users.sort((a, b) => a.name.localeCompare(b.name)).reverse(),
+        ]);
       } else if (sort == "Admin") {
-        api.get("user").then((res) => {
-          const tmp: User[] = res.data;
-          setUsers([...tmp.filter((user) => user.role == "ADMIN")]);
-        });
+        setFilteredUsers([...users.filter((user) => user.role == "ADMIN")]);
       } else {
-        api.get("user").then((res) => {
-          const tmp: User[] = res.data;
-          setUsers([...tmp.filter((user) => user.role == "USER")]);
-        });
+        setFilteredUsers([...users.filter((user) => user.role == "USER")]);
       }
     }
   }, [sort]);
@@ -298,13 +290,13 @@ function Alluser() {
             </div>
           </div>
         ) : null}
-        {users.map((user, i) =>
+        {filteredUsers.map((user, i) =>
           list ? (
             <UserList
               key={user.username}
               onClick={() =>
                 navigate({
-                  pathname: "/user/" + users[i].id,
+                  pathname: "/user/" + filteredUsers[i].id,
                 })
               }
             >
