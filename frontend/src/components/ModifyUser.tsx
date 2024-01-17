@@ -66,6 +66,7 @@ const StyledForm = styled.form`
       align-items: center;
       justify-content: center;
       gap: 10px;
+      transition: background-color 250ms;
 
       &:hover {
         background-color: ${({ theme }) => theme.modifyUser.editButton.hover};
@@ -79,6 +80,8 @@ const StyledForm = styled.form`
       width: 5rem;
       border-radius: 5px;
       cursor: pointer;
+      transition: background-color 250ms;
+
       &:hover {
         background-color: ${({ theme }) =>
           theme.modifyUser.editButton.backhover};
@@ -106,6 +109,8 @@ const StyledForm = styled.form`
       width: 5rem;
       border-radius: 5px;
       cursor: pointer;
+      transition: background-color 250ms;
+
       &:hover {
         background-color: ${({ theme }) =>
           theme.modifyUser.editButton.backhover};
@@ -279,6 +284,7 @@ const PaysheetList = styled.ul`
 `;
 
 const StyledAddPaysheet = styled.div`
+  overflow: hidden;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -387,6 +393,7 @@ function ModifyUser() {
 
   const [paysheets, setPaysheets] = useState<Paysheet[]>([]);
 
+  //Submiting User Infos
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setPending(true);
@@ -407,15 +414,13 @@ function ModifyUser() {
       .finally(() => setPending(false));
   };
 
-  const handleSlide = () => {
-    setIsAdmin(!isAdmin);
-  };
-
   const addPaysheet = () => {
+    //Parsing inputs to Paysheet data type
     const data = {
       userId: userPaysheets.userId,
       baseSalary: parseFloat(userPaysheets.baseSalary),
       advanceOnSalary: parseFloat(userPaysheets.advanceOnSalary),
+      date: userPaysheets.date,
     };
     api
       .post("paysheet", data)
@@ -451,6 +456,10 @@ function ModifyUser() {
       })
       .catch((err) => console.log(err));
   };
+
+  useEffect(() => {
+    console.table(paysheets);
+  }, [paysheets]);
 
   useEffect(() => {
     setUser({
@@ -577,7 +586,10 @@ function ModifyUser() {
                 <h3>Role:</h3>
                 <div className="slider">
                   Admin
-                  <StyledSlider $isAdmin={isAdmin} onClick={handleSlide}>
+                  <StyledSlider
+                    $isAdmin={isAdmin}
+                    onClick={() => setIsAdmin(!isAdmin)}
+                  >
                     <div className="slider-circle"></div>
                   </StyledSlider>
                   User
@@ -699,7 +711,7 @@ function ModifyUser() {
                     type="text"
                     name="Date"
                     id="Date"
-                    defaultValue={now.toLocaleDateString()}
+                    placeholder={now.toLocaleDateString()}
                     onChange={(e) =>
                       setUserPaysheets({
                         ...userPaysheets,

@@ -119,6 +119,7 @@ const UserList = styled.div`
 `;
 
 export const ConfirmButton = styled.div`
+  overflow: hidden;
   width: 100%;
   height: 100%;
   position: absolute;
