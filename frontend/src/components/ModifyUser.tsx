@@ -317,9 +317,15 @@ const StyledAddPaysheet = styled.div`
     border-radius: 15px;
     width: 35%;
     background-color: #f1f1f1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
     .add-input {
+      width: 93%;
       display: flex;
-      justify-content: flex-start;
+      justify-content: space-between;
       align-items: center;
       label {
         font-size: large;
@@ -332,13 +338,14 @@ const StyledAddPaysheet = styled.div`
         border: none;
         width: auto;
         height: 2rem;
+        background-color: transparent;
         border-bottom: 2px solid grey;
         outline: none;
         font-size: medium;
       }
     }
     .validate {
-      width: 90%;
+      width: 93%;
       margin-top: 2rem;
       display: flex;
       flex-direction: row-reverse;
