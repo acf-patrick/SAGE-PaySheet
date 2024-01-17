@@ -195,6 +195,20 @@ const PaysheetList = styled.ul`
     }
   }
 
+  .labels {
+    width: 95%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 2rem;
+    color: #8f8f8f;
+
+    p {
+      width: 15rem;
+      margin: 0;
+    }
+  }
+
   li {
     width: 90%;
     margin: 0 1rem;
@@ -615,6 +629,11 @@ function ModifyUser() {
               <FiFolderPlus onClick={() => setIsAddingPaysheet(true)} />
             )}
           </h2>
+          <div className="labels">
+            <p>Salaire de base:</p>
+            <p>Avance prise:</p>
+            <p>Date:</p>
+          </div>
           {paysheets.length != 0 ? (
             paysheets.map((paysheet, i) => (
               <li key={i}>
