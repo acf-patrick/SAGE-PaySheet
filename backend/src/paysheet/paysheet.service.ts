@@ -86,7 +86,6 @@ export class PaysheetService {
           baseSalary: paysheet.baseSalary,
           advanceOnSalary: paysheet.advanceOnSalary,
           userId: user.id,
-          date: paysheet.date,
         },
       });
 

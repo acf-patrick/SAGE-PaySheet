@@ -315,7 +315,7 @@ const StyledAddPaysheet = styled.div`
     box-shadow: 0 0 15px 15px rgba(0, 0, 0, 0.2);
     padding: 2rem;
     border-radius: 15px;
-    width: 35%;
+    width: 27rem;
     background-color: #f1f1f1;
     display: flex;
     flex-direction: column;
@@ -323,7 +323,7 @@ const StyledAddPaysheet = styled.div`
     align-items: center;
 
     .add-input {
-      width: 93%;
+      width: 25rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -345,12 +345,27 @@ const StyledAddPaysheet = styled.div`
       }
     }
     .validate {
-      width: 93%;
+      width: 25rem;
       margin-top: 2rem;
       display: flex;
       flex-direction: row-reverse;
       align-items: center;
       justify-content: space-between;
+      .error {
+        opacity: 0;
+        background-color: ${({ theme }) => theme.login.error.background};
+        border-radius: 5px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        color: red;
+        font-weight: 600;
+        transition: opacity 250ms;
+      }
+      .show {
+        opacity: 1;
+      }
       .ok {
         background-color: green;
         display: flex;
@@ -402,7 +417,7 @@ function ModifyUser() {
   const errorRef = useRef<HTMLParagraphElement>(null);
   const errorRefForPS = useRef<HTMLParagraphElement>(null);
   const [error, setError] = useState("");
-  const [errorForPs, setErrorForPS] = useState("");
+  const [errorForPS, setErrorForPS] = useState("");
 
   const [user, setUser] = useState({
     name: "",
@@ -495,28 +510,26 @@ function ModifyUser() {
     };
     const { baseSalary, advanceOnSalary, date } = userPaysheets;
 
-    setPending(true);
-
-    if (parseFloat(baseSalary) < 0) {
+    if (!baseSalary || parseFloat(baseSalary) < 0) {
       setErrorForPS("Salaire de base vide (mettre un 0)");
       errorRefForPS.current?.classList.add("show");
-      setTimeout(() => errorRef.current?.classList.remove("show"), 2000);
+      setTimeout(() => errorRefForPS.current?.classList.remove("show"), 2000);
       return;
     }
 
-    if (parseFloat(advanceOnSalary) < 0) {
+    if (parseFloat(advanceOnSalary) < 0 || !advanceOnSalary) {
       setErrorForPS("Avance vide (mettre un 0)");
       errorRefForPS.current?.classList.add("show");
-      setTimeout(() => errorRef.current?.classList.remove("show"), 2000);
+      setTimeout(() => errorRefForPS.current?.classList.remove("show"), 2000);
       return;
     }
 
-    if (date == "") {
-      setErrorForPS("Date vide");
-      errorRefForPS.current?.classList.add("show");
-      setTimeout(() => errorRef.current?.classList.remove("show"), 2000);
-      return;
-    }
+    // if (date == "") {
+    //   setErrorForPS("Date vide");
+    //   errorRefForPS.current?.classList.add("show");
+    //   setTimeout(() => errorRefForPS.current?.classList.remove("show"), 2000);
+    //   return;
+    // }
 
     api
       .post("paysheet", data)
@@ -529,11 +542,11 @@ function ModifyUser() {
           .catch((err) =>
             console.log("Error while getting user's paysheets: " + err)
           );
+        setIsAddingPaysheet(false);
       })
       .catch((err) => {
         console.log("error:" + err);
       });
-    setIsAddingPaysheet(false);
   };
 
   const deletePaysheet = (i: number) => {
@@ -559,6 +572,9 @@ function ModifyUser() {
       role: isAdmin ? "ADMIN" : "USER",
     });
   }, [isAdmin]);
+  useEffect(() => {
+    console.log(paysheets);
+  }, [paysheets]);
 
   useEffect(() => {
     api
@@ -806,7 +822,8 @@ function ModifyUser() {
                     type="text"
                     name="Date"
                     id="Date"
-                    placeholder={now.toLocaleDateString()}
+                    // placeholder={now.toLocaleDateString()}
+                    defaultValue={now.toLocaleDateString()}
                     onChange={(e) =>
                       setUserPaysheets({
                         ...userPaysheets,
@@ -815,10 +832,12 @@ function ModifyUser() {
                     }
                   />
                 </div>
-                <div className="validate" onClick={addPaysheet}>
-                  <p className="ok">Valider</p>
-                  <p className="error" ref={errorRef}>
-                    <span>{errorForPs}</span>
+                <div className="validate">
+                  <p className="ok" onClick={addPaysheet}>
+                    Valider
+                  </p>
+                  <p className="error" ref={errorRefForPS}>
+                    <span>{errorForPS}</span>
                   </p>
                   <p className="non">Annuler</p>
                 </div>
