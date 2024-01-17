@@ -292,9 +292,10 @@ const StyledAddPaysheet = styled.div`
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
+  z-index: 2;
   .container {
     box-shadow: 0 0 15px 15px rgba(0, 0, 0, 0.2);
     padding: 2rem;
@@ -456,10 +457,6 @@ function ModifyUser() {
       })
       .catch((err) => console.log(err));
   };
-
-  useEffect(() => {
-    console.table(paysheets);
-  }, [paysheets]);
 
   useEffect(() => {
     setUser({

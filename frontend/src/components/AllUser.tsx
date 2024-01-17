@@ -122,15 +122,17 @@ export const ConfirmButton = styled.div`
   overflow: hidden;
   width: 100%;
   height: 100%;
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   display: flex;
   align-items: center;
   justify-content: center;
+
   background-color: rgba(0, 0, 0, 0.5);
 
   .container {
+    box-shadow: 0 0 15px 15px rgba(0, 0, 0, 0.2);
     padding: 2rem;
     font-size: medium;
     text-align: center;
