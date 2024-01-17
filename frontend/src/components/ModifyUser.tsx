@@ -239,78 +239,92 @@ const PaysheetList = styled.ul`
         color: gray;
       }
     }
-
-    .add-container {
-      display: flex;
-      flex-direction: column;
-      width: 60%;
-      .add-input {
-        display: flex;
-        justify-content: flex-start;
-        align-items: center;
-        label {
-          font-size: large;
-          font-weight: bold;
-          width: 45%;
-          margin-top: 0.8rem;
-        }
-        input {
-          margin-top: 0.8rem;
-          border: none;
-          width: auto;
-          height: 2rem;
-          border-bottom: 2px solid grey;
-          outline: none;
-          font-size: medium;
-        }
-      }
-      .validate {
-        width: 90%;
-        margin-top: 2rem;
-        display: flex;
-        flex-direction: row-reverse;
-        align-items: center;
-        justify-content: space-between;
-        .ok {
-          background-color: green;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          width: 7.3rem;
-          height: 3rem;
-          border-radius: 5px;
-          color: white;
-          font-weight: lighter;
-          font-size: medium;
-          cursor: pointer;
-          &:hover {
-            background-color: #004900;
-          }
-        }
-        .non {
-          background-color: ${({ theme }) => theme.modifyUser.editButton.back};
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          width: 5rem;
-          height: 3rem;
-          border-radius: 5px;
-          color: black;
-          font-weight: lighter;
-          font-size: medium;
-          cursor: pointer;
-          &:hover {
-            background-color: ${({ theme }) =>
-              theme.modifyUser.editButton.backhover};
-          }
-        }
-      }
-    }
   }
 
   h1 {
     text-align: center;
     font-weight: 700;
+  }
+`;
+
+const StyledAddPaysheet = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  position: absolute;
+  top: 0;
+  left: 0;
+  .container {
+    box-shadow: 0 0 15px 15px rgba(0, 0, 0, 0.2);
+    padding: 2rem;
+    border-radius: 15px;
+    width: 35%;
+    background-color: #f1f1f1;
+    .add-input {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      label {
+        font-size: large;
+        font-weight: bold;
+        width: 45%;
+        margin-top: 0.8rem;
+      }
+      input {
+        margin-top: 0.8rem;
+        border: none;
+        width: auto;
+        height: 2rem;
+        border-bottom: 2px solid grey;
+        outline: none;
+        font-size: medium;
+      }
+    }
+    .validate {
+      width: 90%;
+      margin-top: 2rem;
+      display: flex;
+      flex-direction: row-reverse;
+      align-items: center;
+      justify-content: space-between;
+      .ok {
+        background-color: green;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 7.3rem;
+        height: 3rem;
+        border-radius: 5px;
+        color: white;
+        font-weight: lighter;
+        font-size: medium;
+        cursor: pointer;
+        &:hover {
+          background-color: #004900;
+        }
+      }
+      .non {
+        background-color: ${({ theme }) => theme.modifyUser.editButton.back};
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 5rem;
+        height: 3rem;
+        border-radius: 5px;
+        color: black;
+        font-weight: lighter;
+        font-size: medium;
+        cursor: pointer;
+        &:hover {
+          background-color: ${({ theme }) =>
+            theme.modifyUser.editButton.backhover};
+        }
+      }
+    }
   }
 `;
 
@@ -573,67 +587,68 @@ function ModifyUser() {
             ))
           ) : (
             <div className="empty-box">
-              {!isAddingPaysheet ? (
-                <div>
-                  <p>Vide</p>
-                  <FiFolderPlus
-                    className="add-paysheet"
-                    onClick={() => setIsAddingPaysheet(true)}
-                  />
-                </div>
-              ) : (
-                <div className="add-container">
-                  <div className="add-input">
-                    <label htmlFor="base-salary">Salaire de base:</label>
-                    <input
-                      type="number"
-                      name="base-salary"
-                      id="base-salary"
-                      onChange={(e) =>
-                        setUserPaysheets({
-                          ...userPaysheets,
-                          baseSalary: e.currentTarget.value,
-                        })
-                      }
-                    />
-                  </div>
-                  <div className="add-input">
-                    <label htmlFor="advance">Avance prise:</label>
-                    <input
-                      type="number"
-                      name="advance"
-                      id="advance"
-                      onChange={(e) =>
-                        setUserPaysheets({
-                          ...userPaysheets,
-                          advanceOnSalary: e.currentTarget.value,
-                        })
-                      }
-                    />
-                  </div>
-                  <div className="add-input">
-                    <label htmlFor="Date">Date:</label>
-                    <input
-                      type="text"
-                      name="Date"
-                      id="Date"
-                      defaultValue={now.toLocaleDateString()}
-                      onChange={(e) =>
-                        setUserPaysheets({
-                          ...userPaysheets,
-                          date: e.currentTarget.value,
-                        })
-                      }
-                    />
-                  </div>
-                  <div className="validate" onClick={addPaysheet}>
-                    <p className="ok">Valider</p>
-                    <p className="non">Annuler</p>
-                  </div>
-                </div>
-              )}
+              <div>
+                <p>Vide</p>
+                <FiFolderPlus
+                  className="add-paysheet"
+                  onClick={() => setIsAddingPaysheet(true)}
+                />
+              </div>
             </div>
           )}
+          {isAddingPaysheet ? (
+            <StyledAddPaysheet>
+              <div className="container">
+                <div className="add-input">
+                  <label htmlFor="base-salary">Salaire de base:</label>
+                  <input
+                    type="number"
+                    name="base-salary"
+                    id="base-salary"
+                    onChange={(e) =>
+                      setUserPaysheets({
+                        ...userPaysheets,
+                        baseSalary: e.currentTarget.value,
+                      })
+                    }
+                  />
+                </div>
+                <div className="add-input">
+                  <label htmlFor="advance">Avance prise:</label>
+                  <input
+                    type="number"
+                    name="advance"
+                    id="advance"
+                    onChange={(e) =>
+                      setUserPaysheets({
+                        ...userPaysheets,
+                        advanceOnSalary: e.currentTarget.value,
+                      })
+                    }
+                  />
+                </div>
+                <div className="add-input">
+                  <label htmlFor="Date">Date:</label>
+                  <input
+                    type="text"
+                    name="Date"
+                    id="Date"
+                    defaultValue={now.toLocaleDateString()}
+                    onChange={(e) =>
+                      setUserPaysheets({
+                        ...userPaysheets,
+                        date: e.currentTarget.value,
+                      })
+                    }
+                  />
+                </div>
+                <div className="validate" onClick={addPaysheet}>
+                  <p className="ok">Valider</p>
+                  <p className="non">Annuler</p>
+                </div>
+              </div>
+            </StyledAddPaysheet>
+          ) : null}
         </PaysheetList>
       </StyledContainer>
     </>

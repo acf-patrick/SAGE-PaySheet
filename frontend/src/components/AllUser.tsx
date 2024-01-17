@@ -130,7 +130,9 @@ const ConfirmButton = styled.div`
   background-color: rgba(0, 0, 0, 0.5);
 
   .container {
-    font-size: large;
+    padding: 2rem;
+    font-size: medium;
+    text-align: center;
     width: 25%;
     height: 10rem;
     border-radius: 15px;
@@ -347,7 +349,12 @@ function Alluser() {
         {confirmDelete ? (
           <ConfirmButton>
             <div className="container">
-              Vous êtes sûr?
+              {"Etes-vous sûr de vouloir supprimer"} <br />
+              {"<< " +
+                users[userIndexToDelet].name +
+                " " +
+                users[userIndexToDelet].lastName +
+                " >>?"}
               <div className="choice">
                 <p className="yes" onClick={() => setConfirmDelete(false)}>
                   Non
