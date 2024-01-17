@@ -400,7 +400,9 @@ function ModifyUser() {
   const navigate = useNavigate();
   const now = new Date();
   const errorRef = useRef<HTMLParagraphElement>(null);
+  const errorRefForPS = useRef<HTMLParagraphElement>(null);
   const [error, setError] = useState("");
+  const [errorForPs, setErrorForPS] = useState("");
 
   const [user, setUser] = useState({
     name: "",
@@ -485,12 +487,37 @@ function ModifyUser() {
 
   const addPaysheet = () => {
     //Parsing inputs to Paysheet data type
-    const data = {
+    let data = {
       userId: userPaysheets.userId,
       baseSalary: parseFloat(userPaysheets.baseSalary),
       advanceOnSalary: parseFloat(userPaysheets.advanceOnSalary),
       date: userPaysheets.date,
     };
+    const { baseSalary, advanceOnSalary, date } = userPaysheets;
+
+    setPending(true);
+
+    if (parseFloat(baseSalary) < 0) {
+      setErrorForPS("Salaire de base vide (mettre un 0)");
+      errorRefForPS.current?.classList.add("show");
+      setTimeout(() => errorRef.current?.classList.remove("show"), 2000);
+      return;
+    }
+
+    if (parseFloat(advanceOnSalary) < 0) {
+      setErrorForPS("Avance vide (mettre un 0)");
+      errorRefForPS.current?.classList.add("show");
+      setTimeout(() => errorRef.current?.classList.remove("show"), 2000);
+      return;
+    }
+
+    if (date == "") {
+      setErrorForPS("Date vide");
+      errorRefForPS.current?.classList.add("show");
+      setTimeout(() => errorRef.current?.classList.remove("show"), 2000);
+      return;
+    }
+
     api
       .post("paysheet", data)
       .then(() => {
@@ -790,6 +817,9 @@ function ModifyUser() {
                 </div>
                 <div className="validate" onClick={addPaysheet}>
                   <p className="ok">Valider</p>
+                  <p className="error" ref={errorRef}>
+                    <span>{errorForPs}</span>
+                  </p>
                   <p className="non">Annuler</p>
                 </div>
               </div>
