@@ -228,11 +228,17 @@ function Alluser() {
   useEffect(() => {
     if (sort != "") {
       if (sort == "A-Z") {
-        setUsers([...users.sort((a, b) => a.name.localeCompare(b.name))]);
+        api.get("user").then((res) => {
+          const tmp: User[] = res.data;
+          setUsers([...tmp.sort((a, b) => a.name.localeCompare(b.name))]);
+        });
       } else if (sort == "Z-A") {
-        setUsers([
-          ...users.sort((a, b) => a.name.localeCompare(b.name)).reverse(),
-        ]);
+        api.get("user").then((res) => {
+          const tmp: User[] = res.data;
+          setUsers([
+            ...tmp.sort((a, b) => a.name.localeCompare(b.name)).reverse(),
+          ]);
+        });
       } else if (sort == "Admin") {
         api.get("user").then((res) => {
           const tmp: User[] = res.data;
