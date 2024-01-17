@@ -203,7 +203,7 @@ const UserInfo = styled.div`
 function Alluser() {
   const navigate = useNavigate();
   const [users, setUsers] = useState<User[]>([]);
-  const [filteredUsers, setFilteredUsers] = useState<User[]>(users);
+  const [filteredUsers, setFilteredUsers] = useState<User[]>([]);
   const [list, setList] = useState(true);
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [userIndexToDelet, setUserIndexToDelet] = useState(0);
