@@ -433,7 +433,7 @@ function ModifyUser() {
           .catch((err) =>
             console.log("Error while getting user's paysheets: " + err)
           );
-        // setConfirmDelete(false);
+        setConfirmDelete(false);
       })
       .catch((err) => console.log(err));
   };
@@ -709,7 +709,6 @@ function ModifyUser() {
                   className="no"
                   onClick={() => {
                     deletePaysheet(userIndexToDelet);
-                    setConfirmDelete(false);
                   }}
                 >
                   Oui
