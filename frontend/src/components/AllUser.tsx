@@ -93,7 +93,7 @@ const UserList = styled.div`
     border-bottom-right-radius: 5px;
     transition: box-shadow 250ms;
     &:hover {
-      box-shadow: 0 2px 5px 1px rgba(0, 0, 0, 0.05);
+      box-shadow: 0 2px 5px 1px rgba(0, 0, 0, 0.1);
     }
     p {
       margin: 1rem;
@@ -118,7 +118,7 @@ const UserList = styled.div`
   }
 `;
 
-const ConfirmButton = styled.div`
+export const ConfirmButton = styled.div`
   width: 100%;
   height: 100%;
   position: absolute;
@@ -363,6 +363,7 @@ function Alluser() {
                   className="no"
                   onClick={() => {
                     deleteUser(userIndexToDelet);
+                    setConfirmDelete(false);
                   }}
                 >
                   Oui

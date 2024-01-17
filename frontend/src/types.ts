@@ -19,6 +19,7 @@ export type UserDto = {
 };
 
 export type Paysheet = {
+  id: string;
   userId: string;
   baseSalary: string;
   advanceOnSalary: string;

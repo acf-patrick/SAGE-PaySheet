@@ -60,7 +60,7 @@ export class PaysheetController {
   @ApiOperation({
     summary: 'Delete one specific paysheet',
   })
-  async deletePaysheet(@Query('id') id: string) {
+  async deletePaysheet(@Param('id') id: string) {
     return await this.paysheetService.deletePaySheet(id);
   }
 

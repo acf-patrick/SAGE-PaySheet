@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import { CgSpinner } from "react-icons/cg";
-import { FiEdit3, FiFolderPlus } from "react-icons/fi";
+import { FiDelete, FiEdit3, FiFolderPlus } from "react-icons/fi";
 import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { api } from "../api";
 import "../styles/keyframes.css";
 import { Paysheet } from "../types";
 import { StyledHeader } from "./Paysheets";
+import { ConfirmButton } from "./AllUser";
 
 const StyledContainer = styled.div`
   display: flex;
@@ -198,6 +199,7 @@ const PaysheetList = styled.ul`
     width: 90%;
     margin: 0 1rem;
     display: flex;
+    align-items: center;
     justify-content: space-between;
     border-bottom: 1px solid rgba(0, 0, 0, 0.2);
     border-right: 1px solid rgba(0, 0, 0, 0.2);
@@ -211,6 +213,21 @@ const PaysheetList = styled.ul`
 
     &:hover {
       box-shadow: 2px 5px 5px 2px rgba(0, 0, 0, 0.1);
+    }
+    p {
+      width: 20rem;
+    }
+    div {
+      width: 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 2rem;
+      color: black;
+      transition: color 200ms;
+      &:hover {
+        color: #8f8f8f;
+      }
     }
   }
   .empty-box {
@@ -333,7 +350,10 @@ function ModifyUser() {
   const [pending, setPending] = useState(false);
   const [isEdited, setIsEdited] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [confirmDelete, setConfirmDelete] = useState(false);
   const [isAddingPaysheet, setIsAddingPaysheet] = useState(false);
+  const [userIndexToDelet, setUserIndexToDelet] = useState(0);
+
   const navigate = useNavigate();
   const now = new Date();
   const [user, setUser] = useState({
@@ -344,6 +364,7 @@ function ModifyUser() {
     role: "",
   });
   const [userPaysheets, setUserPaysheets] = useState<Paysheet>({
+    id: "",
     userId: id!,
     baseSalary: "",
     advanceOnSalary: "",
@@ -398,6 +419,23 @@ function ModifyUser() {
         console.log("error:" + err);
       });
     setIsAddingPaysheet(false);
+  };
+
+  const deletePaysheet = (i: number) => {
+    api
+      .delete("paysheet/" + paysheets[i].id)
+      .then(() => {
+        api
+          .get("paysheet/" + id)
+          .then((res) => {
+            setPaysheets(res.data);
+          })
+          .catch((err) =>
+            console.log("Error while getting user's paysheets: " + err)
+          );
+        // setConfirmDelete(false);
+      })
+      .catch((err) => console.log(err));
   };
 
   useEffect(() => {
@@ -583,6 +621,15 @@ function ModifyUser() {
                 <p>{paysheet.baseSalary}</p>
                 <p>{paysheet.advanceOnSalary}</p>
                 <p>{paysheet.date}</p>
+                <div
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setUserIndexToDelet(i);
+                    setConfirmDelete(true);
+                  }}
+                >
+                  <FiDelete />
+                </div>
               </li>
             ))
           ) : (
@@ -650,6 +697,27 @@ function ModifyUser() {
             </StyledAddPaysheet>
           ) : null}
         </PaysheetList>
+        {confirmDelete ? (
+          <ConfirmButton>
+            <div className="container">
+              {"Etes-vous sûr de vouloir supprimer cette fiche?"}
+              <div className="choice">
+                <p className="yes" onClick={() => setConfirmDelete(false)}>
+                  Non
+                </p>
+                <p
+                  className="no"
+                  onClick={() => {
+                    deletePaysheet(userIndexToDelet);
+                    setConfirmDelete(false);
+                  }}
+                >
+                  Oui
+                </p>
+              </div>
+            </div>
+          </ConfirmButton>
+        ) : null}
       </StyledContainer>
     </>
   );
