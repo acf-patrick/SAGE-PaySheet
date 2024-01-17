@@ -24,6 +24,9 @@ export class UserService {
         where: {
           id,
         },
+        include: {
+          paysheets: true,
+        },
       });
     } catch (err) {
       console.log(err);

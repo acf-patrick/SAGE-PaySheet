@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { CgSpinner } from "react-icons/cg";
 import { FiDelete, FiEdit3, FiFolderPlus } from "react-icons/fi";
 import { useNavigate, useParams } from "react-router-dom";
@@ -40,7 +40,7 @@ const StyledForm = styled.form`
 
   button,
   .edit-button {
-    height: 40px;
+    height: 3rem;
     background-color: ${({ theme }) => theme.modifyUser.background};
     width: 120px;
     border: none;
@@ -93,6 +93,21 @@ const StyledForm = styled.form`
     flex-direction: row-reverse;
     justify-content: space-between;
     width: 35%;
+    .error {
+      opacity: 0;
+      background-color: ${({ theme }) => theme.login.error.background};
+      border-radius: 5px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      color: red;
+      font-weight: 600;
+      transition: opacity 250ms;
+    }
+    .show {
+      opacity: 1;
+    }
 
     button {
       .spinner {
@@ -377,6 +392,9 @@ function ModifyUser() {
 
   const navigate = useNavigate();
   const now = new Date();
+  const errorRef = useRef<HTMLParagraphElement>(null);
+  const [error, setError] = useState("");
+
   const [user, setUser] = useState({
     name: "",
     lastName: "",
@@ -397,7 +415,50 @@ function ModifyUser() {
   //Submiting User Infos
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const { name, lastName, username, password } = user;
+
     setPending(true);
+
+    if (name == "") {
+      setError("Nom vide");
+      errorRef.current?.classList.add("show");
+      setTimeout(() => errorRef.current?.classList.remove("show"), 2000);
+      setPending(false);
+      return;
+    }
+
+    if (lastName == "") {
+      setError("Prénom(s) vide");
+      errorRef.current?.classList.add("show");
+      setTimeout(() => errorRef.current?.classList.remove("show"), 2000);
+      setPending(false);
+      return;
+    }
+
+    if (username == "") {
+      setError("Identifiant vide");
+      errorRef.current?.classList.add("show");
+      setTimeout(() => errorRef.current?.classList.remove("show"), 2000);
+      setPending(false);
+      return;
+    }
+
+    if (password == "") {
+      setError("Mot de passe vide");
+      errorRef.current?.classList.add("show");
+      setTimeout(() => errorRef.current?.classList.remove("show"), 2000);
+      setPending(false);
+      return;
+    }
+
+    if (password.length < 8) {
+      setError("Le mot de passe doit avoir au moins 8 caractères");
+      errorRef.current?.classList.add("show");
+      setTimeout(() => errorRef.current?.classList.remove("show"), 2000);
+      setPending(false);
+      return;
+    }
+
     const data = {
       id,
       ...user,
@@ -620,6 +681,9 @@ function ModifyUser() {
                   <span>Sauvegarder</span>
                 )}
               </button>
+              <p className="error" ref={errorRef}>
+                <span>{error}</span>
+              </p>
               <div
                 className="back-button"
                 onClick={() => {
