@@ -1,192 +1,18 @@
 import { useEffect, useRef, useState } from "react";
-import { CgSpinner } from "react-icons/cg";
-import { FiDelete, FiEdit3, FiFolderPlus } from "react-icons/fi";
-import { useNavigate, useParams } from "react-router-dom";
+import { FiDelete, FiFolderPlus } from "react-icons/fi";
+import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import { api } from "../api";
 import "../styles/keyframes.css";
 import { Paysheet } from "../types";
-import { StyledHeader } from "./Paysheets";
 import { ConfirmButton } from "./AllUser";
+import { StyledHeader } from "./Paysheets";
+import UserInfoSummary from "./UserInfoSummary";
 
 const StyledContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-`;
-
-const StyledForm = styled.form`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 100%;
-  gap: 3rem;
-
-  .role-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-    .slider {
-      width: 35%;
-      height: 100%;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-  }
-
-  button,
-  .edit-button {
-    height: 3rem;
-    background-color: ${({ theme }) => theme.modifyUser.background};
-    width: 120px;
-    border: none;
-    border-radius: 5px;
-    color: white;
-    cursor: pointer;
-    transition: background-color 250ms;
-
-    &:hover {
-      background-color: ${({ theme }) => theme.modifyUser.hover};
-    }
-  }
-
-  .my-edit-button {
-    display: flex;
-    width: 35%;
-    flex-direction: row-reverse;
-    justify-content: space-between;
-    .edit-button {
-      background-color: ${({ theme }) =>
-        theme.modifyUser.editButton.background};
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      transition: background-color 250ms;
-
-      &:hover {
-        background-color: ${({ theme }) => theme.modifyUser.editButton.hover};
-      }
-    }
-    .back-button {
-      background-color: ${({ theme }) => theme.modifyUser.editButton.back};
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 5rem;
-      border-radius: 5px;
-      cursor: pointer;
-      transition: background-color 250ms;
-
-      &:hover {
-        background-color: ${({ theme }) =>
-          theme.modifyUser.editButton.backhover};
-      }
-    }
-  }
-  .my-buttons {
-    display: flex;
-    flex-direction: row-reverse;
-    justify-content: space-between;
-    width: 35%;
-    .error {
-      opacity: 0;
-      background-color: ${({ theme }) => theme.login.error.background};
-      border-radius: 5px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      color: red;
-      font-weight: 600;
-      transition: opacity 250ms;
-    }
-    .show {
-      opacity: 1;
-    }
-
-    button {
-      .spinner {
-        font-size: 25px;
-        animation: rotate linear infinite 750ms;
-      }
-    }
-
-    .back-button {
-      background-color: ${({ theme }) => theme.modifyUser.editButton.back};
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 5rem;
-      border-radius: 5px;
-      cursor: pointer;
-      transition: background-color 250ms;
-
-      &:hover {
-        background-color: ${({ theme }) =>
-          theme.modifyUser.editButton.backhover};
-      }
-    }
-  }
-`;
-const UserInfo = styled.div`
-  width: 35%;
-  .infos {
-    display: flex;
-    justify-content: space-between;
-    flex-direction: column;
-    width: 100%;
-    div {
-      display: flex;
-      align-items: center;
-      justify-content: flex-start;
-      width: 100%;
-      h3 {
-        width: 50%;
-      }
-      p {
-        width: auto;
-      }
-      label {
-        margin-top: 0.8rem;
-        width: 50%;
-        font-size: large;
-        font-weight: bold;
-      }
-      input {
-        margin-top: 0.8rem;
-        border: none;
-        width: auto;
-        height: 2rem;
-        border-bottom: 2px solid grey;
-        outline: none;
-        font-size: medium;
-      }
-    }
-  }
-`;
-
-const StyledSlider = styled.div<{ $isAdmin: boolean }>`
-  background-color: ${(props) => (props.$isAdmin ? "green" : "grey")};
-  border-radius: 16px;
-  width: 2rem;
-  height: 1rem;
-  padding: 1px;
-  cursor: pointer;
-
-  .slider-circle {
-    width: 1rem;
-    height: 1rem;
-    border-radius: 50%;
-    background-color: #f1f1f1;
-    transform: ${(props) =>
-      props.$isAdmin ? "translateX(0)" : "translateX(100%)"};
-    transition: transform 250ms, background-color 250ms;
-  }
 `;
 
 const PaysheetList = styled.ul`
@@ -322,6 +148,48 @@ const StyledAddPaysheet = styled.div`
     justify-content: center;
     align-items: center;
 
+    .date-input {
+      width: 25rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      label {
+        font-size: large;
+        font-weight: bold;
+        width: 45%;
+        margin-top: 0.8rem;
+      }
+      .date {
+        display: flex;
+        justify-content: flex-start;
+        gap: 1rem;
+        width: 50%;
+        input {
+          margin-top: 0.8rem;
+          border: none;
+          width: 2rem;
+          height: 2rem;
+          background-color: transparent;
+          border-bottom: 2px solid grey;
+          outline: none;
+          font-size: medium;
+
+          &:nth-child(1) {
+            font-size: small;
+            width: 3rem;
+          }
+          &:nth-child(2) {
+            font-size: small;
+            width: 3rem;
+          }
+          &:nth-child(3) {
+            font-size: small;
+            width: 4rem;
+          }
+        }
+      }
+    }
+
     .add-input {
       width: 25rem;
       display: flex;
@@ -378,6 +246,7 @@ const StyledAddPaysheet = styled.div`
         font-weight: lighter;
         font-size: medium;
         cursor: pointer;
+        transition: background-color 200ms;
         &:hover {
           background-color: #004900;
         }
@@ -393,6 +262,7 @@ const StyledAddPaysheet = styled.div`
         color: black;
         font-weight: lighter;
         font-size: medium;
+        transition: background-color 200ms;
         cursor: pointer;
         &:hover {
           background-color: ${({ theme }) =>
@@ -405,19 +275,11 @@ const StyledAddPaysheet = styled.div`
 
 function ModifyUser() {
   const { id } = useParams();
-  const [pending, setPending] = useState(false);
-  const [isEdited, setIsEdited] = useState(false);
-  const [isAdmin, setIsAdmin] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [isAddingPaysheet, setIsAddingPaysheet] = useState(false);
   const [userIndexToDelet, setUserIndexToDelet] = useState(0);
-
-  const navigate = useNavigate();
-  const errorRef = useRef<HTMLParagraphElement>(null);
   const errorRefForPS = useRef<HTMLParagraphElement>(null);
-  const [error, setError] = useState("");
   const [errorForPS, setErrorForPS] = useState("");
-
   const [user, setUser] = useState({
     name: "",
     lastName: "",
@@ -425,97 +287,40 @@ function ModifyUser() {
     password: "",
     role: "",
   });
+
+  const [userDate, setUserDate] = useState({
+    day: 0,
+    month: 0,
+    year: 0,
+  });
   const [userPaysheets, setUserPaysheets] = useState<Paysheet>({
     id: "",
     userId: id!,
     baseSalary: 0,
     advanceOnSalary: 0,
-    date: "",
+    date: `${new Date().toLocaleDateString()}`,
   });
 
   const [paysheets, setPaysheets] = useState<Paysheet[]>([]);
 
   //Submiting User Infos
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const { name, lastName, username, password } = user;
-
-    setPending(true);
-
-    if (name == "") {
-      setError("Nom vide");
-      errorRef.current?.classList.add("show");
-      setTimeout(() => errorRef.current?.classList.remove("show"), 2000);
-      setPending(false);
-      return;
-    }
-
-    if (lastName == "") {
-      setError("Prénom(s) vide");
-      errorRef.current?.classList.add("show");
-      setTimeout(() => errorRef.current?.classList.remove("show"), 2000);
-      setPending(false);
-      return;
-    }
-
-    if (username == "") {
-      setError("Identifiant vide");
-      errorRef.current?.classList.add("show");
-      setTimeout(() => errorRef.current?.classList.remove("show"), 2000);
-      setPending(false);
-      return;
-    }
-
-    if (password == "") {
-      setError("Mot de passe vide");
-      errorRef.current?.classList.add("show");
-      setTimeout(() => errorRef.current?.classList.remove("show"), 2000);
-      setPending(false);
-      return;
-    }
-
-    if (password.length < 8) {
-      setError("Le mot de passe doit avoir au moins 8 caractères");
-      errorRef.current?.classList.add("show");
-      setTimeout(() => errorRef.current?.classList.remove("show"), 2000);
-      setPending(false);
-      return;
-    }
-
-    const data = {
-      id,
-      ...user,
-      password: user.password,
-    };
-    api
-      .patch("user", data)
-      .then((res) => {
-        console.log(res.data);
-        window.location.reload();
-      })
-      .catch((err) => {
-        console.log(err);
-      })
-      .finally(() => setPending(false));
-  };
 
   const addPaysheet = () => {
-    let paysheetDate = userPaysheets.date;
-    console.log("initoal: " + paysheetDate);
-    const tmp = paysheetDate.split("/");
-    paysheetDate = tmp[1] + "/" + tmp[0] + "/" + tmp[2];
-    console.log("second: " + paysheetDate);
-    const date_ = new Date(paysheetDate).toISOString();
-    console.log("finally: " + date_);
+    let paysheetDate: string =
+      userDate.month.toString() +
+      "/" +
+      userDate.day.toString() +
+      "/" +
+      userDate.year.toString();
 
     //Parsing inputs to Paysheet data type
     let data = {
       userId: userPaysheets.userId,
       baseSalary: userPaysheets.baseSalary,
       advanceOnSalary: userPaysheets.advanceOnSalary,
-      date: date_,
+      date: new Date(paysheetDate).toISOString(),
     };
-    const { baseSalary, advanceOnSalary, date } = userPaysheets;
+    const { baseSalary, advanceOnSalary, date } = data;
 
     if (baseSalary < 0) {
       setErrorForPS("Salaire de base invalide ");
@@ -531,12 +336,12 @@ function ModifyUser() {
       return;
     }
 
-    // if (date == "") {
-    //   setErrorForPS("Date vide");
-    //   errorRefForPS.current?.classList.add("show");
-    //   setTimeout(() => errorRefForPS.current?.classList.remove("show"), 2000);
-    //   return;
-    // }
+    if (!date) {
+      setErrorForPS("Date invalide");
+      errorRefForPS.current?.classList.add("show");
+      setTimeout(() => errorRefForPS.current?.classList.remove("show"), 2000);
+      return;
+    }
 
     api
       .post("paysheet", data)
@@ -574,36 +379,16 @@ function ModifyUser() {
   };
 
   useEffect(() => {
-    setUser({
-      ...user,
-      role: isAdmin ? "ADMIN" : "USER",
-    });
-  }, [isAdmin]);
-
-  useEffect(() => {
     setUserPaysheets({
       id: "",
       userId: id!,
       baseSalary: 0,
       advanceOnSalary: 0,
-      date: "",
+      date: `${new Date().toLocaleDateString()}`,
     });
   }, [paysheets]);
 
   useEffect(() => {
-    api
-      .get("user/" + id)
-      .then((res) => {
-        setUser({
-          name: res.data.name,
-          lastName: res.data.lastName,
-          username: res.data.username,
-          password: "********",
-          role: res.data.role,
-        });
-        setIsAdmin(res.data.role == "ADMIN");
-      })
-      .catch((err) => console.log("Error while getting user: " + err));
     api
       .get("paysheet/" + id)
       .then((res) => {
@@ -622,143 +407,7 @@ function ModifyUser() {
         <div style={{ width: "2rem" }}></div>
       </StyledHeader>
       <StyledContainer>
-        <StyledForm onSubmit={handleSubmit}>
-          <UserInfo>
-            {!isEdited ? (
-              <div className="infos">
-                <div>
-                  <h3>Nom: </h3>
-                  <p>{" " + user.name}</p>
-                </div>
-                <div>
-                  <h3>Prénom(s): </h3>
-                  <p>{" " + user.lastName}</p>
-                </div>
-                <div>
-                  <h3>Identifiant: </h3>
-                  <p>{" " + user.username}</p>
-                </div>
-              </div>
-            ) : (
-              <div className="infos">
-                <div>
-                  <label htmlFor="name">Nom: </label>
-                  <input
-                    type="text"
-                    defaultValue={user.name}
-                    onChange={(e) =>
-                      setUser({
-                        ...user,
-                        name: e.currentTarget.value,
-                      })
-                    }
-                    id="name"
-                    name="name"
-                  />
-                </div>
-                <div>
-                  <label htmlFor="lastName">Prénom(s): </label>
-                  <input
-                    type="text"
-                    defaultValue={user.lastName}
-                    onChange={(e) =>
-                      setUser({
-                        ...user,
-                        lastName: e.currentTarget.value,
-                      })
-                    }
-                    id="lastName"
-                    name="lastName"
-                  />
-                </div>
-                <div>
-                  <label htmlFor="username">Identifiant: </label>
-                  <input
-                    type="text"
-                    defaultValue={user.username}
-                    onChange={(e) =>
-                      setUser({
-                        ...user,
-                        username: e.currentTarget.value,
-                      })
-                    }
-                    id="username"
-                    name="username"
-                  />
-                </div>
-                <div>
-                  <label htmlFor="password">Mot de passe: </label>
-                  <input
-                    type="text"
-                    defaultValue="********"
-                    onChange={(e) =>
-                      setUser({
-                        ...user,
-                        password: e.currentTarget.value,
-                      })
-                    }
-                    id="password"
-                    name="password"
-                  />
-                </div>
-              </div>
-            )}
-            {isEdited ? (
-              <div className="role-container">
-                <h3>Role:</h3>
-                <div className="slider">
-                  Admin
-                  <StyledSlider
-                    $isAdmin={isAdmin}
-                    onClick={() => setIsAdmin(!isAdmin)}
-                  >
-                    <div className="slider-circle"></div>
-                  </StyledSlider>
-                  User
-                </div>
-              </div>
-            ) : null}
-          </UserInfo>
-          {!isEdited ? (
-            <div className="my-edit-button">
-              <div className="edit-button" onClick={() => setIsEdited(true)}>
-                <FiEdit3 />
-                <span>Modifier</span>
-              </div>
-              <div
-                className="back-button"
-                onClick={() => {
-                  navigate({
-                    pathname: "/alluser",
-                  });
-                }}
-              >
-                Retour
-              </div>
-            </div>
-          ) : (
-            <div className="my-buttons">
-              <button>
-                {pending ? (
-                  <CgSpinner className="spinner" />
-                ) : (
-                  <span>Sauvegarder</span>
-                )}
-              </button>
-              <p className="error" ref={errorRef}>
-                <span>{error}</span>
-              </p>
-              <div
-                className="back-button"
-                onClick={() => {
-                  setIsEdited(false);
-                }}
-              >
-                Retour
-              </div>
-            </div>
-          )}
-        </StyledForm>
+        <UserInfoSummary userId={id!} user={user} setUser={setUser} />
         <PaysheetList>
           <h2>
             Fiches de paie{" "}
@@ -811,7 +460,7 @@ function ModifyUser() {
                     name="base-salary"
                     id="base-salary"
                     min={0}
-                    defaultValue={0}
+                    placeholder="0"
                     onChange={(e) =>
                       setUserPaysheets({
                         ...userPaysheets,
@@ -827,7 +476,7 @@ function ModifyUser() {
                     name="advance"
                     id="advance"
                     min={0}
-                    defaultValue={0}
+                    placeholder="0"
                     onChange={(e) =>
                       setUserPaysheets({
                         ...userPaysheets,
@@ -836,20 +485,80 @@ function ModifyUser() {
                     }
                   />
                 </div>
-                <div className="add-input">
-                  <label htmlFor="Date">Date:</label>
-                  <input
-                    type="text"
-                    name="Date"
-                    id="Date"
-                    placeholder="JJ/MM/AAAA"
-                    onChange={(e) =>
-                      setUserPaysheets({
-                        ...userPaysheets,
-                        date: e.currentTarget.value,
-                      })
-                    }
-                  />
+                <div className="date-input">
+                  <label>Date:</label>
+                  <div className="date">
+                    <input
+                      type="number"
+                      placeholder="JJ"
+                      id="day"
+                      onChange={(e) => {
+                        const value = parseInt(e.currentTarget.value);
+                        const month = document.querySelector(
+                          "#month"
+                        ) as HTMLInputElement;
+                        const year = document.querySelector(
+                          "#year"
+                        ) as HTMLInputElement;
+                        const yearValue =
+                          year!.value == ""
+                            ? new Date().getFullYear()
+                            : parseInt(year!.value);
+                        const monthValue =
+                          month!.value == ""
+                            ? new Date().getMonth()
+                            : parseInt(month!.value);
+
+                        const lastDayOfMonth = new Date(
+                          yearValue,
+                          monthValue,
+                          0
+                        ).getDate();
+
+                        if (value > lastDayOfMonth || value < 0)
+                          e.currentTarget.value = lastDayOfMonth.toString();
+
+                        setUserDate({
+                          ...userDate,
+                          day: value,
+                        });
+                      }}
+                    />
+                    <input
+                      type="number"
+                      id="month"
+                      placeholder="MM"
+                      onChange={(e) => {
+                        const value = parseInt(e.currentTarget.value);
+                        if (value > 12 || value < 1) {
+                          // ERROR HANDKING IN STYLES
+                          const now = new Date().getMonth();
+                          e.currentTarget.value = (now + 1).toString();
+                          return;
+                        }
+                        setUserDate({
+                          ...userDate,
+                          month: value,
+                        });
+                      }}
+                    />
+                    <input
+                      type="number"
+                      id="year"
+                      placeholder="AAAA"
+                      onChange={(e) => {
+                        const value = parseInt(e.currentTarget.value);
+                        if (value < 0)
+                          e.currentTarget.value = new Date()
+                            .getFullYear()
+                            .toString();
+                        setUserDate({
+                          ...userDate,
+                          year: parseInt(e.currentTarget.value),
+                        });
+                      }}
+                    />
+                  </div>
                 </div>
                 <div className="validate">
                   <p

@@ -84,7 +84,9 @@ function Filters({
         <label htmlFor="month">Mois</label>
         <select name="month" id="month">
           {months.map((month, i) => (
-            <option value={i}>{month}</option>
+            <option value={i} key={month}>
+              {month}
+            </option>
           ))}
         </select>
         <label htmlFor="year">Année</label>
