@@ -413,7 +413,6 @@ function ModifyUser() {
   const [userIndexToDelet, setUserIndexToDelet] = useState(0);
 
   const navigate = useNavigate();
-  const now = new Date();
   const errorRef = useRef<HTMLParagraphElement>(null);
   const errorRefForPS = useRef<HTMLParagraphElement>(null);
   const [error, setError] = useState("");
@@ -429,8 +428,8 @@ function ModifyUser() {
   const [userPaysheets, setUserPaysheets] = useState<Paysheet>({
     id: "",
     userId: id!,
-    baseSalary: "",
-    advanceOnSalary: "",
+    baseSalary: 0,
+    advanceOnSalary: 0,
     date: "",
   });
 
@@ -502,30 +501,31 @@ function ModifyUser() {
 
   const addPaysheet = () => {
     let paysheetDate = userPaysheets.date;
+    console.log("initoal: " + paysheetDate);
     const tmp = paysheetDate.split("/");
     paysheetDate = tmp[1] + "/" + tmp[0] + "/" + tmp[2];
-    console.log(paysheetDate);
+    console.log("second: " + paysheetDate);
     const date_ = new Date(paysheetDate).toISOString();
-    console.log(date_);
+    console.log("finally: " + date_);
 
     //Parsing inputs to Paysheet data type
     let data = {
       userId: userPaysheets.userId,
-      baseSalary: parseFloat(userPaysheets.baseSalary),
-      advanceOnSalary: parseFloat(userPaysheets.advanceOnSalary),
+      baseSalary: userPaysheets.baseSalary,
+      advanceOnSalary: userPaysheets.advanceOnSalary,
       date: date_,
     };
     const { baseSalary, advanceOnSalary, date } = userPaysheets;
 
-    if (!baseSalary || parseFloat(baseSalary) < 0) {
-      setErrorForPS("Salaire de base vide (mettre un 0)");
+    if (baseSalary < 0) {
+      setErrorForPS("Salaire de base invalide ");
       errorRefForPS.current?.classList.add("show");
       setTimeout(() => errorRefForPS.current?.classList.remove("show"), 2000);
       return;
     }
 
-    if (parseFloat(advanceOnSalary) < 0 || !advanceOnSalary) {
-      setErrorForPS("Avance vide (mettre un 0)");
+    if (advanceOnSalary < 0) {
+      setErrorForPS("Avance invalide");
       errorRefForPS.current?.classList.add("show");
       setTimeout(() => errorRefForPS.current?.classList.remove("show"), 2000);
       return;
@@ -579,6 +579,16 @@ function ModifyUser() {
       role: isAdmin ? "ADMIN" : "USER",
     });
   }, [isAdmin]);
+
+  useEffect(() => {
+    setUserPaysheets({
+      id: "",
+      userId: id!,
+      baseSalary: 0,
+      advanceOnSalary: 0,
+      date: "",
+    });
+  }, [paysheets]);
 
   useEffect(() => {
     api
@@ -756,11 +766,13 @@ function ModifyUser() {
               <FiFolderPlus onClick={() => setIsAddingPaysheet(true)} />
             )}
           </h2>
-          <div className="labels">
-            <p>Salaire de base:</p>
-            <p>Avance prise:</p>
-            <p>Date:</p>
-          </div>
+          {paysheets.length != 0 ? (
+            <div className="labels">
+              <p>Salaire de base:</p>
+              <p>Avance prise:</p>
+              <p>Date:</p>
+            </div>
+          ) : null}
           {paysheets.length != 0 ? (
             paysheets.map((paysheet, i) => (
               <li key={i}>
@@ -798,10 +810,12 @@ function ModifyUser() {
                     type="number"
                     name="base-salary"
                     id="base-salary"
+                    min={0}
+                    defaultValue={0}
                     onChange={(e) =>
                       setUserPaysheets({
                         ...userPaysheets,
-                        baseSalary: e.currentTarget.value,
+                        baseSalary: parseFloat(e.currentTarget.value),
                       })
                     }
                   />
@@ -812,10 +826,12 @@ function ModifyUser() {
                     type="number"
                     name="advance"
                     id="advance"
+                    min={0}
+                    defaultValue={0}
                     onChange={(e) =>
                       setUserPaysheets({
                         ...userPaysheets,
-                        advanceOnSalary: e.currentTarget.value,
+                        advanceOnSalary: parseFloat(e.currentTarget.value),
                       })
                     }
                   />
@@ -826,8 +842,7 @@ function ModifyUser() {
                     type="text"
                     name="Date"
                     id="Date"
-                    // placeholder={now.toLocaleDateString()}
-                    defaultValue={now.toLocaleDateString()}
+                    placeholder="JJ/MM/AAAA"
                     onChange={(e) =>
                       setUserPaysheets({
                         ...userPaysheets,
@@ -837,13 +852,25 @@ function ModifyUser() {
                   />
                 </div>
                 <div className="validate">
-                  <p className="ok" onClick={addPaysheet}>
+                  <p
+                    className="ok"
+                    onClick={() => {
+                      addPaysheet();
+                    }}
+                  >
                     Valider
                   </p>
                   <p className="error" ref={errorRefForPS}>
                     <span>{errorForPS}</span>
                   </p>
-                  <p className="non">Annuler</p>
+                  <p
+                    className="non"
+                    onClick={() => {
+                      setIsAddingPaysheet(false);
+                    }}
+                  >
+                    Annuler
+                  </p>
                 </div>
               </div>
             </StyledAddPaysheet>
