@@ -501,12 +501,19 @@ function ModifyUser() {
   };
 
   const addPaysheet = () => {
+    let paysheetDate = userPaysheets.date;
+    const tmp = paysheetDate.split("/");
+    paysheetDate = tmp[1] + "/" + tmp[0] + "/" + tmp[2];
+    console.log(paysheetDate);
+    const date_ = new Date(paysheetDate).toISOString();
+    console.log(date_);
+
     //Parsing inputs to Paysheet data type
     let data = {
       userId: userPaysheets.userId,
       baseSalary: parseFloat(userPaysheets.baseSalary),
       advanceOnSalary: parseFloat(userPaysheets.advanceOnSalary),
-      date: userPaysheets.date,
+      date: date_,
     };
     const { baseSalary, advanceOnSalary, date } = userPaysheets;
 
@@ -572,9 +579,6 @@ function ModifyUser() {
       role: isAdmin ? "ADMIN" : "USER",
     });
   }, [isAdmin]);
-  useEffect(() => {
-    console.log(paysheets);
-  }, [paysheets]);
 
   useEffect(() => {
     api
@@ -762,7 +766,7 @@ function ModifyUser() {
               <li key={i}>
                 <p>{paysheet.baseSalary}</p>
                 <p>{paysheet.advanceOnSalary}</p>
-                <p>{paysheet.date}</p>
+                <p>{new Date(paysheet.date).toLocaleDateString()}</p>
                 <div
                   onClick={(e) => {
                     e.stopPropagation();

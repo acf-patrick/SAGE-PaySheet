@@ -14,6 +14,10 @@ export class PaySheetDto {
   @ApiProperty()
   @IsString()
   userId: string;
+
+  @ApiProperty()
+  @IsString()
+  date: string;
 }
 
 export class UpdatePaySheetDto {
@@ -30,4 +34,8 @@ export class UpdatePaySheetDto {
   @ApiProperty()
   @IsNumber()
   advanceOnSalary?: number;
+
+  @ApiProperty()
+  @IsString()
+  date: string;
 }
