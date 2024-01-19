@@ -96,6 +96,7 @@ function UserEdit({
     });
     console.log(isAdmin);
   }, [isAdmin]);
+
   return (
     <UserInfo>
       <div>
