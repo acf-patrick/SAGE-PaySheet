@@ -276,6 +276,7 @@ const StyledAddPaysheet = styled.div`
 function ModifyUser() {
   const { id } = useParams();
   const [confirmDelete, setConfirmDelete] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
   const [isAddingPaysheet, setIsAddingPaysheet] = useState(false);
   const [userIndexToDelet, setUserIndexToDelet] = useState(0);
   const errorRefForPS = useRef<HTMLParagraphElement>(null);
@@ -302,8 +303,6 @@ function ModifyUser() {
   });
 
   const [paysheets, setPaysheets] = useState<Paysheet[]>([]);
-
-  //Submiting User Infos
 
   const addPaysheet = () => {
     let paysheetDate: string =
@@ -390,6 +389,19 @@ function ModifyUser() {
 
   useEffect(() => {
     api
+      .get("user/" + id)
+      .then((res) => {
+        setUser({
+          name: res.data.name,
+          lastName: res.data.lastName,
+          username: res.data.username,
+          password: "********",
+          role: res.data.role,
+        });
+        res.data.role == "ADMIN" ? setIsAdmin(true) : setIsAdmin(false);
+      })
+      .catch((err) => console.log("Error while getting user: " + err));
+    api
       .get("paysheet/" + id)
       .then((res) => {
         setPaysheets(res.data);
@@ -407,7 +419,13 @@ function ModifyUser() {
         <div style={{ width: "2rem" }}></div>
       </StyledHeader>
       <StyledContainer>
-        <UserInfoSummary userId={id!} user={user} setUser={setUser} />
+        <UserInfoSummary
+          id={id!}
+          user={user}
+          setUser={setUser}
+          isAdmin={isAdmin}
+          setIsAdmin={setIsAdmin}
+        />
         <PaysheetList>
           <h2>
             Fiches de paie{" "}
