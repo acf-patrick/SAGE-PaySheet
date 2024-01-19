@@ -3,7 +3,7 @@ import { FiEdit3 } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { api } from "../api";
-import UserEdit from "./UserEdit";
+import UserEdit, { UserInfo } from "./UserEdit";
 import UserEditButtons from "./UserEditButtons";
 
 const StyledForm = styled.form`
@@ -33,7 +33,6 @@ const StyledForm = styled.form`
 
   .my-edit-button {
     display: flex;
-    width: 35%;
     flex-direction: row-reverse;
     justify-content: space-between;
     .edit-button {
@@ -69,7 +68,6 @@ const StyledForm = styled.form`
     display: flex;
     flex-direction: row-reverse;
     justify-content: space-between;
-    width: 35%;
     .error {
       opacity: 0;
       background-color: ${({ theme }) => theme.login.error.background};
@@ -136,7 +134,6 @@ function UserInfoSummary({
   const [isEdited, setIsEdited] = useState(false);
   const [pending, setPending] = useState(false);
   const navigate = useNavigate();
-  //   user.role == "ADMIN" ? setIsAdmin(true) : setIsAdmin(false);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -199,7 +196,7 @@ function UserInfoSummary({
         console.log(err);
       })
       .finally(() => {
-        // window.location.reload();
+        window.location.reload();
         setPending(false);
       });
   };
@@ -208,54 +205,55 @@ function UserInfoSummary({
     <StyledForm onSubmit={handleSubmit}>
       <div style={{ width: "35%" }}>
         {!isEdited ? (
-          <div className="infos">
-            <div>
-              <h3>Nom: </h3>
-              <p>{" " + user.name}</p>
+          <>
+            <UserInfo>
+              <div>
+                <h3>Nom: </h3>
+                <p>{" " + user.name}</p>
+              </div>
+              <div>
+                <h3>Prénom(s): </h3>
+                <p>{" " + user.lastName}</p>
+              </div>
+              <div>
+                <h3>Identifiant: </h3>
+                <p>{" " + user.username}</p>
+              </div>
+            </UserInfo>
+            <div className="my-edit-button">
+              <div className="edit-button" onClick={() => setIsEdited(true)}>
+                <FiEdit3 />
+                <span>Modifier</span>
+              </div>
+              <div
+                className="back-button"
+                onClick={() => {
+                  navigate({
+                    pathname: "/alluser",
+                  });
+                }}
+              >
+                Retour
+              </div>
             </div>
-            <div>
-              <h3>Prénom(s): </h3>
-              <p>{" " + user.lastName}</p>
-            </div>
-            <div>
-              <h3>Identifiant: </h3>
-              <p>{" " + user.username}</p>
-            </div>
-          </div>
+          </>
         ) : (
-          <UserEdit
-            user={user}
-            setUser={setUser}
-            isAdmin={isAdmin}
-            setIsAdmin={setIsAdmin}
-          />
+          <>
+            <UserEdit
+              user={user}
+              setUser={setUser}
+              isAdmin={isAdmin}
+              setIsAdmin={setIsAdmin}
+            />
+            <UserEditButtons
+              pending={pending}
+              callBack={() => setIsEdited(false)}
+              error={error}
+              errorRef={errorRef}
+            />
+          </>
         )}
       </div>
-      {!isEdited ? (
-        <div className="my-edit-button">
-          <div className="edit-button" onClick={() => setIsEdited(true)}>
-            <FiEdit3 />
-            <span>Modifier</span>
-          </div>
-          <div
-            className="back-button"
-            onClick={() => {
-              navigate({
-                pathname: "/alluser",
-              });
-            }}
-          >
-            Retour
-          </div>
-        </div>
-      ) : (
-        <UserEditButtons
-          pending={pending}
-          callBack={() => setIsEdited(false)}
-          error={error}
-          errorRef={errorRef}
-        />
-      )}
     </StyledForm>
   );
 }

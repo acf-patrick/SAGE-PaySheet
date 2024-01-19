@@ -19,7 +19,7 @@ const StyledSlider = styled.div<{ $isAdmin: boolean }>`
     transition: transform 250ms, background-color 250ms;
   }
 `;
-const UserInfo = styled.div`
+export const UserInfo = styled.div`
   display: flex;
   justify-content: space-between;
   flex-direction: column;
@@ -46,7 +46,10 @@ const UserInfo = styled.div`
       width: 50%;
     }
     p {
-      width: auto;
+      width: 50%;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid gray;
+      font-size: medium;
     }
     label {
       margin-top: 0.8rem;
