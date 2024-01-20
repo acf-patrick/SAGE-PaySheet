@@ -32,7 +32,7 @@ const StyledPaysheetList = styled.ul`
     width: 90%;
     display: flex;
     align-items: center;
-    justify-content: flex-start;
+    justify-content: space-evenly;
     gap: 2rem;
     color: #8f8f8f;
 
@@ -67,27 +67,27 @@ const StyledPaysheetList = styled.ul`
     p {
       margin: 0;
       height: 100%;
-      width: 20rem;
+      width: 12rem;
       display: flex;
       align-items: center;
+      justify-content: center;
       &:nth-child(1) {
-        width: 17rem;
+        width: 15rem;
         border-right: 1px solid lightgrey;
       }
       &:nth-child(2) {
-        padding-left: 1rem;
-        width: 17rem;
+        width: 15rem;
         border-right: 1px solid lightgrey;
       }
       &:nth-child(3) {
         padding-left: 1rem;
-        width: 17rem;
+        width: 15rem;
         border-right: 1px solid lightgrey;
       }
       &:nth-child(4) {
         border-right: 1px solid lightgrey;
         margin: 0 1rem;
-        width: 17rem;
+        width: 15rem;
       }
     }
     div {
