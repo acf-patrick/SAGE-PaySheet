@@ -109,6 +109,8 @@ function ModifyUser() {
         />
         <UserPaysheetList
           paysheets={paysheets}
+          setPaysheets={setPaysheets}
+          userId={id!}
           setConfirmDelete={setConfirmDelete}
           setIsAddingPaysheet={setIsAddingPaysheet}
           setUserIndexToDelet={setUserIndexToDelet}

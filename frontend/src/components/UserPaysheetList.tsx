@@ -133,12 +133,16 @@ const StyledPaysheetList = styled.ul`
 
 function UserPaysheetList({
   paysheets,
+  setPaysheets,
   setIsAddingPaysheet,
   setUserIndexToDelet,
   setConfirmDelete,
+  userId,
 }: {
+  setPaysheets: (e: Paysheet[]) => void;
   paysheets: Paysheet[];
   setIsAddingPaysheet?: (e: boolean) => void;
+  userId: string;
   setUserIndexToDelet?: (e: number) => void;
   setConfirmDelete?: (e: boolean) => void;
 }) {
@@ -222,6 +226,8 @@ function UserPaysheetList({
       )}
       {isEditingPaysheet ? (
         <EditUserPaysheet
+          userId={userId}
+          setPaysheets={setPaysheets}
           indexToModify={indexToModify}
           paysheets={paysheets}
           setIsEditingPaysheet={setIsEditingPaysheet}
