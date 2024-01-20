@@ -187,7 +187,13 @@ function UserPaysheetList({
       ) : null}
       {paysheets.length != 0 ? (
         paysheets.map((paysheet, i) => (
-          <li key={i} onClick={() => setIndexToModify(i)}>
+          <li
+            key={i}
+            onClick={() => {
+              setIsEditingPaysheet(true);
+              setIndexToModify(i);
+            }}
+          >
             <p>{paysheet.baseSalary.toLocaleString() + "Ar"}</p>
             <p>{paysheet.advanceOnSalary.toLocaleString() + "Ar"}</p>
             <p>
@@ -214,15 +220,13 @@ function UserPaysheetList({
           </div>
         </div>
       )}
-      {/* {isEditingPaysheet ? (
-          <EditUserPaysheet
-            indexToModify={indexToModify}
-            paysheets={paysheets}
-            // setIsEditingPaysheet={setIsEditingPaysheet}
-            // setPaysheets={setPaysheets}
-            // setUserPaysheets={setUserPaysheets}
-          />
-        ) : null} */}
+      {isEditingPaysheet ? (
+        <EditUserPaysheet
+          indexToModify={indexToModify}
+          paysheets={paysheets}
+          setIsEditingPaysheet={setIsEditingPaysheet}
+        />
+      ) : null}
     </StyledPaysheetList>
   );
 }

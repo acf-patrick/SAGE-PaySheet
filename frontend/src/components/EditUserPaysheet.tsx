@@ -33,7 +33,7 @@ function EditUserPaysheet({
             name="base-salary"
             id="base-salary"
             min={0}
-            placeholder="0"
+            defaultValue={paysheets[indexToModify].baseSalary}
           />
         </div>
         <div className="add-input">
@@ -43,15 +43,34 @@ function EditUserPaysheet({
             name="advance"
             id="advance"
             min={0}
-            placeholder="0"
+            defaultValue={paysheets[indexToModify].advanceOnSalary}
           />
         </div>
         <div className="date-input">
           <label>Date:</label>
           <div className="date">
-            <input type="number" placeholder="JJ" id="day" />
-            <input type="number" id="month" placeholder="MM" />
-            <input type="number" id="year" placeholder="AAAA" />
+            <input
+              type="number"
+              placeholder="JJ"
+              id="day"
+              defaultValue={new Date(paysheets[indexToModify].date).getDate()}
+            />
+            <input
+              type="number"
+              id="month"
+              placeholder="MM"
+              defaultValue={
+                new Date(paysheets[indexToModify].date).getMonth() + 1
+              }
+            />
+            <input
+              type="number"
+              id="year"
+              placeholder="AAAA"
+              defaultValue={new Date(
+                paysheets[indexToModify].date
+              ).getFullYear()}
+            />
           </div>
         </div>
         <div className="validate">
