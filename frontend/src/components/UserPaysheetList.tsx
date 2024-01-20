@@ -11,7 +11,7 @@ const StyledPaysheetList = styled.ul`
   padding: 2rem 0;
   gap: 15px;
   border-radius: 15px;
-  background-color: #efefef48;
+  background-color: #d7d2d274;
 
   h2 {
     margin: 0;
@@ -32,62 +32,53 @@ const StyledPaysheetList = styled.ul`
     width: 90%;
     display: flex;
     align-items: center;
-    justify-content: space-evenly;
-    gap: 2rem;
+    justify-content: space-between;
     color: #8f8f8f;
+    padding-left: 1rem;
 
     p {
       width: 10rem;
       margin: 0;
-      &:nth-child(4) {
-        padding-left: 0.5rem;
+
+      &:nth-child(5) {
+        width: 2.5rem;
+        display: grid;
+        place-items: center;
       }
     }
   }
 
   li {
     width: 90%;
-    margin: 0 1rem;
+    padding-left: 1rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
     border-bottom: 1px solid rgba(0, 0, 0, 0.2);
     border-right: 1px solid rgba(0, 0, 0, 0.2);
     box-shadow: 2px 2px 3px 1px rgba(0, 0, 0, 0.05);
-    border-bottom-left-radius: 5px;
-    border-bottom-right-radius: 5px;
+    border-radius: 5px;
+    background-color: #ffffffda;
     cursor: pointer;
     transition: box-shadow 250ms;
     animation: fadeIn linear 250ms;
-    padding: 0 1rem;
     height: 3rem;
     &:hover {
       box-shadow: 2px 5px 5px 2px rgba(0, 0, 0, 0.1);
     }
+
     p {
+      width: 10rem;
       margin: 0;
       height: 100%;
-      width: 12rem;
       display: flex;
       align-items: center;
-      justify-content: center;
-      &:nth-child(1) {
-        width: 15rem;
-        border-right: 1px solid lightgrey;
-      }
-      &:nth-child(2) {
-        width: 15rem;
-        border-right: 1px solid lightgrey;
-      }
-      &:nth-child(3) {
-        padding-left: 1rem;
-        width: 15rem;
-        border-right: 1px solid lightgrey;
-      }
-      &:nth-child(4) {
-        border-right: 1px solid lightgrey;
-        margin: 0 1rem;
-        width: 15rem;
+
+      &:nth-child(5) {
+        width: 2.5rem;
+        display: grid;
+        place-items: center;
+        padding-left: 0;
       }
     }
     div {
@@ -144,24 +135,48 @@ function UserPaysheetList({
   setConfirmDelete,
 }: {
   paysheets: Paysheet[];
-  setIsAddingPaysheet: (e: boolean) => void;
-  setUserIndexToDelet: (e: number) => void;
-  setConfirmDelete: (e: boolean) => void;
+  setIsAddingPaysheet?: (e: boolean) => void;
+  setUserIndexToDelet?: (e: number) => void;
+  setConfirmDelete?: (e: boolean) => void;
 }) {
+  const AddIcon = setIsAddingPaysheet ? (
+    <FiFolderPlus
+      onClick={() => {
+        if (setIsAddingPaysheet) setIsAddingPaysheet(true);
+      }}
+    />
+  ) : null;
+
+  const DeleteIcon = (i: number) =>
+    setUserIndexToDelet ? (
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+        onClick={(e) => {
+          e.stopPropagation();
+          if (setUserIndexToDelet && setConfirmDelete) {
+            setUserIndexToDelet(i);
+            setConfirmDelete(true);
+          }
+        }}
+      >
+        <FiDelete />
+      </div>
+    ) : null;
+
   return (
     <StyledPaysheetList>
-      <h2>
-        Fiches de paie{" "}
-        {paysheets.length == 0 ? null : (
-          <FiFolderPlus onClick={() => setIsAddingPaysheet(true)} />
-        )}
-      </h2>
+      <h2>Fiches de paie {paysheets.length == 0 ? null : AddIcon}</h2>
       {paysheets.length != 0 ? (
         <div className="labels">
           <p>Salaire de base:</p>
           <p>Avance prise:</p>
           <p>Montant restant:</p>
           <p>Date:</p>
+          <p></p>
         </div>
       ) : null}
       {paysheets.length != 0 ? (
@@ -175,15 +190,7 @@ function UserPaysheetList({
               ).toLocaleString() + "Ar"}
             </p>
             <p>{new Date(paysheet.date).toLocaleDateString()}</p>
-            <div
-              onClick={(e) => {
-                e.stopPropagation();
-                setUserIndexToDelet(i);
-                setConfirmDelete(true);
-              }}
-            >
-              <FiDelete />
-            </div>
+            <p>{DeleteIcon(i)}</p>
           </li>
         ))
       ) : (
@@ -192,7 +199,11 @@ function UserPaysheetList({
             <p>Vide</p>
             <FiFolderPlus
               className="add-paysheet"
-              onClick={() => setIsAddingPaysheet(true)}
+              onClick={() => {
+                if (setIsAddingPaysheet) {
+                  setIsAddingPaysheet(true);
+                }
+              }}
             />
           </div>
         </div>

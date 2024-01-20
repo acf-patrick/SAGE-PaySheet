@@ -7,8 +7,8 @@ import { Paysheet } from "../types";
 import AddingPaysheet from "./AddingPaysheet";
 import ConfirmPopUp from "./ConfirmPopUp";
 import UserPaysheetList from "./UserPaysheetList";
-import { StyledHeader } from "./Paysheets";
 import UserInfoSummary from "./UserInfoSummary";
+import { StyledHeader } from "./AllUser";
 
 const StyledContainer = styled.div`
   display: flex;

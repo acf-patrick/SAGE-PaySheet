@@ -4,8 +4,37 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { api } from "../api";
 import { User } from "../types";
-import { StyledHeader } from "./Paysheets";
 import ConfirmPopUp from "./ConfirmPopUp";
+
+export const StyledHeader = styled.h2<{ $scrolled?: boolean }>`
+  margin: 0;
+  position: sticky;
+  top: 0;
+  left: 0;
+  z-index: 2;
+  backdrop-filter: blur(1px);
+  min-height: 75px;
+  text-align: center;
+  background-color: grey;
+  box-shadow: ${(props) =>
+    props.$scrolled ? "0 0 5px 5px #8080809a" : "none"};
+  transition: border-bottom 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  img {
+    margin-left: 50px;
+    width: 50px;
+  }
+
+  svg {
+    margin-right: 50px;
+    font-size: 35px;
+    cursor: pointer;
+    animation: fadeIn linear 350ms;
+  }
+`;
 
 const Users = styled.div`
   margin: 2rem 0;

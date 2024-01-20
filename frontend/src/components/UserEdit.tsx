@@ -60,7 +60,7 @@ export const UserInfo = styled.div`
     input {
       margin-top: 0.8rem;
       border: none;
-      width: auto;
+      width: 50%;
       height: 2rem;
       border-bottom: 2px solid grey;
       outline: none;

@@ -188,7 +188,7 @@ function AddingPaysheet({
 
     setUserDate({
       ...userDate,
-      day: value,
+      day: value > lastDayOfMonth || value < 0 ? lastDayOfMonth : value,
     });
   };
 
@@ -248,6 +248,43 @@ function AddingPaysheet({
       });
   };
 
+  const reComputeDay = (month: number, year: number) => {
+    const lastDayOfMonth = new Date(year, month, 0).getDate();
+
+    const day = document.querySelector("#day") as HTMLInputElement;
+    day.value = lastDayOfMonth.toString();
+  };
+
+  const handleMonth = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = parseInt(e.currentTarget.value);
+    if (value > 12 || value < 1) {
+      const now = new Date().getMonth();
+      e.currentTarget.value = (now + 1).toString();
+      return;
+    }
+    reComputeDay(
+      value,
+      userDate.year == 0 ? new Date().getFullYear() : userDate.year
+    );
+    setUserDate({
+      ...userDate,
+      month: value,
+    });
+  };
+
+  const handleYear = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = parseInt(e.currentTarget.value);
+    if (value < 0) e.currentTarget.value = new Date().getFullYear().toString();
+    reComputeDay(
+      userDate.month == 0 ? new Date().getMonth() : userDate.month,
+      value
+    );
+    setUserDate({
+      ...userDate,
+      year: parseInt(e.currentTarget.value),
+    });
+  };
+
   return (
     <StyledAddPaysheet>
       <div className="container">
@@ -298,33 +335,13 @@ function AddingPaysheet({
               type="number"
               id="month"
               placeholder="MM"
-              onChange={(e) => {
-                const value = parseInt(e.currentTarget.value);
-                if (value > 12 || value < 1) {
-                  // ERROR HANDKING IN STYLES
-                  const now = new Date().getMonth();
-                  e.currentTarget.value = (now + 1).toString();
-                  return;
-                }
-                setUserDate({
-                  ...userDate,
-                  month: value,
-                });
-              }}
+              onChange={handleMonth}
             />
             <input
               type="number"
               id="year"
               placeholder="AAAA"
-              onChange={(e) => {
-                const value = parseInt(e.currentTarget.value);
-                if (value < 0)
-                  e.currentTarget.value = new Date().getFullYear().toString();
-                setUserDate({
-                  ...userDate,
-                  year: parseInt(e.currentTarget.value),
-                });
-              }}
+              onChange={handleYear}
             />
           </div>
         </div>
