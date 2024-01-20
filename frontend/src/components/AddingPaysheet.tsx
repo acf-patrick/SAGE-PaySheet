@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import styled from "styled-components";
 import { api } from "../api";
 import { Paysheet } from "../types";
@@ -171,6 +171,27 @@ function AddingPaysheet({
     month: 0,
     year: 0,
   });
+
+  const handleDateInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = parseInt(e.currentTarget.value);
+    const month = document.querySelector("#month") as HTMLInputElement;
+    const year = document.querySelector("#year") as HTMLInputElement;
+    const yearValue =
+      year!.value == "" ? new Date().getFullYear() : parseInt(year!.value);
+    const monthValue =
+      month!.value == "" ? new Date().getMonth() : parseInt(month!.value);
+
+    const lastDayOfMonth = new Date(yearValue, monthValue, 0).getDate();
+
+    if (value > lastDayOfMonth || value < 0)
+      e.currentTarget.value = lastDayOfMonth.toString();
+
+    setUserDate({
+      ...userDate,
+      day: value,
+    });
+  };
+
   const addPaysheet = () => {
     let paysheetDate: string =
       userDate.month.toString() +
@@ -270,35 +291,7 @@ function AddingPaysheet({
               placeholder="JJ"
               id="day"
               onChange={(e) => {
-                const value = parseInt(e.currentTarget.value);
-                const month = document.querySelector(
-                  "#month"
-                ) as HTMLInputElement;
-                const year = document.querySelector(
-                  "#year"
-                ) as HTMLInputElement;
-                const yearValue =
-                  year!.value == ""
-                    ? new Date().getFullYear()
-                    : parseInt(year!.value);
-                const monthValue =
-                  month!.value == ""
-                    ? new Date().getMonth()
-                    : parseInt(month!.value);
-
-                const lastDayOfMonth = new Date(
-                  yearValue,
-                  monthValue,
-                  0
-                ).getDate();
-
-                if (value > lastDayOfMonth || value < 0)
-                  e.currentTarget.value = lastDayOfMonth.toString();
-
-                setUserDate({
-                  ...userDate,
-                  day: value,
-                });
+                handleDateInput(e);
               }}
             />
             <input

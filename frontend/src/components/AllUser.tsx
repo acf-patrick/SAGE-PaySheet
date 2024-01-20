@@ -5,6 +5,7 @@ import styled from "styled-components";
 import { api } from "../api";
 import { User } from "../types";
 import { StyledHeader } from "./Paysheets";
+import ConfirmPopUp from "./ConfirmPopUp";
 
 const Users = styled.div`
   margin: 2rem 0;
@@ -354,29 +355,10 @@ function Alluser() {
           )
         )}
         {confirmDelete ? (
-          <ConfirmButton>
-            <div className="container">
-              {"Etes-vous sûr de vouloir supprimer"} <br />
-              {"<< " +
-                users[userIndexToDelet].name +
-                " " +
-                users[userIndexToDelet].lastName +
-                " >>?"}
-              <div className="choice">
-                <p className="yes" onClick={() => setConfirmDelete(false)}>
-                  Non
-                </p>
-                <p
-                  className="no"
-                  onClick={() => {
-                    deleteUser(userIndexToDelet);
-                  }}
-                >
-                  Oui
-                </p>
-              </div>
-            </div>
-          </ConfirmButton>
+          <ConfirmPopUp
+            callBackStop={() => setConfirmDelete(false)}
+            callBackValidate={() => deleteUser(userIndexToDelet)}
+          />
         ) : null}
       </Users>
     </>
