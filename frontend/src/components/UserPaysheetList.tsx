@@ -29,7 +29,7 @@ const StyledPaysheetList = styled.ul`
   }
 
   .labels {
-    width: 95%;
+    width: 90%;
     display: flex;
     align-items: center;
     justify-content: flex-start;
@@ -37,8 +37,11 @@ const StyledPaysheetList = styled.ul`
     color: #8f8f8f;
 
     p {
-      width: 15rem;
+      width: 10rem;
       margin: 0;
+      &:nth-child(4) {
+        padding-left: 0.5rem;
+      }
     }
   }
 
@@ -57,12 +60,35 @@ const StyledPaysheetList = styled.ul`
     transition: box-shadow 250ms;
     animation: fadeIn linear 250ms;
     padding: 0 1rem;
-
+    height: 3rem;
     &:hover {
       box-shadow: 2px 5px 5px 2px rgba(0, 0, 0, 0.1);
     }
     p {
+      margin: 0;
+      height: 100%;
       width: 20rem;
+      display: flex;
+      align-items: center;
+      &:nth-child(1) {
+        width: 17rem;
+        border-right: 1px solid lightgrey;
+      }
+      &:nth-child(2) {
+        padding-left: 1rem;
+        width: 17rem;
+        border-right: 1px solid lightgrey;
+      }
+      &:nth-child(3) {
+        padding-left: 1rem;
+        width: 17rem;
+        border-right: 1px solid lightgrey;
+      }
+      &:nth-child(4) {
+        border-right: 1px solid lightgrey;
+        margin: 0 1rem;
+        width: 17rem;
+      }
     }
     div {
       width: 2rem;
@@ -134,6 +160,7 @@ function UserPaysheetList({
         <div className="labels">
           <p>Salaire de base:</p>
           <p>Avance prise:</p>
+          <p>Montant restant:</p>
           <p>Date:</p>
         </div>
       ) : null}
@@ -142,6 +169,11 @@ function UserPaysheetList({
           <li key={i}>
             <p>{paysheet.baseSalary.toLocaleString() + "Ar"}</p>
             <p>{paysheet.advanceOnSalary.toLocaleString() + "Ar"}</p>
+            <p>
+              {(
+                paysheet.baseSalary - paysheet.advanceOnSalary
+              ).toLocaleString() + "Ar"}
+            </p>
             <p>{new Date(paysheet.date).toLocaleDateString()}</p>
             <div
               onClick={(e) => {
