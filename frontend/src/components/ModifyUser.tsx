@@ -5,11 +5,10 @@ import { api } from "../api";
 import "../styles/keyframes.css";
 import { Paysheet } from "../types";
 import AddingPaysheet from "./AddingPaysheet";
-import ConfirmPopUp from "./ConfirmPopUp";
-import UserPaysheetList from "./UserPaysheetList";
-import UserInfoSummary from "./UserInfoSummary";
 import { StyledHeader } from "./AllUser";
-import EditUserPaysheet from "./EditUserPaysheet";
+import ConfirmPopUp from "./ConfirmPopUp";
+import UserInfoSummary from "./UserInfoSummary";
+import UserPaysheetList from "./UserPaysheetList";
 
 const StyledContainer = styled.div`
   display: flex;
