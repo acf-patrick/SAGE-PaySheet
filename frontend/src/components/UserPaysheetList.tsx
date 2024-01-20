@@ -111,7 +111,7 @@ const StyledPaysheetList = styled.ul`
   }
 `;
 
-function PaysheetList({
+function UserPaysheetList({
   paysheets,
   setIsAddingPaysheet,
   setUserIndexToDelet,
@@ -169,4 +169,4 @@ function PaysheetList({
   );
 }
 
-export default PaysheetList;
+export default UserPaysheetList;

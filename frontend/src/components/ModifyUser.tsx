@@ -6,7 +6,7 @@ import "../styles/keyframes.css";
 import { Paysheet } from "../types";
 import AddingPaysheet from "./AddingPaysheet";
 import ConfirmPopUp from "./ConfirmPopUp";
-import PaysheetList from "./PaysheetList";
+import UserPaysheetList from "./UserPaysheetList";
 import { StyledHeader } from "./Paysheets";
 import UserInfoSummary from "./UserInfoSummary";
 
@@ -106,7 +106,7 @@ function ModifyUser() {
           isAdmin={isAdmin}
           setIsAdmin={setIsAdmin}
         />
-        <PaysheetList
+        <UserPaysheetList
           paysheets={paysheets}
           setConfirmDelete={setConfirmDelete}
           setIsAddingPaysheet={setIsAddingPaysheet}
