@@ -354,13 +354,13 @@ function Alluser() {
             </UserCard>
           )
         )}
-        {confirmDelete ? (
-          <ConfirmPopUp
-            callBackStop={() => setConfirmDelete(false)}
-            callBackValidate={() => deleteUser(userIndexToDelet)}
-          />
-        ) : null}
       </Users>
+      {confirmDelete ? (
+        <ConfirmPopUp
+          callBackStop={() => setConfirmDelete(false)}
+          callBackValidate={() => deleteUser(userIndexToDelet)}
+        />
+      ) : null}
     </>
   );
 }

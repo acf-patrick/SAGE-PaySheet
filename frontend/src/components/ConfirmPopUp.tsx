@@ -64,7 +64,7 @@ function ConfirmPopUp({
   return (
     <ConfirmButton>
       <div className="container">
-        {"Etes-vous sûr de vouloir supprimer cette fiche?"}
+        {"Confirmer la suppression ?"}
         <div className="choice">
           <p className="yes" onClick={callBackStop}>
             Non
