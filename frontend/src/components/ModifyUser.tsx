@@ -9,6 +9,7 @@ import ConfirmPopUp from "./ConfirmPopUp";
 import UserPaysheetList from "./UserPaysheetList";
 import UserInfoSummary from "./UserInfoSummary";
 import { StyledHeader } from "./AllUser";
+import EditUserPaysheet from "./EditUserPaysheet";
 
 const StyledContainer = styled.div`
   display: flex;

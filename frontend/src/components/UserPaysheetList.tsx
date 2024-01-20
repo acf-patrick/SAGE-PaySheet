@@ -1,6 +1,8 @@
 import { FiDelete, FiFolderPlus } from "react-icons/fi";
 import styled from "styled-components";
 import { Paysheet } from "../types";
+import { useEffect, useState } from "react";
+import EditUserPaysheet from "./EditUserPaysheet";
 
 const StyledPaysheetList = styled.ul`
   display: flex;
@@ -35,6 +37,7 @@ const StyledPaysheetList = styled.ul`
     justify-content: space-between;
     color: #8f8f8f;
     padding-left: 1rem;
+    cursor: pointer;
 
     p {
       width: 10rem;
@@ -59,10 +62,11 @@ const StyledPaysheetList = styled.ul`
     box-shadow: 2px 2px 3px 1px rgba(0, 0, 0, 0.05);
     border-radius: 5px;
     background-color: #ffffffda;
-    cursor: pointer;
     transition: box-shadow 250ms;
     animation: fadeIn linear 250ms;
     height: 3rem;
+    cursor: pointer;
+
     &:hover {
       box-shadow: 2px 5px 5px 2px rgba(0, 0, 0, 0.1);
     }
@@ -73,13 +77,12 @@ const StyledPaysheetList = styled.ul`
       height: 100%;
       display: flex;
       align-items: center;
-
-      &:nth-child(5) {
-        width: 2.5rem;
-        display: grid;
-        place-items: center;
-        padding-left: 0;
-      }
+    }
+    .delete-icon {
+      width: 2.5rem;
+      display: grid;
+      place-items: center;
+      padding-left: 0;
     }
     div {
       width: 2rem;
@@ -139,6 +142,9 @@ function UserPaysheetList({
   setUserIndexToDelet?: (e: number) => void;
   setConfirmDelete?: (e: boolean) => void;
 }) {
+  const [isEditingPaysheet, setIsEditingPaysheet] = useState(false);
+  const [indexToModify, setIndexToModify] = useState(0);
+
   const AddIcon = setIsAddingPaysheet ? (
     <FiFolderPlus
       onClick={() => {
@@ -172,7 +178,7 @@ function UserPaysheetList({
       <h2>Fiches de paie {paysheets.length == 0 ? null : AddIcon}</h2>
       {paysheets.length != 0 ? (
         <div className="labels">
-          <p>Salaire de base:</p>
+          <p>Montant actuel:</p>
           <p>Avance prise:</p>
           <p>Montant restant:</p>
           <p>Date:</p>
@@ -181,7 +187,7 @@ function UserPaysheetList({
       ) : null}
       {paysheets.length != 0 ? (
         paysheets.map((paysheet, i) => (
-          <li key={i}>
+          <li key={i} onClick={() => setIndexToModify(i)}>
             <p>{paysheet.baseSalary.toLocaleString() + "Ar"}</p>
             <p>{paysheet.advanceOnSalary.toLocaleString() + "Ar"}</p>
             <p>
@@ -190,7 +196,7 @@ function UserPaysheetList({
               ).toLocaleString() + "Ar"}
             </p>
             <p>{new Date(paysheet.date).toLocaleDateString()}</p>
-            <p>{DeleteIcon(i)}</p>
+            <div className="delete-icon">{DeleteIcon(i)}</div>
           </li>
         ))
       ) : (
@@ -208,6 +214,15 @@ function UserPaysheetList({
           </div>
         </div>
       )}
+      {/* {isEditingPaysheet ? (
+          <EditUserPaysheet
+            indexToModify={indexToModify}
+            paysheets={paysheets}
+            // setIsEditingPaysheet={setIsEditingPaysheet}
+            // setPaysheets={setPaysheets}
+            // setUserPaysheets={setUserPaysheets}
+          />
+        ) : null} */}
     </StyledPaysheetList>
   );
 }

@@ -30,4 +30,8 @@ export const routes = createBrowserRouter([
     path: "user/:id",
     element: <ModifyUser />,
   },
+  {
+    path: "update",
+    element: <ModifyUser />,
+  },
 ]);

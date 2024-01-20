@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { api } from "../api";
 import { Paysheet } from "../types";
 
-const StyledAddPaysheet = styled.div`
+export const StyledAddPaysheet = styled.div`
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -289,7 +289,7 @@ function AddingPaysheet({
     <StyledAddPaysheet>
       <div className="container">
         <div className="add-input">
-          <label htmlFor="base-salary">Salaire de base:</label>
+          <label htmlFor="base-salary">Montant actuel:</label>
           <input
             type="number"
             name="base-salary"
