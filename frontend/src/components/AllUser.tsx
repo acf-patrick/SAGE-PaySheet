@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
-import { FiGrid, FiList, FiDelete } from "react-icons/fi";
-import { useNavigate } from "react-router-dom";
+import { FiGrid, FiList } from "react-icons/fi";
 import styled from "styled-components";
 import { api } from "../api";
 import { User } from "../types";
 import ConfirmPopUp from "./ConfirmPopUp";
+import UserCards from "./UserCards";
+import UsersList from "./UsersList";
 
 export const StyledHeader = styled.h2<{ $scrolled?: boolean }>`
   margin: 0;
@@ -33,118 +34,6 @@ export const StyledHeader = styled.h2<{ $scrolled?: boolean }>`
     font-size: 35px;
     cursor: pointer;
     animation: fadeIn linear 350ms;
-  }
-`;
-
-const Users = styled.div`
-  margin: 2rem 0;
-  display: flex;
-  width: 100%;
-  height: 100%;
-  flex-wrap: wrap;
-  gap: 2rem;
-  .list-label {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    .titles {
-      width: 75%;
-      padding-right: 20%;
-      display: flex;
-      justify-content: space-between;
-      p {
-        color: grey;
-      }
-    }
-    label {
-      display: flex;
-      justify-content: flex-start;
-      gap: 1rem;
-      width: 30%;
-      display: flex;
-      justify-content: center;
-      select {
-        cursor: pointer;
-      }
-    }
-  }
-`;
-const UserCard = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  width: 20%;
-  height: 20rem;
-  border: 2px solid grey;
-  border-radius: 10px;
-  padding: 5px;
-  transform: scale(1);
-  transition: transform 300ms;
-  animation: fadeIn linear 250ms;
-  cursor: pointer;
-  &:hover {
-    transform: scale(1.05);
-  }
-  .delete {
-    font-size: x-large;
-    width: 100%;
-    height: 3rem;
-    margin: 0 13% 0 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 5px;
-    background-color: #f1f1f1;
-    color: gray;
-    transition: color 200ms, background-color 200ms;
-    &:hover {
-      color: white;
-      background-color: #fcdfdf;
-    }
-  }
-`;
-const UserList = styled.div`
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-  gap: 5px;
-  justify-content: flex-end;
-  cursor: pointer;
-  animation: fadeIn linear 250ms;
-
-  .first-child {
-    width: 60%;
-    display: flex;
-    justify-content: space-between;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
-    border-right: 1px solid rgba(0, 0, 0, 0.2);
-    border-bottom-left-radius: 5px;
-    border-bottom-right-radius: 5px;
-    transition: box-shadow 250ms;
-    &:hover {
-      box-shadow: 0 2px 5px 1px rgba(0, 0, 0, 0.1);
-    }
-    p {
-      margin: 1rem;
-    }
-  }
-
-  .delete {
-    font-size: x-large;
-    width: 5%;
-    margin: 0 13% 0 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 5px;
-    background-color: #f1f1f1;
-    color: gray;
-    transition: color 200ms, background-color 200ms;
-    &:hover {
-      color: white;
-      background-color: #fcdfdf;
-    }
   }
 `;
 
@@ -201,37 +90,8 @@ export const ConfirmButton = styled.div`
     }
   }
 `;
-const UserProfil = styled.div`
-  width: 100%;
-  height: 45%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-bottom: 1px solid grey;
-  background-color: grey;
-  border-top-right-radius: 5px;
-  border-top-left-radius: 5px;
-`;
-const UserInfo = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  height: 50%;
-  justify-content: space-around;
-  p {
-    display: flex;
-    flex-direction: column;
-    margin: 0;
-    span {
-      margin: 0;
-      color: #5b5b5b;
-      font-weight: bold;
-    }
-  }
-`;
 
 function Alluser() {
-  const navigate = useNavigate();
   const [users, setUsers] = useState<User[]>([]);
   const [filteredUsers, setFilteredUsers] = useState<User[]>([]);
   const [list, setList] = useState(true);
@@ -250,6 +110,9 @@ function Alluser() {
         setConfirmDelete(false);
       })
       .catch((err) => console.log(err));
+    const value = users.filter((_user, index) => i != index);
+    console.log(value);
+    setUsers(value);
   };
 
   useEffect(() => {
@@ -261,7 +124,7 @@ function Alluser() {
   }, []);
 
   useEffect(() => {
-    if (sort != "") {
+    if (sort != "" || users) {
       if (sort == "A-Z") {
         setFilteredUsers([
           ...users.sort((a, b) => a.name.localeCompare(b.name)),
@@ -276,13 +139,13 @@ function Alluser() {
         setFilteredUsers([...users.filter((user) => user.role == "USER")]);
       }
     }
-  }, [sort]);
+  }, [sort, users]);
 
   return (
     <>
       <StyledHeader>
         <img src="../../public/paysheet.svg" alt="" />
-        <span>All Users</span>
+        <span>Tous les utilisateurs</span>
         <div className="view">
           {!list ? (
             <FiList onClick={() => setList(true)} className="icone" />
@@ -291,99 +154,26 @@ function Alluser() {
           )}
         </div>
       </StyledHeader>
-      <Users
-        style={{
-          flexDirection: list ? "column" : "row",
-          alignItems: list ? "center" : "none",
-          justifyContent: list ? "none" : "center",
-        }}
-      >
-        {list ? (
-          <div className="list-label">
-            <label htmlFor="select">
-              Trier:
-              <select
-                id="select"
-                name="Trier"
-                onChange={(e) => setSort(e.currentTarget.value)}
-              >
-                <option value="A-Z">A-Z</option>
-                <option value="Z-A">Z-A</option>
-                <option value="Admin">Admin</option>
-                <option value="User">User</option>
-              </select>
-            </label>
-            <div className="titles">
-              <p>Full Name</p>
-              <p>Username</p>
-              <p>Role</p>
-            </div>
-          </div>
-        ) : null}
-        {filteredUsers.map((user, i) =>
-          list ? (
-            <UserList
-              key={user.username}
-              onClick={() =>
-                navigate({
-                  pathname: "/user/" + filteredUsers[i].id,
-                })
-              }
-            >
-              <div className="first-child">
-                <p>{user.name + " " + user.lastName}</p>
-                <p>{user.username}</p>
-                <p>{user.role}</p>
-              </div>
-              <div
-                className="delete"
-                onClick={(e) => {
-                  setUserIndexToDelet(i);
-                  e.stopPropagation();
-                  setConfirmDelete(true);
-                }}
-              >
-                <FiDelete />
-              </div>
-            </UserList>
-          ) : (
-            <UserCard
-              key={user.username}
-              onClick={() =>
-                navigate({
-                  pathname: "/user/" + users[i].id,
-                })
-              }
-            >
-              <UserProfil>Placeholder Image</UserProfil>
-              <UserInfo>
-                <p>
-                  <span>Full name:</span>
-                  {user.name + " " + user.lastName}
-                </p>
-                <p>
-                  <span>UserName:</span>
-                  {user.username}
-                </p>
-                <p>
-                  <span>Role:</span>
-                  {user.role}
-                </p>
-              </UserInfo>
-              <div
-                className="delete"
-                onClick={(e) => {
-                  setUserIndexToDelet(i);
-                  e.stopPropagation();
-                  setConfirmDelete(true);
-                }}
-              >
-                <FiDelete />
-              </div>
-            </UserCard>
-          )
-        )}
-      </Users>
+      {list ? (
+        <UsersList
+          users={filteredUsers}
+          setSort={setSort}
+          setConfirmDelete={(i: number, e: React.MouseEvent<SVGElement>) => {
+            setUserIndexToDelet(i);
+            e.stopPropagation();
+            setConfirmDelete(true);
+          }}
+        />
+      ) : (
+        <UserCards
+          users={filteredUsers}
+          setConfirmDelete={(i: number, e: React.MouseEvent<HTMLElement>) => {
+            setUserIndexToDelet(i);
+            e.stopPropagation();
+            setConfirmDelete(true);
+          }}
+        />
+      )}
       {confirmDelete ? (
         <ConfirmPopUp
           callBackStop={() => setConfirmDelete(false)}

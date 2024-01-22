@@ -84,6 +84,7 @@ function ModifyUser() {
     api
       .get("paysheet/" + id)
       .then((res) => {
+        console.log(res.data);
         setPaysheets(res.data);
       })
       .catch((err) =>

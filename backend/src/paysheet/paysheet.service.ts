@@ -14,7 +14,11 @@ export class PaysheetService {
   // Getting all paysheets
   async getPaySheets() {
     try {
-      return await this.prisma.paysheet.findMany();
+      return await this.prisma.paysheet.findMany({
+        orderBy: {
+          date: 'desc',
+        },
+      });
     } catch (err) {
       console.log(err);
       return 'Error: ' + err;
@@ -24,11 +28,15 @@ export class PaysheetService {
   // Get pay sheets by a keyword for name and last name
   async getPaySheetsByKeyWord(userId: string) {
     try {
-      return await this.prisma.paysheet.findMany({
+      const paysheets = await this.prisma.paysheet.findMany({
         where: {
           userId,
         },
+        orderBy: {
+          date: 'desc',
+        },
       });
+      return paysheets;
     } catch (err) {
       console.log(err);
       return 'Error: ' + err;
@@ -139,6 +147,9 @@ export class PaysheetService {
       return await this.prisma.paysheet.findMany({
         where: {
           userId: id,
+        },
+        orderBy: {
+          date: 'desc',
         },
       });
     } catch (err) {
