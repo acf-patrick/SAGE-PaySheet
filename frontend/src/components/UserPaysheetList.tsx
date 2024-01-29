@@ -1,14 +1,16 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { FiDelete, FiFolderPlus } from "react-icons/fi";
 import styled from "styled-components";
 import { Paysheet } from "../types";
 import EditUserPaysheet from "./EditUserPaysheet";
+import AdminUser from "../contexts/AdminUser";
 
 const StyledPaysheetList = styled.ul`
   display: flex;
   flex-direction: column;
   align-items: center;
   min-height: 100%;
+  width: 40rem;
   padding: 2rem 0;
   gap: 15px;
   border-radius: 15px;
@@ -17,7 +19,7 @@ const StyledPaysheetList = styled.ul`
     width: 90%;
   }
   @media (480px <= width <= 768px) {
-    width: 75%;
+    width: 65%;
   }
 
   h2 {
@@ -121,7 +123,6 @@ const StyledPaysheetList = styled.ul`
       padding-left: 0;
       @media (width <= 480px) {
         width: 94.5%;
-        border-top: 1px solid #95959545;
       }
       @media (480px <= width <= 768px) {
         margin-top: 2rem;
@@ -191,6 +192,8 @@ function UserPaysheetList({
 }) {
   const [isEditingPaysheet, setIsEditingPaysheet] = useState(false);
   const [indexToModify, setIndexToModify] = useState(0);
+  const isUserAdmin = useContext(AdminUser).isUserAdmin;
+
   const AddIcon = setIsAddingPaysheet ? (
     <FiFolderPlus
       onClick={() => {
@@ -236,7 +239,9 @@ function UserPaysheetList({
           <li
             key={i}
             onClick={() => {
-              setIsEditingPaysheet(true);
+              isUserAdmin
+                ? setIsEditingPaysheet(true)
+                : setIsEditingPaysheet(false);
               setIndexToModify(i);
             }}
           >

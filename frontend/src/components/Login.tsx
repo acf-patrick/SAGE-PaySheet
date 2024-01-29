@@ -1,7 +1,8 @@
-import { useRef, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { api } from "../api";
+import AdminUser from "../contexts/AdminUser";
 
 const LoginContainer = styled.div`
   display: flex;
@@ -177,6 +178,7 @@ const LoginFormContainer = styled.form`
 `;
 
 export const Login = () => {
+  const isUserAdminContext = useContext(AdminUser);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const errorRef = useRef<HTMLParagraphElement>(null);
@@ -191,11 +193,18 @@ export const Login = () => {
         password,
       })
       .then((res) => {
+        console.log(res.data.user);
+        res.data.user.role == "ADMIN"
+          ? isUserAdminContext!.setIsUserAdmin(true)
+          : isUserAdminContext!.setIsUserAdmin(false);
+        console.log(isUserAdminContext!.isUserAdmin);
         localStorage.clear();
         localStorage.setItem("userId", res.data.user.id);
         localStorage.setItem("access_token", res.data.access_token);
         localStorage.setItem("refresh_token", res.data.refresh_token);
-        navigate("/paysheets");
+        res.data.user.role == "ADMIN"
+          ? navigate("/alluser")
+          : navigate("/paysheets");
       })
       .catch((err) => {
         console.log("Error when authenticating");
