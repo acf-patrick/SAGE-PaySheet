@@ -108,7 +108,7 @@ export class UserService {
       const data = {
         name: updateUserDto.name,
         lastName: updateUserDto.lastName,
-        username: updateUserDto.username,
+        username: updateUserDto.username.toLowerCase(),
         role: updateUserDto.role,
       };
 
@@ -134,6 +134,7 @@ export class UserService {
       return await this.prisma.user.create({
         data: {
           ...userDto,
+          username: userDto.username.toLowerCase(),
           password: await bcrypt.hash(userDto.password, 10),
         },
       });

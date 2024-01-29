@@ -124,7 +124,7 @@ function Alluser() {
   }, []);
 
   useEffect(() => {
-    if (sort != "" || users) {
+    if (sort != "") {
       if (sort == "A-Z") {
         setFilteredUsers([
           ...users.sort((a, b) => a.name.localeCompare(b.name)),
@@ -139,7 +139,7 @@ function Alluser() {
         setFilteredUsers([...users.filter((user) => user.role == "USER")]);
       }
     }
-  }, [sort, users]);
+  }, [sort]);
 
   return (
     <>

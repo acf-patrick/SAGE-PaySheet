@@ -47,7 +47,6 @@ function Paysheets() {
           setPaysheets={setPaysheets}
           userId={localStorage.getItem("userId")!}
         />
-        ;
       </StyledPaysheetContainer>
     </>
   );
