@@ -13,6 +13,16 @@ const StyledUsersList = styled.table`
     width: 95%;
     font-size: 15.5px;
   }
+  @media (480px <= width <= 768px) {
+    margin-top: 5rem;
+    width: 95%;
+    font-size: 15.5px;
+  }
+  @media (768px <= width <= 1024px) {
+    margin-top: 5rem;
+    width: 95%;
+    font-size: 15.5px;
+  }
 
   .labels {
     user-select: none;
@@ -27,8 +37,23 @@ const StyledUsersList = styled.table`
       user-select: none;
       top: 4.5rem;
       left: 0;
-      width: 100%;
+      width: calc(100% - 2rem);
       justify-content: center;
+    }
+    @media (480px <= width <= 768px) {
+      user-select: none;
+      top: 4.5rem;
+      left: 0;
+      width: calc(97.9% - 3rem);
+      justify-content: center;
+    }
+    @media (768px <= width <= 1024px) {
+      user-select: none;
+      top: 4.5rem;
+      left: 0;
+      width: calc(98.4% - 3rem);
+      justify-content: flex-start;
+      padding-left: 2rem;
     }
 
     select {
