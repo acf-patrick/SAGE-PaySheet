@@ -17,8 +17,7 @@ const StyledPaysheetList = styled.ul`
     width: 90%;
   }
   @media (480px <= width <= 768px) {
-  }
-  @media (768px <= width <= 1024px) {
+    width: 75%;
   }
 
   h2 {
@@ -47,6 +46,9 @@ const StyledPaysheetList = styled.ul`
     color: #8f8f8f;
     padding-left: 1rem;
     cursor: pointer;
+    @media (width <= 480px) {
+      display: none;
+    }
 
     p {
       width: 10rem;
@@ -75,17 +77,41 @@ const StyledPaysheetList = styled.ul`
     animation: fadeIn linear 250ms;
     height: 3rem;
     cursor: pointer;
+    @media (width <= 480px) {
+      flex-direction: column;
+      width: 80%;
+      border-radius: 10px;
+      align-items: flex-start;
+      height: 10rem;
+    }
 
     &:hover {
       box-shadow: 2px 5px 5px 2px rgba(0, 0, 0, 0.1);
     }
 
     p {
-      width: 10rem;
+      width: 95%;
       margin: 0;
       height: 100%;
       display: flex;
       align-items: center;
+
+      span {
+        display: none;
+      }
+
+      @media (width <= 480px) {
+        justify-content: space-between;
+        font-weight: bold;
+        font-size: 15px;
+        color: #5a5a5a;
+        span {
+          font-weight: normal;
+          width: 50%;
+          display: block;
+          color: #959595;
+        }
+      }
     }
     .delete-icon {
       width: 2.5rem;
@@ -157,7 +183,6 @@ function UserPaysheetList({
 }) {
   const [isEditingPaysheet, setIsEditingPaysheet] = useState(false);
   const [indexToModify, setIndexToModify] = useState(0);
-
   const AddIcon = setIsAddingPaysheet ? (
     <FiFolderPlus
       onClick={() => {
@@ -207,14 +232,24 @@ function UserPaysheetList({
               setIndexToModify(i);
             }}
           >
-            <p>{paysheet.baseSalary.toLocaleString() + "Ar"}</p>
-            <p>{paysheet.advanceOnSalary.toLocaleString() + "Ar"}</p>
             <p>
+              <span>Montant actuel:</span>
+              {paysheet.baseSalary.toLocaleString() + "Ar"}
+            </p>
+            <p>
+              <span>Avance prise:</span>
+              {paysheet.advanceOnSalary.toLocaleString() + "Ar"}
+            </p>
+            <p>
+              <span>Montant restant:</span>
               {(
                 paysheet.baseSalary - paysheet.advanceOnSalary
               ).toLocaleString() + "Ar"}
             </p>
-            <p>{new Date(paysheet.date).toLocaleDateString()}</p>
+            <p>
+              <span> Date:</span>
+              {new Date(paysheet.date).toLocaleDateString()}
+            </p>
             <div className="delete-icon">{DeleteIcon(i)}</div>
           </li>
         ))
