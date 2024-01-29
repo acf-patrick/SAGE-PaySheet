@@ -7,6 +7,11 @@ const StyledUsersList = styled.table`
   border-collapse: collapse;
   width: 75%;
   margin: 20px auto;
+  @media (width <= 480px) {
+    margin-top: 5rem;
+    width: 95%;
+    font-size: 15.5px;
+  }
 
   .labels {
     position: absolute;
@@ -16,6 +21,12 @@ const StyledUsersList = styled.table`
     gap: 1rem;
     font-size: 1rem;
     font-weight: 600;
+    @media (width <= 480px) {
+      top: 4.5rem;
+      left: 0;
+      width: 100%;
+      justify-content: center;
+    }
 
     select {
       cursor: pointer;
@@ -74,6 +85,10 @@ const StyledUsersList = styled.table`
             font-size: 25px;
             transition: color 150ms;
             margin-left: 0.75rem;
+            @media (width <= 480px) {
+              font-size: 17px;
+              margin: 0;
+            }
 
             &:hover {
               color: red;

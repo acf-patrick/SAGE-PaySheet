@@ -1,10 +1,8 @@
 import { useEffect, useState } from "react";
-import { FiGrid, FiList } from "react-icons/fi";
 import styled from "styled-components";
 import { api } from "../api";
 import { User } from "../types";
 import ConfirmPopUp from "./ConfirmPopUp";
-import UserCards from "./UserCards";
 import UsersList from "./UsersList";
 
 export const StyledHeader = styled.h2<{ $scrolled?: boolean }>`
@@ -124,7 +122,6 @@ export const ConfirmButton = styled.div`
 function Alluser() {
   const [users, setUsers] = useState<User[]>([]);
   const [filteredUsers, setFilteredUsers] = useState<User[]>([]);
-  const [list, setList] = useState(true);
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [userIndexToDelet, setUserIndexToDelet] = useState(0);
   const [sort, setSort] = useState("");
@@ -176,34 +173,16 @@ function Alluser() {
       <StyledHeader>
         <img src="../../public/paysheet.svg" alt="" />
         <span>Tous les utilisateurs</span>
-        <div className="view">
-          {!list ? (
-            <FiList onClick={() => setList(true)} className="icone" />
-          ) : (
-            <FiGrid onClick={() => setList(false)} className="icone" />
-          )}
-        </div>
       </StyledHeader>
-      {list ? (
-        <UsersList
-          users={filteredUsers}
-          setSort={setSort}
-          setConfirmDelete={(i: number, e: React.MouseEvent<SVGElement>) => {
-            setUserIndexToDelet(i);
-            e.stopPropagation();
-            setConfirmDelete(true);
-          }}
-        />
-      ) : (
-        <UserCards
-          users={filteredUsers}
-          setConfirmDelete={(i: number, e: React.MouseEvent<HTMLElement>) => {
-            setUserIndexToDelet(i);
-            e.stopPropagation();
-            setConfirmDelete(true);
-          }}
-        />
-      )}
+      <UsersList
+        users={filteredUsers}
+        setSort={setSort}
+        setConfirmDelete={(i: number, e: React.MouseEvent<SVGElement>) => {
+          setUserIndexToDelet(i);
+          e.stopPropagation();
+          setConfirmDelete(true);
+        }}
+      />
       {confirmDelete ? (
         <ConfirmPopUp
           callBackStop={() => setConfirmDelete(false)}
