@@ -10,9 +10,17 @@ const StyledPaysheetContainer = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  margin-top: 5rem;
+  @media (width <= 480px) {
+    margin-top: 2rem;
+  }
+  @media (480px <= width <= 768px) {
+    margin-top: 2rem;
+  }
 `;
 
 function Paysheets() {
+  let body = document.querySelector("body") as HTMLBodyElement;
   const [user, setUser] = useState<User>({
     id: "",
     lastName: "",
@@ -39,7 +47,9 @@ function Paysheets() {
       <StyledHeader>
         <img src="../../public/paysheet.svg" alt="" />
         <span>{user.name + " " + user.lastName}</span>
-        <div style={{ width: "2rem" }}></div>
+        {body.clientWidth <= 1024 ? null : (
+          <div style={{ width: "2rem" }}></div>
+        )}
       </StyledHeader>
       <StyledPaysheetContainer>
         <UserPaysheetList

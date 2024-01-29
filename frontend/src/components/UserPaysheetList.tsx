@@ -8,18 +8,27 @@ const StyledPaysheetList = styled.ul`
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 65%;
   min-height: 100%;
   padding: 2rem 0;
   gap: 15px;
   border-radius: 15px;
   background-color: #d7d2d274;
+  @media (width <= 480px) {
+    width: 90%;
+  }
+  @media (480px <= width <= 768px) {
+  }
+  @media (768px <= width <= 1024px) {
+  }
 
   h2 {
     margin: 0;
     display: flex;
     justify-content: space-between;
     width: 95%;
+    @media (width <= 480px) {
+      justify-content: center;
+    }
     svg {
       cursor: pointer;
       color: black;

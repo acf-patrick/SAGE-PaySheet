@@ -23,10 +23,40 @@ export const StyledHeader = styled.h2<{ $scrolled?: boolean }>`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  @media (width <= 480px) {
+    width: calc(100% - 2rem);
+    min-height: 56px;
+    font-size: medium;
+    padding: 0 1rem;
+  }
+  @media (480px <= width <= 768px) {
+    width: calc(97.9% - 3rem);
+    min-height: 56px;
+    font-size: medium;
+    padding: 0 2rem;
+  }
+  @media (768px <= width <= 1024px) {
+    width: calc(98.4% - 3rem);
+    min-height: 56px;
+    font-size: medium;
+    padding: 0 2rem;
+  }
 
   img {
     margin-left: 50px;
     width: 50px;
+    @media (width <= 480px) {
+      width: 35px;
+      margin: 0;
+    }
+    @media (480px <=width <= 768px) {
+      width: 35px;
+      margin: 0;
+    }
+    @media (768px <= width <= 1024px) {
+      width: 35px;
+      margin: 0;
+    }
   }
 
   svg {
