@@ -196,12 +196,9 @@ function UserInfoSummary({
       ...user,
       password: user.password,
     };
-    console.log(data);
     api
       .patch("user", data)
-      .then((res) => {
-        console.log(res.data);
-      })
+      .then(() => {})
       .catch((err) => {
         console.log(err);
       })

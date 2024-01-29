@@ -193,11 +193,9 @@ export const Login = () => {
         password,
       })
       .then((res) => {
-        console.log(res.data.user);
         res.data.user.role == "ADMIN"
           ? isUserAdminContext!.setIsUserAdmin(true)
           : isUserAdminContext!.setIsUserAdmin(false);
-        console.log(isUserAdminContext!.isUserAdmin);
         localStorage.clear();
         localStorage.setItem("userId", res.data.user.id);
         localStorage.setItem("access_token", res.data.access_token);
