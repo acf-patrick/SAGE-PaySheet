@@ -26,6 +26,27 @@ const LoginFormContainer = styled.form`
   justify-content: center;
   color: black;
 
+  @media (width <= 480px) {
+    width: 75%;
+    font-size: small;
+  }
+  @media (480px <= width <= 768px) {
+    width: 60%;
+    font-size: medium;
+  }
+  @media (768px <= width <= 1024px) {
+    width: 40%;
+    font-size: medium;
+  }
+  @media (1024px <=width <=1440px) {
+    width: 30%;
+    font-size: medium;
+  }
+  @media (1440px <=width <=2560px) {
+    width: 20%;
+    font-size: medium;
+  }
+
   .header {
     display: flex;
     flex-direction: column;
@@ -34,10 +55,24 @@ const LoginFormContainer = styled.form`
 
     img {
       width: 25%;
+      @media (width <= 480px) {
+        width: 20%;
+        font-size: small;
+      }
+      @media (480px <=width<= 768px) {
+        width: 20%;
+        font-size: medium;
+      }
     }
     h2 {
       text-align: center;
       margin-bottom: 20px;
+      @media (width <=480px) {
+        font-size: x-large;
+      }
+      @media (480px <=width <= 768px) {
+        font-size: x-large;
+      }
     }
   }
 
@@ -57,6 +92,14 @@ const LoginFormContainer = styled.form`
     transition: border 250ms;
     font-family: "Ubuntu";
     font-weight: 600;
+    @media (width <=480px) {
+      width: 75%;
+      font-size: medium;
+    }
+    @media (480px <=width <= 768px) {
+      width: 60%;
+      font-size: medium;
+    }
 
     &:hover {
       border: 2px solid grey;
@@ -83,6 +126,12 @@ const LoginFormContainer = styled.form`
     border-radius: 4px;
     cursor: pointer;
     transition: background-color 0.3s;
+    @media (width <=480px) {
+      font-size: small;
+    }
+    @media (480px <=width <= 768px) {
+      font-size: small;
+    }
 
     &:hover {
       background-color: ${({ theme }) => theme.login.button.hover};
@@ -100,6 +149,9 @@ const LoginFormContainer = styled.form`
     color: red;
     font-weight: 600;
     transition: opacity 250ms;
+    @media (width <=480px) {
+      height: 50px;
+    }
   }
 
   .show {
@@ -110,6 +162,13 @@ const LoginFormContainer = styled.form`
     font-weight: 600;
     cursor: pointer;
     text-decoration: none;
+    @media (width <=480px) {
+      margin-top: 5rem;
+    }
+
+    @media (480px <=width <= 768px) {
+      margin-top: 5rem;
+    }
 
     &:hover {
       color: grey;

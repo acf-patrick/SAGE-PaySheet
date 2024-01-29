@@ -34,6 +34,26 @@ const SignupFormContainer = styled.form`
   align-items: center;
   justify-content: center;
   color: black;
+  @media (width <= 480px) {
+    width: 75%;
+    font-size: small;
+  }
+  @media (480px <= width <= 768px) {
+    width: 60%;
+    font-size: medium;
+  }
+  @media (768px <= width <= 1024px) {
+    width: 40%;
+    font-size: medium;
+  }
+  @media (1024px <=width <=1440px) {
+    width: 30%;
+    font-size: medium;
+  }
+  @media (1440px <=width <=2560px) {
+    width: 20%;
+    font-size: medium;
+  }
 
   .header {
     display: flex;
@@ -43,10 +63,24 @@ const SignupFormContainer = styled.form`
 
     img {
       width: 55px;
+      @media (width <= 480px) {
+        width: 20%;
+        font-size: small;
+      }
+      @media (480px <=width<= 768px) {
+        width: 20%;
+        font-size: medium;
+      }
     }
     h2 {
       text-align: center;
       margin-bottom: 20px;
+      @media (width <=480px) {
+        font-size: x-large;
+      }
+      @media (480px <=width <= 768px) {
+        font-size: x-large;
+      }
     }
   }
 
@@ -66,6 +100,14 @@ const SignupFormContainer = styled.form`
     transition: border 250ms;
     font-family: "Ubuntu";
     font-weight: 600;
+    @media (width <=480px) {
+      width: 75%;
+      font-size: medium;
+    }
+    @media (480px <=width <= 768px) {
+      width: 60%;
+      font-size: medium;
+    }
 
     &:hover {
       border: 2px solid grey;
@@ -91,6 +133,12 @@ const SignupFormContainer = styled.form`
     border-radius: 4px;
     cursor: pointer;
     transition: background-color 0.3s;
+    @media (width <=480px) {
+      font-size: small;
+    }
+    @media (480px <=width <= 768px) {
+      font-size: small;
+    }
 
     &:hover {
       background-color: ${({ theme }) => theme.login.button.hover};
@@ -110,6 +158,9 @@ const SignupFormContainer = styled.form`
     color: red;
     font-weight: 600;
     transition: opacity 250ms;
+    @media (width <=480px) {
+      height: 50px;
+    }
   }
 
   .show {
