@@ -4,6 +4,14 @@ import { api } from "../api";
 import { Paysheet } from "../types";
 
 export const StyledAddPaysheet = styled.div`
+  @keyframes fadein {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -16,6 +24,8 @@ export const StyledAddPaysheet = styled.div`
   top: 0;
   left: 0;
   z-index: 2;
+  animation: fadein 150ms;
+
   .container {
     box-shadow: 0 0 15px 15px rgba(0, 0, 0, 0.2);
     padding: 2rem;
@@ -26,17 +36,26 @@ export const StyledAddPaysheet = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    @media (width <= 480px) {
+      width: 73%;
+    }
 
     .date-input {
       width: 25rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      @media (width <= 480px) {
+        width: 100%;
+      }
       label {
         font-size: large;
         font-weight: bold;
         width: 45%;
         margin-top: 0.8rem;
+        @media (width <= 480px) {
+          font-size: medium;
+        }
       }
       .date {
         display: flex;
@@ -56,14 +75,23 @@ export const StyledAddPaysheet = styled.div`
           &:nth-child(1) {
             font-size: small;
             width: 3rem;
+            @media (width <= 480px) {
+              width: 20%;
+            }
           }
           &:nth-child(2) {
             font-size: small;
             width: 3rem;
+            @media (width <= 480px) {
+              width: 20%;
+            }
           }
           &:nth-child(3) {
             font-size: small;
             width: 4rem;
+            @media (width <= 480px) {
+              width: 30%;
+            }
           }
         }
       }
@@ -74,11 +102,17 @@ export const StyledAddPaysheet = styled.div`
       display: flex;
       justify-content: space-between;
       align-items: center;
+      @media (width <= 480px) {
+        width: 100%;
+      }
       label {
         font-size: large;
         font-weight: bold;
         width: 45%;
         margin-top: 0.8rem;
+        @media (width <= 480px) {
+          font-size: medium;
+        }
       }
       input {
         margin-top: 0.8rem;
@@ -89,6 +123,9 @@ export const StyledAddPaysheet = styled.div`
         border-bottom: 2px solid grey;
         outline: none;
         font-size: medium;
+        @media (width <= 480px) {
+          width: 50%;
+        }
       }
     }
     .validate {
@@ -98,6 +135,9 @@ export const StyledAddPaysheet = styled.div`
       flex-direction: row-reverse;
       align-items: center;
       justify-content: space-between;
+      @media (width <= 480px) {
+        width: 100%;
+      }
       .error {
         opacity: 0;
         background-color: ${({ theme }) => theme.login.error.background};
@@ -126,6 +166,9 @@ export const StyledAddPaysheet = styled.div`
         font-size: medium;
         cursor: pointer;
         transition: background-color 200ms;
+        @media (width <= 480px) {
+          font-size: small;
+        }
         &:hover {
           background-color: #004900;
         }
@@ -143,6 +186,9 @@ export const StyledAddPaysheet = styled.div`
         font-size: medium;
         transition: background-color 200ms;
         cursor: pointer;
+        @media (width <= 480px) {
+          font-size: small;
+        }
         &:hover {
           background-color: ${({ theme }) =>
             theme.modifyUser.editButton.backhover};
