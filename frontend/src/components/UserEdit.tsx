@@ -30,7 +30,7 @@ export const UserInfo = styled.div`
     align-items: center;
 
     .slider {
-      width: 35%;
+      min-width: 8rem;
       height: 100%;
       display: flex;
       justify-content: space-between;

@@ -15,6 +15,16 @@ const StyledForm = styled.form`
   height: 100%;
   gap: 3rem;
 
+  .container {
+    width: 35%;
+    @media (width <= 480px) {
+      width: 90%;
+    }
+    @media (480px <= width <= 768px) {
+      margin-top: 2rem;
+    }
+  }
+
   button,
   .edit-button {
     height: 3rem;
@@ -203,7 +213,7 @@ function UserInfoSummary({
 
   return (
     <StyledForm onSubmit={handleSubmit}>
-      <div style={{ width: "35%" }}>
+      <div className="container">
         {!isEdited ? (
           <>
             <UserInfo>

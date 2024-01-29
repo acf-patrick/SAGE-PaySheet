@@ -27,6 +27,7 @@ const StyledPaysheetList = styled.ul`
     width: 95%;
     @media (width <= 480px) {
       justify-content: center;
+      gap: 2rem;
     }
     svg {
       cursor: pointer;
@@ -118,6 +119,13 @@ const StyledPaysheetList = styled.ul`
       display: grid;
       place-items: center;
       padding-left: 0;
+      @media (width <= 480px) {
+        width: 94.5%;
+        border-top: 1px solid #95959545;
+      }
+      @media (480px <= width <= 768px) {
+        margin-top: 2rem;
+      }
     }
     div {
       width: 2rem;
