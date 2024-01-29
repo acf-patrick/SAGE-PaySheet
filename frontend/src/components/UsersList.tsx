@@ -7,6 +7,7 @@ const StyledUsersList = styled.table`
   border-collapse: collapse;
   width: 75%;
   margin: 20px auto;
+  user-select: none;
   @media (width <= 480px) {
     margin-top: 5rem;
     width: 95%;
@@ -14,6 +15,7 @@ const StyledUsersList = styled.table`
   }
 
   .labels {
+    user-select: none;
     position: absolute;
     left: 1rem;
     top: 6.5rem;
@@ -22,6 +24,7 @@ const StyledUsersList = styled.table`
     font-size: 1rem;
     font-weight: 600;
     @media (width <= 480px) {
+      user-select: none;
       top: 4.5rem;
       left: 0;
       width: 100%;
@@ -29,6 +32,7 @@ const StyledUsersList = styled.table`
     }
 
     select {
+      user-select: none;
       cursor: pointer;
       width: 100px;
       text-align: center;
@@ -40,13 +44,16 @@ const StyledUsersList = styled.table`
 
   tr {
     transition: all 250ms;
+    user-select: none;
 
     &:nth-child(even) {
+      user-select: none;
       background-color: #f9f9f9;
     }
 
     &:hover {
       td {
+        user-select: none;
         transition: all 250ms;
 
         &:not(:last-of-type) {
@@ -57,37 +64,51 @@ const StyledUsersList = styled.table`
   }
 
   td {
+    user-select: none;
     padding: 10px;
+    @media (width <= 480px) {
+      padding: 0 2.5px;
+    }
   }
 
   thead {
     background-color: #f2f2f2;
     color: #333;
     font-weight: bold;
+    user-select: none;
 
     tr {
+      user-select: none;
       height: 4rem;
     }
   }
 
   tbody {
+    user-select: none;
     tr {
+      user-select: none;
       height: 3rem;
       cursor: pointer;
 
       td {
+        user-select: none;
         &:last-of-type {
+          user-select: none;
           background-color: white;
           border: none;
           width: 20px;
+          @media (width <= 480px) {
+            width: 20px;
+          }
 
           svg {
             font-size: 25px;
             transition: color 150ms;
+            user-select: none;
             margin-left: 0.75rem;
             @media (width <= 480px) {
               font-size: 17px;
-              margin: 0;
+              margin-left: 0.5px;
             }
 
             &:hover {
@@ -97,17 +118,6 @@ const StyledUsersList = styled.table`
         }
       }
     }
-  }
-
-  .confirm-popup {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: #fff;
-    padding: 20px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-    z-index: 2;
   }
 `;
 

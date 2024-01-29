@@ -1,6 +1,15 @@
 import styled from "styled-components";
 
 export const ConfirmButton = styled.div`
+  @keyframes fadein {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
   overflow: hidden;
   width: 100%;
   height: 100%;
@@ -10,8 +19,8 @@ export const ConfirmButton = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-
   background-color: rgba(0, 0, 0, 0.5);
+  animation: fadein 150ms;
 
   .container {
     box-shadow: 0 0 15px 15px rgba(0, 0, 0, 0.2);
@@ -28,6 +37,11 @@ export const ConfirmButton = styled.div`
     border: 1px solid grey;
     background-color: #fafafa;
     z-index: 2;
+
+    @media (width <= 480px) {
+      width: 65%;
+    }
+
     .choice {
       display: flex;
       justify-content: center;
