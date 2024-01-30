@@ -114,9 +114,15 @@ const StyledUsersList = styled.table`
       user-select: none;
       height: 3rem;
       cursor: pointer;
+      width: 25px;
 
       td {
         user-select: none;
+        @media (width <= 480px) {
+          width: 25px;
+          font-size: smaller;
+        }
+
         &:last-of-type {
           user-select: none;
           background-color: white;
@@ -124,6 +130,7 @@ const StyledUsersList = styled.table`
           width: 20px;
           @media (width <= 480px) {
             width: 20px;
+            font-size: small;
           }
 
           svg {
