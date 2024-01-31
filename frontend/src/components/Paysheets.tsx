@@ -3,14 +3,39 @@ import styled from "styled-components";
 import { api } from "../api";
 import { Paysheet, User } from "../types";
 import { StyledHeader } from "./AllUser";
+import ExportXlsxButton from "./ExportXlsxButton";
 import UserPaysheetList from "./UserPaysheetList";
+
+const schema = [
+  {
+    column: "Salaire de base",
+    type: Number,
+    value: (paysheet: Paysheet) => paysheet.baseSalary,
+  },
+  {
+    column: "Avance sur salaire",
+    type: Number,
+    value: (paysheet: Paysheet) => paysheet.advanceOnSalary,
+  },
+  {
+    column: "Salaire restant",
+    type: Number,
+    value: (paysheet: Paysheet) =>
+      paysheet.baseSalary - paysheet.advanceOnSalary,
+  },
+  {
+    column: "Date",
+    type: Date,
+    format: "dd/mm/yyyy",
+    value: (paysheet: Paysheet) => new Date(paysheet.date),
+  },
+];
 
 const StyledPaysheetContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin-top: 5rem;
   @media (width <= 480px) {
     margin-top: 2rem;
   }
@@ -50,6 +75,11 @@ function Paysheets() {
         {body.clientWidth <= 1024 ? null : (
           <div style={{ width: "2rem" }}></div>
         )}
+        <ExportXlsxButton
+          schema={schema}
+          data={paysheets}
+          fileName={user.name + "_" + user.lastName}
+        />
       </StyledHeader>
       <StyledPaysheetContainer>
         <UserPaysheetList

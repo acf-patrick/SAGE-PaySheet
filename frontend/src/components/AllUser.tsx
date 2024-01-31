@@ -63,6 +63,50 @@ export const StyledHeader = styled.h2<{ $scrolled?: boolean }>`
     cursor: pointer;
     animation: fadeIn linear 350ms;
   }
+
+  button {
+    position: absolute;
+    right: 1rem;
+    height: 50px;
+    width: 150px;
+    border-radius: 5px;
+    border: none;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    transition: all 350ms;
+
+    &:hover {
+      background-color: #19ba19;
+      color: white;
+    }
+
+    @media (width <= 480px) {
+      width: 50px;
+      height: 75%;
+      margin: 0;
+    }
+
+    svg {
+      font-size: 25px;
+      margin: 0;
+
+      @media (width <= 480px) {
+        font-size: 20px;
+      }
+    }
+
+    span {
+      font-size: 17px;
+
+      @media (width <= 480px) {
+        display: none;
+      }
+    }
+  }
 `;
 
 export const ConfirmButton = styled.div`
