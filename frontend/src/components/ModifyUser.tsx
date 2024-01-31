@@ -95,7 +95,7 @@ function ModifyUser() {
     <>
       <StyledHeader>
         <div className="image">
-          <img src="../../public/paysheet.svg" alt="" />
+          <img src="../../public/paysheet.svg" alt="logo" />
         </div>
         <span>{user.name + " " + user.lastName}</span>
         <div style={{ width: "30%" }}></div>

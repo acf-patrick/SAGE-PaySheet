@@ -10,7 +10,6 @@ const StyledUsersList = styled.table`
   margin: 20px auto;
   user-select: none;
   @media (width <= 480px) {
-    margin-top: 5rem;
     width: 95%;
     font-size: 15.5px;
   }

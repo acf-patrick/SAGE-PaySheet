@@ -1,12 +1,9 @@
 import { useEffect, useState } from "react";
-import { AiOutlinePoweroff } from "react-icons/ai";
-import { IoMdCloseCircleOutline } from "react-icons/io";
-import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { api } from "../api";
 import { Paysheet, User } from "../types";
 import { StyledHeader } from "./AllUser";
-import ExportXlsxButton from "./ExportXlsxButton";
+import Sidebar from "./Sidebar";
 import UserPaysheetList from "./UserPaysheetList";
 
 const schema = [
@@ -56,7 +53,6 @@ function Paysheets() {
     username: "",
   });
   const [paysheets, setPaysheets] = useState<Paysheet[]>([]);
-  const navigate = useNavigate();
   const [toggleButtons, setToggleButtons] = useState(false);
 
   useEffect(() => {
@@ -71,11 +67,6 @@ function Paysheets() {
       .catch((err) => console.log(err));
   }, []);
 
-  const logOut = () => {
-    localStorage.clear();
-    navigate("/login");
-  };
-
   return (
     <>
       <StyledHeader>
@@ -87,29 +78,13 @@ function Paysheets() {
           />
         </div>
         <span>{user.name + " " + user.lastName}</span>
-        <div
-          className="buttons"
-          style={{
-            transform:
-              window.innerWidth <= 480
-                ? toggleButtons
-                  ? "translateX(0)"
-                  : "translateX(-100%)"
-                : "unset",
-          }}
-        >
-          {window.innerWidth <= 480 ? (
-            <IoMdCloseCircleOutline onClick={() => setToggleButtons(false)} />
-          ) : null}
-          <ExportXlsxButton
-            schema={schema}
-            data={paysheets}
-            fileName={user.name + "_" + user.lastName}
-          />
-          <button onClick={logOut}>
-            <AiOutlinePoweroff /> <span>Deconnexion</span>
-          </button>
-        </div>
+        <Sidebar
+          schema={schema}
+          data={paysheets}
+          toggle={toggleButtons}
+          setToggle={setToggleButtons}
+          fileName={user.name + "_" + user.lastName}
+        />
       </StyledHeader>
       <StyledPaysheetContainer>
         <UserPaysheetList

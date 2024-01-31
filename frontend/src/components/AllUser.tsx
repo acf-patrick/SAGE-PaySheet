@@ -4,6 +4,7 @@ import { api } from "../api";
 import { User } from "../types";
 import ConfirmPopUp from "./ConfirmPopUp";
 import UsersList from "./UsersList";
+import { useNavigate } from "react-router-dom";
 
 export const StyledHeader = styled.h2<{ $scrolled?: boolean }>`
   margin: 0;
@@ -229,6 +230,8 @@ function Alluser() {
   const [userIndexToDelet, setUserIndexToDelet] = useState(0);
   const [sort, setSort] = useState("A-Z");
 
+  const navigate = useNavigate();
+
   const deleteUser = (i: number) => {
     api
       .delete("user/" + users[i].id)
@@ -286,11 +289,16 @@ function Alluser() {
     }
   }, [sort]);
 
+  const logOut = () => {
+    localStorage.clear();
+    navigate("/login");
+  };
+
   return (
     <>
       <StyledHeader>
         <div className="image">
-          <img src="../../public/paysheet.svg" alt="" />
+          <img src="../../public/paysheet.svg" alt="logo" onClick={logOut} />
         </div>
         <span>Tous les utilisateurs</span>
         <div style={{ width: "30%" }}></div>
