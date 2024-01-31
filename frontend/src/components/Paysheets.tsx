@@ -1,4 +1,7 @@
 import { useEffect, useState } from "react";
+import { AiOutlinePoweroff } from "react-icons/ai";
+import { IoMdCloseCircleOutline } from "react-icons/io";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { api } from "../api";
 import { Paysheet, User } from "../types";
@@ -45,7 +48,6 @@ const StyledPaysheetContainer = styled.div`
 `;
 
 function Paysheets() {
-  let body = document.querySelector("body") as HTMLBodyElement;
   const [user, setUser] = useState<User>({
     id: "",
     lastName: "",
@@ -54,6 +56,8 @@ function Paysheets() {
     username: "",
   });
   const [paysheets, setPaysheets] = useState<Paysheet[]>([]);
+  const navigate = useNavigate();
+  const [toggleButtons, setToggleButtons] = useState(false);
 
   useEffect(() => {
     const userId = localStorage.getItem("userId");
@@ -67,19 +71,45 @@ function Paysheets() {
       .catch((err) => console.log(err));
   }, []);
 
+  const logOut = () => {
+    localStorage.clear();
+    navigate("/login");
+  };
+
   return (
     <>
       <StyledHeader>
-        <img src="../../public/paysheet.svg" alt="" />
+        <div className="image">
+          <img
+            src="../../public/paysheet.svg"
+            alt=""
+            onClick={() => setToggleButtons((toggleButtons) => !toggleButtons)}
+          />
+        </div>
         <span>{user.name + " " + user.lastName}</span>
-        {body.clientWidth <= 1024 ? null : (
-          <div style={{ width: "2rem" }}></div>
-        )}
-        <ExportXlsxButton
-          schema={schema}
-          data={paysheets}
-          fileName={user.name + "_" + user.lastName}
-        />
+        <div
+          className="buttons"
+          style={{
+            transform:
+              window.innerWidth <= 480
+                ? toggleButtons
+                  ? "translateX(0)"
+                  : "translateX(-100%)"
+                : "unset",
+          }}
+        >
+          {window.innerWidth <= 480 ? (
+            <IoMdCloseCircleOutline onClick={() => setToggleButtons(false)} />
+          ) : null}
+          <ExportXlsxButton
+            schema={schema}
+            data={paysheets}
+            fileName={user.name + "_" + user.lastName}
+          />
+          <button onClick={logOut}>
+            <AiOutlinePoweroff /> <span>Deconnexion</span>
+          </button>
+        </div>
       </StyledHeader>
       <StyledPaysheetContainer>
         <UserPaysheetList

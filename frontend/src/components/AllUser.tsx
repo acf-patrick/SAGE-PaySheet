@@ -21,18 +21,21 @@ export const StyledHeader = styled.h2<{ $scrolled?: boolean }>`
   display: flex;
   align-items: center;
   justify-content: space-between;
+
   @media (width <= 480px) {
     width: calc(100% - 2rem);
     min-height: 56px;
     font-size: medium;
     padding: 0 1rem;
   }
+
   @media (480px <= width <= 768px) {
     width: calc(97.9% - 3rem);
     min-height: 56px;
     font-size: medium;
     padding: 0 2rem;
   }
+
   @media (768px <= width <= 1024px) {
     width: calc(98.4% - 3rem);
     min-height: 56px;
@@ -40,70 +43,126 @@ export const StyledHeader = styled.h2<{ $scrolled?: boolean }>`
     padding: 0 2rem;
   }
 
-  img {
-    margin-left: 50px;
-    width: 50px;
-    @media (width <= 480px) {
-      width: 35px;
-      margin: 0;
-    }
-    @media (480px <=width <= 768px) {
-      width: 35px;
-      margin: 0;
-    }
-    @media (768px <= width <= 1024px) {
-      width: 35px;
-      margin: 0;
-    }
-  }
-
-  svg {
-    margin-right: 50px;
-    font-size: 35px;
-    cursor: pointer;
-    animation: fadeIn linear 350ms;
-  }
-
-  button {
-    position: absolute;
-    right: 1rem;
-    height: 50px;
-    width: 150px;
-    border-radius: 5px;
-    border: none;
-    font-weight: bold;
+  .image {
+    width: 30%;
     display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 0.5rem;
-    cursor: pointer;
-    transition: all 350ms;
+    justify-content: flex-start;
 
-    &:hover {
-      background-color: #19ba19;
-      color: white;
-    }
-
-    @media (width <= 480px) {
+    img {
+      margin-left: 50px;
       width: 50px;
-      height: 75%;
-      margin: 0;
-    }
-
-    svg {
-      font-size: 25px;
-      margin: 0;
 
       @media (width <= 480px) {
-        font-size: 20px;
+        width: 35px;
+        margin: 0;
+      }
+
+      @media (480px <=width <= 768px) {
+        width: 35px;
+        margin: 0;
+      }
+
+      @media (768px <= width <= 1024px) {
+        width: 35px;
+        margin: 0;
       }
     }
+  }
 
-    span {
-      font-size: 17px;
+  & > span {
+    width: 30%;
+
+    @media (width <= 480px) {
+      height: 75%;
+      width: 50%;
+      justify-content: center;
+    }
+  }
+
+  .buttons {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    margin-right: 1rem;
+    gap: 1rem;
+    height: 75%;
+    width: 30%;
+    transition: transform 250ms;
+
+    @media (width <= 480px) {
+      width: 50%;
+      height: 100vh;
+      position: absolute;
+      top: 0;
+      left: 0;
+      display: flex;
+      flex-direction: column;
+      background-color: #656161ff;
+      align-items: flex-start;
+      justify-content: flex-start;
+    }
+
+    & > svg {
+      font-size: 2rem;
+      color: white;
+      margin: 0.5rem 0 1rem 0.75rem;
+    }
+
+    button {
+      width: 9rem;
+      height: 50px;
+      border-radius: 5px;
+      border: none;
+      font-weight: bold;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 0.5rem;
+      cursor: pointer;
+      transition: all 350ms;
+
+      &:hover {
+        color: white;
+
+        &:first-of-type {
+          background-color: #19ba19;
+        }
+
+        &:last-of-type {
+          background-color: red;
+        }
+      }
 
       @media (width <= 480px) {
-        display: none;
+        width: 75%;
+        height: 40px;
+        margin: 0 auto;
+        color: white;
+
+        &:first-of-type {
+          background-color: #09b80994;
+        }
+
+        &:last-of-type {
+          background-color: #df1c1cb9;
+        }
+      }
+
+      svg {
+        font-size: 25px;
+        margin: 0;
+
+        @media (width <= 480px) {
+          font-size: 20px;
+        }
+      }
+
+      span {
+        font-size: 15px;
+
+        @media (width <= 480px) {
+          font-size: 12px;
+        }
       }
     }
   }
