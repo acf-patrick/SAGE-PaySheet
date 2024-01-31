@@ -1,6 +1,5 @@
 import { useRef, useState } from "react";
 import { FiEdit3 } from "react-icons/fi";
-import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { api } from "../api";
 import UserEdit, { UserInfo } from "./UserEdit";
@@ -17,6 +16,7 @@ const StyledForm = styled.form`
 
   .container {
     width: 35%;
+
     @media (width <= 480px) {
       width: 90%;
     }
@@ -119,6 +119,39 @@ const StyledForm = styled.form`
   }
 `;
 
+const StyledUserInfo = styled.div`
+  display: flex;
+  gap: 2rem;
+  margin-top: 1rem;
+
+  .edit-button {
+    width: 150px;
+    background-color: #ff9602;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 17px;
+
+    @media (width <= 480px) {
+      position: absolute;
+      top: 0.5rem;
+      right: 0.5rem;
+      z-index: 2;
+      width: 40px;
+      height: 40px;
+
+      span {
+        display: none;
+      }
+    }
+
+    &:hover {
+      background-color: #ff8400;
+    }
+  }
+`;
+
 interface userI {
   name: string;
   lastName: string;
@@ -126,6 +159,7 @@ interface userI {
   password: string;
   role: string;
 }
+
 function UserInfoSummary({
   id,
   user,
@@ -143,7 +177,6 @@ function UserInfoSummary({
   const [error, setError] = useState("");
   const [isEdited, setIsEdited] = useState(false);
   const [pending, setPending] = useState(false);
-  const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -212,7 +245,7 @@ function UserInfoSummary({
     <StyledForm onSubmit={handleSubmit}>
       <div className="container">
         {!isEdited ? (
-          <>
+          <StyledUserInfo>
             <UserInfo>
               <div>
                 <h3>Nom: </h3>
@@ -227,23 +260,11 @@ function UserInfoSummary({
                 <p>{" " + user.username}</p>
               </div>
             </UserInfo>
-            <div className="my-edit-button">
-              <div className="edit-button" onClick={() => setIsEdited(true)}>
-                <FiEdit3 />
-                <span>Modifier</span>
-              </div>
-              <div
-                className="back-button"
-                onClick={() => {
-                  navigate({
-                    pathname: "/alluser",
-                  });
-                }}
-              >
-                Retour
-              </div>
+            <div className="edit-button" onClick={() => setIsEdited(true)}>
+              <FiEdit3 />
+              <span>Modifier</span>
             </div>
-          </>
+          </StyledUserInfo>
         ) : (
           <>
             <UserEdit

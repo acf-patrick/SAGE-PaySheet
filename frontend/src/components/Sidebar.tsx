@@ -52,12 +52,19 @@ const StyledSideBar = styled.div<{ $toggle: boolean }>`
     gap: 0.5rem;
     cursor: pointer;
     transition: all 350ms;
+    color: white;
+
+    &:first-of-type {
+      background-color: #09b809ff;
+    }
+
+    &:last-of-type {
+      background-color: #df1c1cff;
+    }
 
     &:hover {
-      color: white;
-
       &:first-of-type {
-        background-color: #19ba19;
+        background-color: #04cf04;
       }
 
       &:last-of-type {
@@ -72,7 +79,7 @@ const StyledSideBar = styled.div<{ $toggle: boolean }>`
       color: white;
 
       &:first-of-type {
-        background-color: #09b80994;
+        background-color: #0de10d94;
       }
 
       &:last-of-type {
@@ -99,7 +106,11 @@ const StyledSideBar = styled.div<{ $toggle: boolean }>`
   }
 
   .user-list {
-    background-color: #c1bbbb;
+    background-color: #1e67e5;
+
+    &:hover {
+      background-color: #3780ff;
+    }
   }
 `;
 
