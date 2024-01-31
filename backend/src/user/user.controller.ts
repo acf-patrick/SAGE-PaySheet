@@ -75,7 +75,6 @@ export class UserController {
     return await this.userService.updateUser(updateUserDto);
   }
 
-  // @UseGuards(AccessTokenGuard)
   @Post()
   @ApiOperation({
     summary: 'Create user',
@@ -83,5 +82,14 @@ export class UserController {
   async createUser(@Body() userDto: UserDto, @Req() req: Request) {
     req.user;
     return await this.userService.createUser(userDto);
+  }
+
+  @UseGuards(AccessTokenGuard)
+  @Get('role/:id')
+  @ApiOperation({
+    summary: "Get sepcific user's role",
+  })
+  async getUserRole(@Param('id') id: string) {
+    return await this.userService.getUserRole(id);
   }
 }

@@ -143,4 +143,19 @@ export class UserService {
       return 'Error: ' + err;
     }
   }
+
+  // Get specific user role
+  async getUserRole(id: string) {
+    try {
+      const user = await this.prisma.user.findUnique({
+        where: {
+          id,
+        },
+      });
+      return user.role;
+    } catch (err) {
+      console.log(err);
+      return 'Error: ' + err;
+    }
+  }
 }
