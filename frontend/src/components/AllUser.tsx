@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { api } from "../api";
 import { User } from "../types";
@@ -143,8 +142,6 @@ function Alluser() {
   const [userIndexToDelet, setUserIndexToDelet] = useState(0);
   const [sort, setSort] = useState("A-Z");
   const [toggleButtons, setToggleButtons] = useState(false);
-
-  const navigate = useNavigate();
 
   const deleteUser = (i: number) => {
     api

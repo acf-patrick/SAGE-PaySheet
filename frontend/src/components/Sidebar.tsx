@@ -4,7 +4,8 @@ import { useNavigate } from "react-router-dom";
 import ExportXlsxButton from "./ExportXlsxButton";
 import styled from "styled-components";
 import RoleContext from "../contexts/AdminUser";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
+import { api } from "../api";
 
 const StyledSideBar = styled.div<{ $toggle: boolean }>`
   display: flex;
@@ -117,12 +118,25 @@ function Sidebar({
 }) {
   const navigate = useNavigate();
 
-  const { isUserAdmin } = useContext(RoleContext);
+  const { isUserAdmin, setIsUserAdmin } = useContext(RoleContext);
 
   const logOut = () => {
     localStorage.clear();
     navigate("/login");
   };
+
+  useEffect(() => {
+    api
+      .get("user/role/" + localStorage.getItem("userId"))
+      .then((res) => {
+        setIsUserAdmin(res.data == "ADMIN");
+      })
+      .catch((err) => {
+        console.log(err);
+        localStorage.clear();
+        navigate("login");
+      });
+  }, [window.location]);
 
   return (
     <StyledSideBar $toggle={toggle}>
