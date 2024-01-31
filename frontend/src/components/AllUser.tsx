@@ -227,7 +227,7 @@ function Alluser() {
   const [filteredUsers, setFilteredUsers] = useState<User[]>([]);
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [userIndexToDelet, setUserIndexToDelet] = useState(0);
-  const [sort, setSort] = useState("");
+  const [sort, setSort] = useState("A-Z");
 
   const deleteUser = (i: number) => {
     api
@@ -254,19 +254,34 @@ function Alluser() {
   }, []);
 
   useEffect(() => {
+    console.log("Sort: " + sort);
     if (sort != "") {
       if (sort == "A-Z") {
         setFilteredUsers([
           ...users.sort((a, b) => a.name.localeCompare(b.name)),
         ]);
+      } else if (sort == "IdA-IdZ") {
+        setFilteredUsers([
+          ...users.sort((a, b) => a.username.localeCompare(b.name)),
+        ]);
       } else if (sort == "Z-A") {
         setFilteredUsers([
           ...users.sort((a, b) => a.name.localeCompare(b.name)).reverse(),
         ]);
+      } else if (sort == "IdZ-IdA") {
+        setFilteredUsers([
+          ...users.sort((a, b) => a.username.localeCompare(b.name)).reverse(),
+        ]);
       } else if (sort == "Admin") {
-        setFilteredUsers([...users.filter((user) => user.role == "ADMIN")]);
-      } else {
-        setFilteredUsers([...users.filter((user) => user.role == "USER")]);
+        setFilteredUsers([
+          ...users.filter((user) => user.role == "ADMIN"),
+          ...users.filter((user) => user.role != "ADMIN"),
+        ]);
+      } else if (sort == "User") {
+        setFilteredUsers([
+          ...users.filter((user) => user.role == "USER"),
+          ...users.filter((user) => user.role != "USER"),
+        ]);
       }
     }
   }, [sort]);
@@ -274,11 +289,15 @@ function Alluser() {
   return (
     <>
       <StyledHeader>
-        <img src="../../public/paysheet.svg" alt="" />
+        <div className="image">
+          <img src="../../public/paysheet.svg" alt="" />
+        </div>
         <span>Tous les utilisateurs</span>
+        <div style={{ width: "30%" }}></div>
       </StyledHeader>
       <UsersList
         users={filteredUsers}
+        sort={sort}
         setSort={setSort}
         setConfirmDelete={(i: number, e: React.MouseEvent<SVGElement>) => {
           setUserIndexToDelet(i);

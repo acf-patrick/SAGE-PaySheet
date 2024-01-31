@@ -94,9 +94,11 @@ function ModifyUser() {
   return (
     <>
       <StyledHeader>
-        <img src="../../public/paysheet.svg" alt="" />
+        <div className="image">
+          <img src="../../public/paysheet.svg" alt="" />
+        </div>
         <span>{user.name + " " + user.lastName}</span>
-        <div style={{ width: "2rem" }}></div>
+        <div style={{ width: "30%" }}></div>
       </StyledHeader>
       <StyledContainer>
         <UserInfoSummary

@@ -1,7 +1,8 @@
 import { FiDelete } from "react-icons/fi";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { User } from "../types";
-import { useNavigate } from "react-router-dom";
+import TableHeaderSorter from "./TableHeaderSorter";
 
 const StyledUsersList = styled.table`
   border-collapse: collapse;
@@ -22,49 +23,6 @@ const StyledUsersList = styled.table`
     margin-top: 5rem;
     width: 95%;
     font-size: 15.5px;
-  }
-
-  .labels {
-    user-select: none;
-    position: absolute;
-    left: 1rem;
-    top: 6.5rem;
-    display: flex;
-    gap: 1rem;
-    font-size: 1rem;
-    font-weight: 600;
-    @media (width <= 480px) {
-      user-select: none;
-      top: 4.5rem;
-      left: 0;
-      width: calc(100% - 2rem);
-      justify-content: center;
-    }
-    @media (480px <= width <= 768px) {
-      user-select: none;
-      top: 4.5rem;
-      left: 0;
-      width: calc(97.9% - 3rem);
-      justify-content: center;
-    }
-    @media (768px <= width <= 1024px) {
-      user-select: none;
-      top: 4.5rem;
-      left: 0;
-      width: calc(98.4% - 3rem);
-      justify-content: flex-start;
-      padding-left: 2rem;
-    }
-
-    select {
-      user-select: none;
-      cursor: pointer;
-      width: 100px;
-      text-align: center;
-      font-weight: 600;
-      font-size: 1.1rem;
-      border-radius: 5px;
-    }
   }
 
   tr {
@@ -105,6 +63,10 @@ const StyledUsersList = styled.table`
     tr {
       user-select: none;
       height: 4rem;
+
+      &:hover {
+        background-color: #e5e5e5;
+      }
     }
   }
 
@@ -155,10 +117,12 @@ const StyledUsersList = styled.table`
 
 function UsersList({
   users,
+  sort,
   setSort,
   setConfirmDelete,
 }: {
   users: User[];
+  sort: string;
   setSort: (s: string) => void;
   setConfirmDelete: (i: number, e: React.MouseEvent<SVGElement>) => void;
 }) {
@@ -166,24 +130,32 @@ function UsersList({
 
   return (
     <StyledUsersList>
-      <div className="labels">
-        <p>Trier:</p>
-        <select
-          id="select"
-          name="Trier"
-          onChange={(e) => setSort(e.currentTarget.value)}
-        >
-          <option value="A-Z">A-Z</option>
-          <option value="Z-A">Z-A</option>
-          <option value="Admin">Admin</option>
-          <option value="User">User</option>
-        </select>
-      </div>
       <thead>
         <tr>
-          <td>Nom</td>
-          <td>Identifiant</td>
-          <td>Role</td>
+          <td>
+            <TableHeaderSorter
+              header="Nom"
+              sort={sort}
+              setSort={setSort}
+              sortValues={["A-Z", "Z-A"]}
+            />
+          </td>
+          <td>
+            <TableHeaderSorter
+              header="Identifiant"
+              sort={sort}
+              setSort={setSort}
+              sortValues={["IdA-IdZ", "IdZ-IdA"]}
+            />
+          </td>
+          <td>
+            <TableHeaderSorter
+              header="Role"
+              sort={sort}
+              setSort={setSort}
+              sortValues={["Admin", "User"]}
+            />
+          </td>
         </tr>
       </thead>
       <tbody>
