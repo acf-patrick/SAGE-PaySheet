@@ -5,31 +5,7 @@ import { Paysheet, User } from "../types";
 import { StyledHeader } from "./AllUser";
 import Sidebar from "./Sidebar";
 import UserPaysheetList from "./UserPaysheetList";
-
-const schema = [
-  {
-    column: "Salaire de base",
-    type: Number,
-    value: (paysheet: Paysheet) => paysheet.baseSalary,
-  },
-  {
-    column: "Avance sur salaire",
-    type: Number,
-    value: (paysheet: Paysheet) => paysheet.advanceOnSalary,
-  },
-  {
-    column: "Salaire restant",
-    type: Number,
-    value: (paysheet: Paysheet) =>
-      paysheet.baseSalary - paysheet.advanceOnSalary,
-  },
-  {
-    column: "Date",
-    type: Date,
-    format: "dd/mm/yyyy",
-    value: (paysheet: Paysheet) => new Date(paysheet.date),
-  },
-];
+import { PaysheetSchema } from "../schemas/paysheetSchema";
 
 const StyledPaysheetContainer = styled.div`
   display: flex;
@@ -79,11 +55,11 @@ function Paysheets() {
         </div>
         <span>{user.name + " " + user.lastName}</span>
         <Sidebar
-          schema={schema}
+          schema={PaysheetSchema}
           data={paysheets}
           toggle={toggleButtons}
           setToggle={setToggleButtons}
-          fileName={user.name + "_" + user.lastName}
+          fileName={user.name + "_" + user.lastName + ".xlsx"}
         />
       </StyledHeader>
       <StyledPaysheetContainer>

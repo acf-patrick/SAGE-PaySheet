@@ -5,6 +5,7 @@ import { User } from "../types";
 import ConfirmPopUp from "./ConfirmPopUp";
 import Sidebar from "./Sidebar";
 import UsersList from "./UsersList";
+import { UserSchema } from "../schemas/userSchema";
 
 export const StyledHeader = styled.h2<{ $scrolled?: boolean }>`
   margin: 0;
@@ -213,11 +214,11 @@ function Alluser() {
         <span>Tous les utilisateurs</span>
         <div style={{ width: "30%" }}></div>
         <Sidebar
-          schema={{}}
-          data={[]}
+          schema={UserSchema}
+          data={filteredUsers}
           toggle={toggleButtons}
           setToggle={setToggleButtons}
-          fileName={"liste_utilisateurs"}
+          fileName={"liste_utilisateurs.xlsx"}
         />
       </StyledHeader>
       <UsersList

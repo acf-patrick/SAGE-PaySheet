@@ -9,6 +9,8 @@ import { StyledHeader } from "./AllUser";
 import ConfirmPopUp from "./ConfirmPopUp";
 import UserInfoSummary from "./UserInfoSummary";
 import UserPaysheetList from "./UserPaysheetList";
+import Sidebar from "./Sidebar";
+import { PaysheetSchema } from "../schemas/paysheetSchema";
 
 const StyledContainer = styled.div`
   display: flex;
@@ -40,6 +42,8 @@ function ModifyUser() {
   });
 
   const [paysheets, setPaysheets] = useState<Paysheet[]>([]);
+  const [toggleButtons, setToggleButtons] = useState(false);
+
   const deletePaysheet = (i: number) => {
     api
       .delete("paysheet/" + paysheets[i].id)
@@ -95,10 +99,21 @@ function ModifyUser() {
     <>
       <StyledHeader>
         <div className="image">
-          <img src="../../public/paysheet.svg" alt="logo" />
+          <img
+            src="../../public/paysheet.svg"
+            alt="logo"
+            onClick={() => setToggleButtons((toggleButtons) => !toggleButtons)}
+          />
         </div>
         <span>{user.name + " " + user.lastName}</span>
         <div style={{ width: "30%" }}></div>
+        <Sidebar
+          schema={PaysheetSchema}
+          data={paysheets}
+          toggle={toggleButtons}
+          setToggle={setToggleButtons}
+          fileName={user.name + "_" + user.lastName + ".xlsx"}
+        />
       </StyledHeader>
       <StyledContainer>
         <UserInfoSummary

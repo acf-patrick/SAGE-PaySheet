@@ -145,7 +145,20 @@ function Sidebar({
       ) : null}
       <ExportXlsxButton schema={schema} data={data} fileName={fileName} />
       {isUserAdmin ? (
-        <button className="user-list">Liste utilisateurs</button>
+        <button
+          className="user-list"
+          onClick={() =>
+            navigate({
+              pathname: window.location.pathname.includes("alluser")
+                ? "/user/" + localStorage.getItem("userId")
+                : "/alluser",
+            })
+          }
+        >
+          {window.location.pathname.includes("alluser")
+            ? "Compte"
+            : "Liste utilisateurs"}
+        </button>
       ) : null}
       <button onClick={logOut}>
         <AiOutlinePoweroff /> <span>Deconnexion</span>
