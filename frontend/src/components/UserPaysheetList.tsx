@@ -3,7 +3,7 @@ import { FiDelete, FiFolderPlus } from "react-icons/fi";
 import styled from "styled-components";
 import { Paysheet } from "../types";
 import EditUserPaysheet from "./EditUserPaysheet";
-import AdminUser from "../contexts/AdminUser";
+import RoleContext from "../contexts/AdminUser";
 
 const StyledPaysheetList = styled.ul`
   display: flex;
@@ -192,7 +192,7 @@ function UserPaysheetList({
 }) {
   const [isEditingPaysheet, setIsEditingPaysheet] = useState(false);
   const [indexToModify, setIndexToModify] = useState(0);
-  const isUserAdmin = useContext(AdminUser).isUserAdmin;
+  const isUserAdmin = useContext(RoleContext).isUserAdmin;
 
   const AddIcon = setIsAddingPaysheet ? (
     <FiFolderPlus

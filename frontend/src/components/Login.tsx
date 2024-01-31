@@ -1,8 +1,8 @@
-import { useContext, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { api } from "../api";
-import AdminUser from "../contexts/AdminUser";
+import RoleContext from "../contexts/AdminUser";
 
 const LoginContainer = styled.div`
   display: flex;
@@ -178,7 +178,7 @@ const LoginFormContainer = styled.form`
 `;
 
 export const Login = () => {
-  const isUserAdminContext = useContext(AdminUser);
+  const { isUserAdmin, setIsUserAdmin } = useContext(RoleContext);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const errorRef = useRef<HTMLParagraphElement>(null);
@@ -193,9 +193,8 @@ export const Login = () => {
         password,
       })
       .then((res) => {
-        res.data.user.role == "ADMIN"
-          ? isUserAdminContext!.setIsUserAdmin(true)
-          : isUserAdminContext!.setIsUserAdmin(false);
+        console.log(res.data.user.role);
+        setIsUserAdmin(res.data.user.role == "ADMIN");
         localStorage.clear();
         localStorage.setItem("userId", res.data.user.id);
         localStorage.setItem("access_token", res.data.access_token);
@@ -211,6 +210,10 @@ export const Login = () => {
         setTimeout(() => errorRef.current?.classList.remove("show"), 2000);
       });
   };
+
+  useEffect(() => {
+    console.log("isUserAdmin: " + isUserAdmin);
+  }, [isUserAdmin]);
 
   return (
     <LoginContainer>

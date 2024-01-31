@@ -5,8 +5,8 @@ interface IAdminUser {
   setIsUserAdmin: (_val: boolean) => void;
 }
 
-const AdminUser = createContext<IAdminUser>({
+const RoleContext = createContext<IAdminUser>({
   isUserAdmin: false,
   setIsUserAdmin: (_val: boolean) => {},
 });
-export default AdminUser;
+export default RoleContext;

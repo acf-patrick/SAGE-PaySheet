@@ -2,6 +2,105 @@ import { AiOutlinePoweroff } from "react-icons/ai";
 import { IoMdCloseCircleOutline } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
 import ExportXlsxButton from "./ExportXlsxButton";
+import styled from "styled-components";
+import RoleContext from "../contexts/AdminUser";
+import { useContext } from "react";
+
+const StyledSideBar = styled.div<{ $toggle: boolean }>`
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-right: 1rem;
+  gap: 1rem;
+  height: 75%;
+  width: 30%;
+  transition: transform 250ms;
+  transform: ${({ $toggle }) =>
+    window.innerWidth <= 480
+      ? `translateX(${$toggle ? "0" : "-100%"})`
+      : "unset"};
+
+  @media (width <= 480px) {
+    width: 50%;
+    height: 100vh;
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    background-color: #656161ff;
+    align-items: flex-start;
+    justify-content: flex-start;
+  }
+
+  & > svg {
+    font-size: 2rem;
+    color: white;
+    margin: 0.5rem 0 1rem 0.75rem;
+  }
+
+  button {
+    width: 9rem;
+    height: 50px;
+    border-radius: 5px;
+    border: none;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    transition: all 350ms;
+
+    &:hover {
+      color: white;
+
+      &:first-of-type {
+        background-color: #19ba19;
+      }
+
+      &:last-of-type {
+        background-color: red;
+      }
+    }
+
+    @media (width <= 480px) {
+      width: 75%;
+      height: 40px;
+      margin: 0 auto;
+      color: white;
+
+      &:first-of-type {
+        background-color: #09b80994;
+      }
+
+      &:last-of-type {
+        background-color: #df1c1cb9;
+      }
+    }
+
+    svg {
+      font-size: 25px;
+      margin: 0;
+
+      @media (width <= 480px) {
+        font-size: 20px;
+      }
+    }
+
+    span {
+      font-size: 15px;
+
+      @media (width <= 480px) {
+        font-size: 12px;
+      }
+    }
+  }
+
+  .user-list {
+    background-color: #c1bbbb;
+  }
+`;
 
 function Sidebar({
   schema,
@@ -18,31 +117,26 @@ function Sidebar({
 }) {
   const navigate = useNavigate();
 
+  const { isUserAdmin } = useContext(RoleContext);
+
   const logOut = () => {
     localStorage.clear();
     navigate("/login");
   };
 
   return (
-    <div
-      className="buttons"
-      style={{
-        transform:
-          window.innerWidth <= 480
-            ? toggle
-              ? "translateX(0)"
-              : "translateX(-100%)"
-            : "unset",
-      }}
-    >
+    <StyledSideBar $toggle={toggle}>
       {window.innerWidth <= 480 ? (
         <IoMdCloseCircleOutline onClick={() => setToggle(false)} />
       ) : null}
       <ExportXlsxButton schema={schema} data={data} fileName={fileName} />
+      {isUserAdmin ? (
+        <button className="user-list">Liste utilisateurs</button>
+      ) : null}
       <button onClick={logOut}>
         <AiOutlinePoweroff /> <span>Deconnexion</span>
       </button>
-    </div>
+    </StyledSideBar>
   );
 }
 
